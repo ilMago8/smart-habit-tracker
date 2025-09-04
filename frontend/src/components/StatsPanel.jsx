@@ -7,11 +7,36 @@ const StatsPanel = ({ habits }) => {
   useEffect(() => {
     const fetchStats = async () => {
       try {
+        // Dati di esempio per testing senza backend
+        const mockStats = {
+          habits: habits.map(habit => ({
+            id: habit.id,
+            name: habit.name,
+            color: habit.color,
+            target_frequency: habit.target_frequency || 7,
+            completed_days: habit.week_checks || 0,
+            completion_percentage: habit.week_completion || 0
+          })),
+          summary: {
+            total_habits: habits.length,
+            average_completion: habits.length > 0 
+              ? Math.round(habits.reduce((sum, h) => sum + (h.week_completion || 0), 0) / habits.length)
+              : 0,
+            week_start: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            week_end: new Date().toISOString().split('T')[0]
+          }
+        };
+        
+        setWeeklyStats(mockStats);
+        
+        // Codice originale per quando il backend sarà attivo:
+        /*
         const response = await fetch('/api/habits/stats');
         const data = await response.json();
         if (data.success) {
           setWeeklyStats(data.data);
         }
+        */
       } catch (error) {
         console.error('Errore nel recupero statistiche:', error);
       } finally {
