@@ -25,10 +25,5 @@
   ],
   "env": {
     "NODE_VERSION": "18.x"
-  },
-  "functions": {
-    "backend/**/*.php": {
-      "runtime": "vercel-php@0.6.0"
-    }
   }
 }
