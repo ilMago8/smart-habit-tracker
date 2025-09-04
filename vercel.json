@@ -10,7 +10,7 @@
     },
     {
       "src": "backend/**/*.php",
-      "use": "vercel-php@0.6.0"
+      "use": "vercel-php@0.7.2"
     }
   ],
   "routes": [
@@ -22,8 +22,5 @@
       "src": "/(.*)",
       "dest": "/frontend/dist/$1"
     }
-  ],
-  "env": {
-    "NODE_VERSION": "18.x"
-  }
+  ]
 }
