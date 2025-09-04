@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Dashboard from './pages/Dashboard';
 import './styles/App.css';
 
-// Dati mock ottimizzati
+// Dati mock ottimizzati - Iniziano tutti a 0
 const MOCK_HABITS = [
   {
     id: 1,
@@ -11,10 +11,10 @@ const MOCK_HABITS = [
     color: "#00a8ff",
     icon: "💧",
     target_frequency: 7,
-    week_checks: 5,
-    week_completion: 71,
+    week_checks: 0,
+    week_completion: 0,
     today_completed: false,
-    total_checks: 15
+    total_checks: 0
   },
   {
     id: 2,
@@ -23,10 +23,10 @@ const MOCK_HABITS = [
     color: "#fbc531",
     icon: "📚",
     target_frequency: 7,
-    week_checks: 6,
-    week_completion: 86,
-    today_completed: true,
-    total_checks: 20
+    week_checks: 0,
+    week_completion: 0,
+    today_completed: false,
+    total_checks: 0
   },
   {
     id: 3,
@@ -35,10 +35,10 @@ const MOCK_HABITS = [
     color: "#44bd32",
     icon: "🤸‍♂️",
     target_frequency: 7,
-    week_checks: 4,
-    week_completion: 57,
+    week_checks: 0,
+    week_completion: 0,
     today_completed: false,
-    total_checks: 12
+    total_checks: 0
   },
   {
     id: 4,
@@ -47,10 +47,10 @@ const MOCK_HABITS = [
     color: "#9c88ff",
     icon: "🧘‍♀️",
     target_frequency: 5,
-    week_checks: 3,
-    week_completion: 60,
+    week_checks: 0,
+    week_completion: 0,
     today_completed: false,
-    total_checks: 8
+    total_checks: 0
   }
 ];
 
@@ -58,13 +58,41 @@ function App() {
   const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  // Funzione per salvare le abitudini nel localStorage
+  const saveHabitsToStorage = useCallback((habitsData) => {
+    try {
+      localStorage.setItem('smart-habit-tracker-habits', JSON.stringify(habitsData));
+    } catch (error) {
+      console.warn('Impossibile salvare nel localStorage:', error);
+    }
+  }, []);
+
+  // Funzione per caricare le abitudini dal localStorage
+  const loadHabitsFromStorage = useCallback(() => {
+    try {
+      const stored = localStorage.getItem('smart-habit-tracker-habits');
+      return stored ? JSON.parse(stored) : null;
+    } catch (error) {
+      console.warn('Impossibile leggere dal localStorage:', error);
+      return null;
+    }
+  }, []);
+
   // Memoized fetch function
   const fetchHabits = useCallback(async () => {
     try {
       // Simulazione loading per UX realistica
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      setHabits(MOCK_HABITS);
+      // Prova a caricare dal localStorage prima dei mock data
+      const storedHabits = loadHabitsFromStorage();
+      if (storedHabits && storedHabits.length > 0) {
+        setHabits(storedHabits);
+      } else {
+        // Usa i dati mock solo se non ci sono dati salvati
+        setHabits(MOCK_HABITS);
+        saveHabitsToStorage(MOCK_HABITS);
+      }
       
       // Codice originale per quando il backend sarà attivo:
       /*
@@ -80,31 +108,45 @@ function App() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [loadHabitsFromStorage, saveHabitsToStorage]);
 
   // Ottimizzato con useCallback per prevenire re-renders
   const toggleHabit = useCallback(async (habitId) => {
     try {
-      setHabits(prevHabits => 
-        prevHabits.map(habit => 
-          habit.id === habitId 
-            ? { 
-                ...habit, 
-                today_completed: !habit.today_completed,
-                // Aggiorna anche le statistiche localmente
-                week_checks: habit.today_completed 
-                  ? Math.max(0, habit.week_checks - 1)
-                  : Math.min(habit.target_frequency, habit.week_checks + 1),
-                week_completion: (() => {
-                  const newWeekChecks = habit.today_completed 
-                    ? Math.max(0, habit.week_checks - 1)
-                    : Math.min(habit.target_frequency, habit.week_checks + 1);
-                  return Math.round((newWeekChecks / habit.target_frequency) * 100);
-                })()
-              }
-            : habit
-        )
-      );
+      const updatedHabits = habits.map(habit => {
+        if (habit.id !== habitId) return habit;
+        
+        // Calcola i nuovi valori
+        const wasCompleted = habit.today_completed;
+        const newTodayCompleted = !wasCompleted;
+        
+        // Aggiorna week_checks
+        const newWeekChecks = wasCompleted 
+          ? Math.max(0, habit.week_checks - 1)
+          : Math.min(habit.target_frequency, habit.week_checks + 1);
+        
+        // Calcola la nuova percentuale
+        const newWeekCompletion = habit.target_frequency > 0 
+          ? Math.round((newWeekChecks / habit.target_frequency) * 100)
+          : 0;
+        
+        // Aggiorna total_checks
+        const newTotalChecks = wasCompleted 
+          ? Math.max(0, habit.total_checks - 1)
+          : habit.total_checks + 1;
+        
+        return {
+          ...habit,
+          today_completed: newTodayCompleted,
+          week_checks: newWeekChecks,
+          week_completion: newWeekCompletion,
+          total_checks: newTotalChecks
+        };
+      });
+      
+      // Aggiorna lo stato e salva nel localStorage
+      setHabits(updatedHabits);
+      saveHabitsToStorage(updatedHabits);
       
       // Codice originale per quando il backend sarà attivo:
       /*
@@ -122,7 +164,7 @@ function App() {
     } catch (error) {
       console.error('Errore nel toggle abitudine:', error);
     }
-  }, []);
+  }, [habits, saveHabitsToStorage]);
 
   const addHabit = useCallback(async (habitData) => {
     try {
@@ -135,7 +177,9 @@ function App() {
         total_checks: 0
       };
       
-      setHabits(prevHabits => [...prevHabits, newHabit]);
+      const updatedHabits = [...habits, newHabit];
+      setHabits(updatedHabits);
+      saveHabitsToStorage(updatedHabits);
       
       // Codice originale per quando il backend sarà attivo:
       /*
@@ -153,7 +197,27 @@ function App() {
     } catch (error) {
       console.error('Errore nella creazione abitudine:', error);
     }
-  }, []);
+  }, [habits, saveHabitsToStorage]);
+
+  // Funzione per resettare tutte le abitudini
+  const resetHabits = useCallback(() => {
+    const resetHabitsData = habits.map(habit => ({
+      ...habit,
+      week_checks: 0,
+      week_completion: 0,
+      today_completed: false,
+      total_checks: 0
+    }));
+    
+    setHabits(resetHabitsData);
+    saveHabitsToStorage(resetHabitsData);
+  }, [habits, saveHabitsToStorage]);
+
+  // Funzione per eliminare tutte le abitudini e ricaricare i mock
+  const resetToDefaults = useCallback(() => {
+    setHabits(MOCK_HABITS);
+    saveHabitsToStorage(MOCK_HABITS);
+  }, [saveHabitsToStorage]);
 
   useEffect(() => {
     fetchHabits();
@@ -177,6 +241,8 @@ function App() {
         habits={habits}
         onToggleHabit={toggleHabit}
         onAddHabit={addHabit}
+        onResetHabits={resetHabits}
+        onResetToDefaults={resetToDefaults}
       />
     </div>
   );
