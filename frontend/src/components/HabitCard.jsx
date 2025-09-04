@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 
-const HabitCard = memo(({ habit, onToggle }) => {
+const HabitCard = memo(({ habit, onToggle, onDelete }) => {
   const { 
     id, 
     name, 
@@ -17,6 +17,14 @@ const HabitCard = memo(({ habit, onToggle }) => {
     e.preventDefault();
     onToggle(id);
   }, [id, onToggle]);
+
+  const handleDelete = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onDelete && window.confirm(`Sei sicuro di voler eliminare l'abitudine "${name}"?`)) {
+      onDelete();
+    }
+  }, [onDelete, name]);
 
   // Funzione per gestire la pressione di tasti (accessibilità)
   const handleKeyPress = useCallback((e) => {
@@ -54,6 +62,17 @@ const HabitCard = memo(({ habit, onToggle }) => {
             </p>
           )}
         </div>
+        {onDelete && (
+          <button
+            type="button"
+            className="delete-btn"
+            onClick={handleDelete}
+            aria-label={`Elimina abitudine ${name}`}
+            title="Elimina abitudine"
+          >
+            ✕
+          </button>
+        )}
       </header>
 
       <div className="progress-section">

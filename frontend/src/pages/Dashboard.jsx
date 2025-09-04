@@ -1,30 +1,11 @@
-import React, { useState, useMemo, useCallback, memo, useEffect, useRef } from 'react';
+import React, { useState, useMemo, useCallback, memo } from 'react';
 import HabitCard from '../components/HabitCard';
 import AddHabitForm from '../components/AddHabitForm';
 import StatsPanel from '../components/StatsPanel';
 
-const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onResetHabits, onResetToDefaults }) => {
+const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onResetProgress }) => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [activeTab, setActiveTab] = useState('habits');
-  const [showResetMenu, setShowResetMenu] = useState(false);
-  const resetMenuRef = useRef(null);
-
-  // Chiudi il menu reset quando si clicca fuori
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (resetMenuRef.current && !resetMenuRef.current.contains(event.target)) {
-        setShowResetMenu(false);
-      }
-    };
-
-    if (showResetMenu) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [showResetMenu]);
 
   // Memoized date formatting
   const today = useMemo(() => {
@@ -59,21 +40,6 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onResetHabits, onRe
     setShowAddForm(false);
   }, [onAddHabit]);
 
-  // Callbacks per il reset
-  const handleResetProgress = useCallback(() => {
-    if (window.confirm('Sei sicuro di voler azzerare i progressi di tutte le abitudini?')) {
-      onResetHabits();
-      setShowResetMenu(false);
-    }
-  }, [onResetHabits]);
-
-  const handleResetToDefaults = useCallback(() => {
-    if (window.confirm('Sei sicuro di voler resettare tutto e caricare le abitudini di esempio?')) {
-      onResetToDefaults();
-      setShowResetMenu(false);
-    }
-  }, [onResetToDefaults]);
-
   // Memoized empty state
   const emptyState = useMemo(() => (
     <div className="empty-state">
@@ -98,9 +64,10 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onResetHabits, onRe
         key={habit.id}
         habit={habit}
         onToggle={() => onToggleHabit(habit.id)}
+        onDelete={onDeleteHabit ? () => onDeleteHabit(habit.id) : undefined}
       />
     ));
-  }, [habits, onToggleHabit, emptyState]);
+  }, [habits, onToggleHabit, onDeleteHabit, emptyState]);
 
   return (
     <div className="dashboard">
@@ -150,40 +117,9 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onResetHabits, onRe
           <div className="habits-section" role="tabpanel">
             <div className="section-header">
               <h2>Abitudini di Oggi</h2>
-              <div className="section-actions">
+              <div className="header-actions">
                 {habits.length > 0 && (
                   <>
-                    <div className="reset-menu-container" ref={resetMenuRef}>
-                      <button 
-                        className="reset-btn"
-                        onClick={() => setShowResetMenu(!showResetMenu)}
-                        aria-label="Menu reset"
-                        title="Opzioni reset"
-                      >
-                        <span className="btn-icon">🔄</span>
-                        Reset
-                      </button>
-                      {showResetMenu && (
-                        <div className="reset-dropdown">
-                          <button 
-                            className="reset-option"
-                            onClick={handleResetProgress}
-                            title="Azzera solo i progressi, mantieni le abitudini"
-                          >
-                            <span className="option-icon">📊</span>
-                            Azzera Progressi
-                          </button>
-                          <button 
-                            className="reset-option danger"
-                            onClick={handleResetToDefaults}
-                            title="Elimina tutto e carica le abitudini di esempio"
-                          >
-                            <span className="option-icon">🏠</span>
-                            Reset Completo
-                          </button>
-                        </div>
-                      )}
-                    </div>
                     <button 
                       className="add-habit-btn"
                       onClick={handleShowAddForm}
@@ -192,6 +128,17 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onResetHabits, onRe
                       <span className="btn-icon">➕</span>
                       Nuova Abitudine
                     </button>
+                    {onResetProgress && (
+                      <button 
+                        className="reset-btn"
+                        onClick={onResetProgress}
+                        aria-label="Resetta tutti i progressi"
+                        title="Resetta tutti i progressi"
+                      >
+                        <span className="btn-icon">🔄</span>
+                        Reset
+                      </button>
+                    )}
                   </>
                 )}
               </div>

@@ -1,96 +1,171 @@
-# 🔐 Security Policy
+# 🔒 Security Policy
 
-## 🛡️ Supported Versions
+## 🛡️ Versioni Supportate
 
-Versioni attualmente supportate con security updates:
+Supportiamo attivamente le seguenti versioni di **Smart Habit Tracker**:
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.0.x   | ✅ Current         |
-| < 1.0   | ❌ No longer supported |
+| Versione | Supporto Sicurezza     | Status           |
+| -------- | ---------------------- | ---------------- |
+| 1.1.x    | ✅ Supporto completo   | Attiva          |
+| 1.0.x    | ⚠️ Supporto critico   | Manutenzione    |
+| < 1.0    | ❌ Non supportato      | EOL             |
 
-## 🚨 Reporting a Vulnerability
+## 🚨 Segnalare Vulnerabilità
 
-Se scopri una vulnerabilità di sicurezza, per favore **NON** aprire un issue pubblico.
+La sicurezza è la nostra priorità. Se hai trovato una vulnerabilità:
 
-### 📧 Come Segnalare
+### 📧 Segnalazione Privata
+**Per vulnerabilità critiche o sensibili:**
 
-1. **Email**: Invia una email dettagliata a [security email]
-2. **Oggetto**: `[SECURITY] Smart Habit Tracker - [Brief Description]`
-3. **Contenuto**: Include dettagli completi sulla vulnerabilità
+- **Email**: [security@smart-habit-tracker.dev](#)
+- **PGP Key**: [Download](public.key) per comunicazioni crittografate
+- **Response Time**: Entro 48 ore
 
-### 📋 Cosa Includere
+### 🔍 Informazioni da Includere
+1. **Descrizione** dettagliata della vulnerabilità
+2. **Passi per riprodurre** il problema
+3. **Impatto potenziale** e scenario di exploit
+4. **Versione** software interessata
+5. **Proof of Concept** (se sicuro da condividere)
 
-- **Descrizione dettagliata** della vulnerabilità
-- **Steps to reproduce** il problema
-- **Potential impact** e severity level
-- **Screenshots/video** se applicabile
-- **Environment details** (browser, OS, etc.)
-- **Your contact info** per follow-up
+### ⚡ Processo di Risoluzione
 
-### ⏱️ Response Timeline
+1. **Acknowledgment** - Confermiamo ricevuta entro 48h
+2. **Assessment** - Validazione e valutazione rischio (3-5 giorni)
+3. **Fix Development** - Sviluppo patch di sicurezza
+4. **Testing** - Verifica completa della correzione
+5. **Release** - Deploy coordinato della fix
+6. **Disclosure** - Comunicazione pubblica responsabile
 
-- **24 ore**: Conferma di ricezione
-- **72 ore**: Valutazione iniziale e priority
-- **1 settimana**: Timeline per fix (dipende dalla severity)
-- **Fix deployment**: Notifica quando risolto
+## 🏆 Responsible Disclosure
 
-### 🏆 Recognition
+### ✅ Cosa Apprezziamo
+- Segnalazione responsabile prima della disclosure pubblica
+- Tempo ragionevole per correggere la vulnerabilità
+- Proof of concept dettagliato ma sicuro
+- Suggerimenti per migliorare la sicurezza
 
-I security researchers che segnalano vulnerabilità responsabilmente saranno:
+### ❌ Cosa Non Fare
+- Non testare su dati di produzione
+- Non utilizzare tecniche invasive o distruttive
+- Non divulgare pubblicamente prima della correzione
+- Non richiedere compensi o ricatti
 
-- ✅ **Riconosciuti** nei release notes (se desiderato)
-- ✅ **Aggiunti** alla hall of fame security
-- ✅ **Contattati** prima del disclosure pubblico
+### 🎁 Riconoscimenti
+I ricercatori responsabili saranno riconosciuti:
+- **Hall of Fame** sulla documentazione
+- **Credits** nelle release notes
+- **LinkedIn/Twitter** mention se desiderato
 
-## 🔒 Security Best Practices
+## 🔐 Best Practices di Sicurezza
 
-### Per Users
-- ✅ Usa sempre l'ultima versione disponibile
-- ✅ Mantieni aggiornato il browser
-- ✅ Evita di condividere link dell'app in chat pubbliche
-- ✅ Segnala comportamenti sospetti immediatamente
+### 👨‍💻 Per Sviluppatori
 
-### Per Developers
-- ✅ Segui [OWASP guidelines](https://owasp.org/)
-- ✅ Valida sempre input utente
-- ✅ Usa HTTPS per tutte le comunicazioni
-- ✅ Implementa CSP headers appropriati
-- ✅ Regular security audits del codice
+#### Codice Sicuro
+```javascript
+// ✅ Sanitizzazione input
+const sanitizeInput = (input) => {
+  return input.replace(/[<>]/g, '');
+};
 
-## 🔍 Security Features
+// ✅ Validazione lato client E server
+const validateHabitName = (name) => {
+  return name.length >= 2 && name.length <= 50;
+};
+```
 
-### Attualmente Implementate
-- ✅ **CSP Headers** per prevenire XSS
-- ✅ **HTTPS enforcement** su Vercel
-- ✅ **Input validation** su tutti i form
-- ✅ **Secure headers** nella configurazione Vercel
-- ✅ **No sensitive data** in localStorage/cookies
+#### Dipendenze
+```bash
+# Audit regolare delle dipendenze
+npm audit
+npm audit fix
 
-### Planned (v2.0)
-- 🔄 **JWT authentication** con refresh tokens
-- 🔄 **Rate limiting** su API endpoints
-- 🔄 **SQL injection protection** con prepared statements
-- 🔄 **CSRF protection** per form submissions
-- 🔄 **Data encryption** per informazioni sensibili
+# Update sicuri
+npm update
+```
 
-## 🚫 Out of Scope
+### 🚀 Per Deployment
 
-Le seguenti vulnerabilità sono considerate out of scope:
+#### Vercel Configuration
+```json
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {"key": "X-Content-Type-Options", "value": "nosniff"},
+        {"key": "X-Frame-Options", "value": "DENY"},
+        {"key": "X-XSS-Protection", "value": "1; mode=block"}
+      ]
+    }
+  ]
+}
+```
 
-- ❌ **Social engineering** attacks
-- ❌ **Brute force** su demo app (no auth)
-- ❌ **DDoS attacks** (gestiti da Vercel)
-- ❌ **Browser vulnerabilities** (non nel nostro controllo)
-- ❌ **Physical access** al device dell'utente
+#### Environment Variables
+- Mai committare `.env` files
+- Usare secrets management per produzione
+- Rotazione regolare delle chiavi API
 
-## 📚 Resources
+### 🌐 Per Utenti
 
+#### Browser Security
+- Mantieni browser aggiornato
+- Usa HTTPS sempre (smart-habit-tracker.vercel.app)
+- Attenzione ai phishing sites
+
+#### Data Privacy
+- I dati sono salvati localmente nel browser
+- Nessun tracking di dati personali
+- Cancellazione dati con clear browser cache
+
+## 📊 Security Monitoring
+
+### 🔍 Automated Scanning
+- **Dependabot**: Aggiornamenti automatici dipendenze
+- **CodeQL**: Analisi statica del codice
+- **OWASP ZAP**: Penetration testing periodico
+
+### 📈 Metriche Sicurezza
+- Zero vulnerabilità critiche tollerate
+- Tempo medio risoluzione: < 7 giorni
+- Coverage test sicurezza: > 90%
+
+## 🚨 Security Incidents
+
+### 📋 Incident Response Plan
+
+1. **Detection** - Monitoring automatico e segnalazioni
+2. **Assessment** - Valutazione impatto e rischio
+3. **Containment** - Isolamento e mitigazione
+4. **Eradication** - Rimozione completa minaccia
+5. **Recovery** - Ripristino servizi sicuri
+6. **Lessons Learned** - Post-mortem e miglioramenti
+
+### 📞 Emergency Contacts
+- **Lead Developer**: [@ilMago8](https://github.com/ilMago8)
+- **Security Team**: [security@domain.com](#)
+- **On-call**: [+39 XXX XXX XXXX](#) (solo emergenze)
+
+## 📚 Risorse Aggiuntive
+
+### 🔗 Link Utili
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/)
-- [Vercel Security](https://vercel.com/docs/security)
-- [React Security Best Practices](https://react.dev/learn/security)
-- [CSP Generator](https://report-uri.com/home/generate)
+- [Node.js Security Guide](https://nodejs.org/en/docs/guides/security/)
+- [React Security Best Practices](https://react.dev/learn)
+
+### 📖 Documentation
+- [Security Architecture](docs/security-architecture.md)
+- [Threat Model](docs/threat-model.md)
+- [Audit Logs](docs/audit-logs.md)
 
 ---
 
-**🙏 Grazie per aiutarci a mantenere Smart Habit Tracker sicuro per tutti!**
+## 🤝 Collaborazione
+
+La sicurezza è responsabilità di tutti. 
+
+**Segnala responsabilmente, proteggiamo insieme la community!**
+
+**Last Updated**: Settembre 2025  
+**Next Review**: Dicembre 2025

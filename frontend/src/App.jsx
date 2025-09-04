@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Dashboard from './pages/Dashboard';
 import './styles/App.css';
 
-// Dati mock ottimizzati - Iniziano tutti a 0
+// Dati mock ottimizzati - TUTTE LE ABITUDINI PARTONO DA 0%
 const MOCK_HABITS = [
   {
     id: 1,
@@ -58,41 +58,13 @@ function App() {
   const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Funzione per salvare le abitudini nel localStorage
-  const saveHabitsToStorage = useCallback((habitsData) => {
-    try {
-      localStorage.setItem('smart-habit-tracker-habits', JSON.stringify(habitsData));
-    } catch (error) {
-      console.warn('Impossibile salvare nel localStorage:', error);
-    }
-  }, []);
-
-  // Funzione per caricare le abitudini dal localStorage
-  const loadHabitsFromStorage = useCallback(() => {
-    try {
-      const stored = localStorage.getItem('smart-habit-tracker-habits');
-      return stored ? JSON.parse(stored) : null;
-    } catch (error) {
-      console.warn('Impossibile leggere dal localStorage:', error);
-      return null;
-    }
-  }, []);
-
   // Memoized fetch function
   const fetchHabits = useCallback(async () => {
     try {
       // Simulazione loading per UX realistica
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      // Prova a caricare dal localStorage prima dei mock data
-      const storedHabits = loadHabitsFromStorage();
-      if (storedHabits && storedHabits.length > 0) {
-        setHabits(storedHabits);
-      } else {
-        // Usa i dati mock solo se non ci sono dati salvati
-        setHabits(MOCK_HABITS);
-        saveHabitsToStorage(MOCK_HABITS);
-      }
+      setHabits(MOCK_HABITS);
       
       // Codice originale per quando il backend sarà attivo:
       /*
@@ -108,45 +80,39 @@ function App() {
     } finally {
       setLoading(false);
     }
-  }, [loadHabitsFromStorage, saveHabitsToStorage]);
+  }, []);
 
   // Ottimizzato con useCallback per prevenire re-renders
   const toggleHabit = useCallback(async (habitId) => {
     try {
-      const updatedHabits = habits.map(habit => {
-        if (habit.id !== habitId) return habit;
-        
-        // Calcola i nuovi valori
-        const wasCompleted = habit.today_completed;
-        const newTodayCompleted = !wasCompleted;
-        
-        // Aggiorna week_checks
-        const newWeekChecks = wasCompleted 
-          ? Math.max(0, habit.week_checks - 1)
-          : Math.min(habit.target_frequency, habit.week_checks + 1);
-        
-        // Calcola la nuova percentuale
-        const newWeekCompletion = habit.target_frequency > 0 
-          ? Math.round((newWeekChecks / habit.target_frequency) * 100)
-          : 0;
-        
-        // Aggiorna total_checks
-        const newTotalChecks = wasCompleted 
-          ? Math.max(0, habit.total_checks - 1)
-          : habit.total_checks + 1;
-        
-        return {
-          ...habit,
-          today_completed: newTodayCompleted,
-          week_checks: newWeekChecks,
-          week_completion: newWeekCompletion,
-          total_checks: newTotalChecks
-        };
-      });
-      
-      // Aggiorna lo stato e salva nel localStorage
-      setHabits(updatedHabits);
-      saveHabitsToStorage(updatedHabits);
+      setHabits(prevHabits => 
+        prevHabits.map(habit => {
+          if (habit.id !== habitId) return habit;
+          
+          // Calcola i nuovi valori
+          const willBeCompleted = !habit.today_completed;
+          const newWeekChecks = willBeCompleted 
+            ? habit.week_checks + 1
+            : Math.max(0, habit.week_checks - 1);
+          
+          const newTotalChecks = willBeCompleted
+            ? habit.total_checks + 1
+            : Math.max(0, habit.total_checks - 1);
+          
+          // Calcola la percentuale dinamicamente
+          const newWeekCompletion = habit.target_frequency > 0 
+            ? Math.round((newWeekChecks / habit.target_frequency) * 100)
+            : 0;
+          
+          return {
+            ...habit,
+            today_completed: willBeCompleted,
+            week_checks: newWeekChecks,
+            week_completion: Math.min(100, newWeekCompletion), // Cap al 100%
+            total_checks: newTotalChecks
+          };
+        })
+      );
       
       // Codice originale per quando il backend sarà attivo:
       /*
@@ -164,7 +130,7 @@ function App() {
     } catch (error) {
       console.error('Errore nel toggle abitudine:', error);
     }
-  }, [habits, saveHabitsToStorage]);
+  }, []);
 
   const addHabit = useCallback(async (habitData) => {
     try {
@@ -177,9 +143,7 @@ function App() {
         total_checks: 0
       };
       
-      const updatedHabits = [...habits, newHabit];
-      setHabits(updatedHabits);
-      saveHabitsToStorage(updatedHabits);
+      setHabits(prevHabits => [...prevHabits, newHabit]);
       
       // Codice originale per quando il backend sarà attivo:
       /*
@@ -197,27 +161,43 @@ function App() {
     } catch (error) {
       console.error('Errore nella creazione abitudine:', error);
     }
-  }, [habits, saveHabitsToStorage]);
+  }, []);
 
-  // Funzione per resettare tutte le abitudini
-  const resetHabits = useCallback(() => {
-    const resetHabitsData = habits.map(habit => ({
-      ...habit,
-      week_checks: 0,
-      week_completion: 0,
-      today_completed: false,
-      total_checks: 0
-    }));
-    
-    setHabits(resetHabitsData);
-    saveHabitsToStorage(resetHabitsData);
-  }, [habits, saveHabitsToStorage]);
+  // Funzione per eliminare un'abitudine
+  const deleteHabit = useCallback(async (habitId) => {
+    try {
+      setHabits(prevHabits => prevHabits.filter(habit => habit.id !== habitId));
+      
+      // Codice originale per quando il backend sarà attivo:
+      /*
+      const response = await fetch(`/api/habits/${habitId}`, {
+        method: 'DELETE'
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        fetchHabits();
+      }
+      */
+    } catch (error) {
+      console.error('Errore nell\'eliminazione abitudine:', error);
+    }
+  }, []);
 
-  // Funzione per eliminare tutte le abitudini e ricaricare i mock
-  const resetToDefaults = useCallback(() => {
-    setHabits(MOCK_HABITS);
-    saveHabitsToStorage(MOCK_HABITS);
-  }, [saveHabitsToStorage]);
+  // Funzione per resettare tutti i progressi (utile per demo)
+  const resetAllProgress = useCallback(() => {
+    if (window.confirm('Sei sicuro di voler resettare tutti i progressi? Questa azione non può essere annullata.')) {
+      setHabits(prevHabits => 
+        prevHabits.map(habit => ({
+          ...habit,
+          week_checks: 0,
+          week_completion: 0,
+          today_completed: false,
+          total_checks: 0
+        }))
+      );
+    }
+  }, []);
 
   useEffect(() => {
     fetchHabits();
@@ -241,8 +221,8 @@ function App() {
         habits={habits}
         onToggleHabit={toggleHabit}
         onAddHabit={addHabit}
-        onResetHabits={resetHabits}
-        onResetToDefaults={resetToDefaults}
+        onDeleteHabit={deleteHabit}
+        onResetProgress={resetAllProgress}
       />
     </div>
   );

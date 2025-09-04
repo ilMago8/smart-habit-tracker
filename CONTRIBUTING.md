@@ -1,192 +1,162 @@
 # 🤝 Contributing to Smart Habit Tracker
 
-Prima di tutto, grazie for il tuo interesse nel contribuire a Smart Habit Tracker! 🎉
+Grazie per il tuo interesse nel contribuire a **Smart Habit Tracker**! 🎉
 
-## 📋 Table of Contents
+## 📋 Come Contribuire
 
-- [Code of Conduct](#code-of-conduct)
-- [Getting Started](#getting-started)
-- [Development Setup](#development-setup)
-- [Pull Request Process](#pull-request-process)
-- [Coding Guidelines](#coding-guidelines)
-- [Issue Reporting](#issue-reporting)
+### 🐛 Segnalare Bug
+1. Controlla che il bug non sia già segnalato negli [Issues](https://github.com/ilMago8/smart-habit-tracker/issues)
+2. Crea un nuovo issue usando il template **Bug Report**
+3. Includi informazioni dettagliate:
+   - Versione browser/OS
+   - Passi per riprodurre il bug
+   - Screenshot se possibile
+   - Comportamento atteso vs osservato
 
-## 📜 Code of Conduct
+### ✨ Proporre Nuove Features
+1. Controlla la [Roadmap](README.md#-roadmap) per vedere se è già pianificata
+2. Crea un issue usando il template **Feature Request**
+3. Descrivi:
+   - Il problema che la feature risolverebbe
+   - La soluzione proposta
+   - Alternative considerate
+   - Mockup/wireframe se utili
 
-Questo progetto aderisce al [Contributor Covenant](https://www.contributor-covenant.org/). Partecipando, ci si aspetta che tu rispetti questo codice.
+### 🔧 Contribuire Codice
 
-## 🚀 Getting Started
-
-### Prerequisites
-
-- Node.js 18+ 
-- Git
-- Un editor di codice (VS Code raccomandato)
-
-### Development Setup
-
-1. **Fork & Clone**
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/smart-habit-tracker.git
-   cd smart-habit-tracker
-   ```
-
-2. **Setup Frontend**
-   ```bash
-   cd frontend
-   npm install
-   npm run dev
-   ```
-
-3. **Create Feature Branch**
-   ```bash
-   git checkout -b feature/your-amazing-feature
-   ```
-
-## 🔄 Pull Request Process
-
-1. **Ensure** il tuo codice segue gli standard del progetto
-2. **Update** la documentazione se necessario  
-3. **Add** test per nuove funzionalità
-4. **Ensure** tutti i test passano
-5. **Request** review da un maintainer
-
-### PR Template
-
-```markdown
-## 🎯 Cosa fa questa PR
-
-Descrizione chiara delle modifiche
-
-## ✅ Checklist
-
-- [ ] Ho testato le modifiche localmente
-- [ ] Ho aggiornato la documentazione
-- [ ] Ho aggiunto test se necessario
-- [ ] Il codice segue le convenzioni del progetto
-
-## 📸 Screenshot (se applicabile)
-
-[Aggiungi screenshot se ci sono cambiamenti UI]
-```
-
-## 📏 Coding Guidelines
-
-### JavaScript/React
-
-```javascript
-// ✅ Good
-const HabitCard = memo(({ habit, onToggle }) => {
-  const handleClick = useCallback(() => {
-    onToggle(habit.id);
-  }, [habit.id, onToggle]);
-  
-  return <div onClick={handleClick}>{habit.name}</div>;
-});
-
-// ❌ Bad  
-function HabitCard(props) {
-  return <div onClick={() => props.onToggle(props.habit.id)}>{props.habit.name}</div>;
-}
-```
-
-### CSS
-
-```css
-/* ✅ Good - Use CSS custom properties */
-.habit-card {
-  background: var(--card-background);
-  border-radius: var(--border-radius);
-  transition: var(--transition-base);
-}
-
-/* ❌ Bad - Hard-coded values */
-.habit-card {
-  background: #ffffff;
-  border-radius: 12px;
-  transition: all 0.3s ease;
-}
-```
-
-### Commit Messages
-
-Usa [Conventional Commits](https://conventionalcommits.org/):
-
+#### Setup Sviluppo
 ```bash
-feat: add streak tracking feature
-fix: resolve habit deletion bug
-docs: update README with new features
-style: improve button hover animations
-refactor: optimize habit state management
-test: add unit tests for HabitCard component
+# Fork e clona il repository
+git clone https://github.com/TUO-USERNAME/smart-habit-tracker.git
+cd smart-habit-tracker
+
+# Installa dipendenze
+cd frontend
+npm install
+
+# Avvia server di sviluppo
+npm run dev
 ```
 
-## 🐛 Issue Reporting
+#### Workflow
+1. **Crea un branch** per la tua feature:
+   ```bash
+   git checkout -b feature/nome-feature
+   ```
 
-### Bug Reports
+2. **Sviluppa** seguendo le guidelines:
+   - Codice pulito e commentato
+   - Test per nuove funzionalità
+   - Commit messages descrittivi
 
-Usa il template GitHub e includi:
+3. **Testa** le tue modifiche:
+   ```bash
+   npm run build
+   npm run preview
+   ```
 
-- **🔍 Steps to reproduce**
-- **💻 Environment info** (OS, browser, Node version)
-- **🎯 Expected behavior**
-- **🐛 Actual behavior** 
-- **📸 Screenshots** se applicabile
+4. **Commit** usando conventional commits:
+   ```bash
+   git commit -m "feat: add dark mode toggle"
+   git commit -m "fix: resolve habit deletion bug"
+   git commit -m "docs: update installation guide"
+   ```
 
-### Feature Requests
+5. **Push** e crea **Pull Request**:
+   ```bash
+   git push origin feature/nome-feature
+   ```
 
-- **📝 Clear description** della funzionalità
-- **🎯 Use case** e motivazione
-- **💡 Possible implementation** se hai idee
-- **📊 Priority** (low/medium/high)
+## 📏 Guidelines
 
-## 🏷️ Labels
-
-- `bug` - Qualcosa non funziona
-- `enhancement` - Nuova funzionalità
-- `documentation` - Miglioramenti alla documentazione  
-- `good first issue` - Buono per principianti
-- `help wanted` - Aiuto extra richiesto
-- `priority: high` - Richiede attenzione immediata
-
-## 🎯 Areas for Contribution
-
-### 🔧 Code
-- React component optimization
-- CSS animations e transitions
-- Performance improvements
-- Accessibility enhancements
-
-### 📝 Documentation  
-- README improvements
-- Code comments
-- API documentation
-- Tutorial creation
-
-### 🎨 Design
-- UI/UX improvements
-- Icon design
-- Color palette refinements
-- Mobile responsiveness
+### 🎨 Stile Codice
+- **ESLint**: Segui le regole esistenti
+- **Prettier**: Formattazione automatica
+- **Naming**: camelCase per variabili, PascalCase per componenti
+- **Commenti**: Spiega il "perché", non il "cosa"
 
 ### 🧪 Testing
-- Unit tests
-- Integration tests
-- E2E tests
-- Performance testing
+- Testa su Chrome, Firefox, Safari
+- Verifica responsive su mobile
+- Controlla accessibilità con screen reader
+- Performance test con Lighthouse
 
-## 🎉 Recognition
+### 📝 Documentazione
+- Aggiorna README.md se necessario
+- Commenta funzioni complesse
+- Includi JSDoc per API pubbliche
 
-Tutti i contributors saranno riconosciuti nel README e avranno accesso al Contributors team su GitHub.
+### 🚀 Pull Request
+- **Titolo** chiaro e descrittivo
+- **Descrizione** che spiega le modifiche
+- **Screenshot** per cambiamenti UI
+- **Breaking changes** evidenziati
 
-## 📞 Contact
+## 🏷️ Conventional Commits
 
-- **GitHub Issues** - Per bug reports e feature requests
-- **GitHub Discussions** - Per domande generali
-- **Email** - [Maintainer email] per questioni sensibili
+Usiamo [Conventional Commits](https://www.conventionalcommits.org/) per messaggi consistenti:
+
+- `feat:` nuove funzionalità
+- `fix:` correzioni bug
+- `docs:` aggiornamenti documentazione
+- `style:` modifiche formattazione
+- `refactor:` refactoring codice
+- `test:` aggiunta test
+- `chore:` task manutenzione
+
+**Esempi:**
+```bash
+feat(habits): add streak tracking functionality
+fix(dashboard): resolve progress bar calculation
+docs(readme): update installation instructions
+style(components): improve button hover effects
+```
+
+## 🎯 Aree di Contributo
+
+### 🆘 Good First Issues
+Perfetti per iniziare:
+- Correzioni typo nella documentazione
+- Miglioramenti UI minori
+- Aggiunta test mancanti
+- Ottimizzazioni performance
+
+### 🔥 Priority Features
+- Dark mode implementation
+- Habit streak tracking
+- Data export functionality
+- Mobile app (React Native)
+
+### 🧪 Testing & QA
+- Unit tests con Jest
+- E2E tests con Playwright
+- Accessibility testing
+- Cross-browser compatibility
+
+## 🏆 Riconoscimenti
+
+I contributori saranno riconosciuti:
+- **README.md** con link GitHub
+- **Release notes** delle versioni
+- **Social media** per contributi significativi
+- **Swag** per contributori top (futuro)
+
+## ❓ Domande?
+
+- **Discord**: [Server Community](#) (futuro)
+- **Discussions**: [GitHub Discussions](https://github.com/ilMago8/smart-habit-tracker/discussions)
+- **Email**: [maintainer@email.com](#)
+
+## 📜 Codice di Condotta
+
+Seguiamo il [Contributor Covenant](https://www.contributor-covenant.org/):
+- Sii rispettoso e inclusivo
+- Accetta critiche costruttive
+- Focalizzati su cosa è meglio per la community
+- Mostra empatia verso altri membri
 
 ---
 
-**Grazie per il tuo contributo! 🙏**
+**🙏 Grazie per contribuire a rendere Smart Habit Tracker ancora migliore!**
 
-*Happy coding!* ✨
+**💪 Insieme possiamo aiutare milioni di persone a costruire abitudini positive!**
