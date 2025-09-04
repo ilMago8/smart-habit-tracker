@@ -2,11 +2,47 @@
 <html lang="it">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/src/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Smart Habit Tracker</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>Smart Habit Tracker - Traccia le tue abitudini quotidiane</title>
+    <meta name="description" content="App moderna per tracciare e monitorare le tue abitudini giornaliere. Dashboard colorata, statistiche e progress bar per migliorare la tua produttività." />
+    <meta name="keywords" content="abitudini, habit tracker, produttività, dashboard, statistiche, benessere" />
+    <meta name="author" content="ilMago8" />
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Smart Habit Tracker" />
+    <meta property="og:description" content="App moderna per tracciare le tue abitudini quotidiane con dashboard colorata e statistiche." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/og-image.png" />
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Smart Habit Tracker" />
+    <meta name="twitter:description" content="Traccia le tue abitudini con un'interfaccia moderna e colorata." />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    
+    <!-- Manifest for PWA -->
+    <link rel="manifest" href="/site.webmanifest" />
+    
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#667eea" />
+    
+    <!-- Preload important fonts -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'" />
   </head>
   <body>
+    <noscript>
+      <div style="text-align: center; padding: 50px; font-family: Arial, sans-serif;">
+        <h1>Smart Habit Tracker</h1>
+        <p>Questa app richiede JavaScript per funzionare correttamente.</p>
+        <p>Per favore abilita JavaScript nel tuo browser.</p>
+      </div>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

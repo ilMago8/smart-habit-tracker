@@ -1,96 +1,156 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback, memo } from 'react';
 import HabitCard from '../components/HabitCard';
 import AddHabitForm from '../components/AddHabitForm';
 import StatsPanel from '../components/StatsPanel';
 
-const Dashboard = ({ habits, onToggleHabit, onAddHabit }) => {
+const Dashboard = memo(({ habits, onToggleHabit, onAddHabit }) => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [activeTab, setActiveTab] = useState('habits');
 
-  const today = new Date().toLocaleDateString('it-IT', { 
-    weekday: 'long', 
-    year: 'numeric', 
-    month: 'long', 
-    day: 'numeric' 
-  });
+  // Memoized date formatting
+  const today = useMemo(() => {
+    return new Date().toLocaleDateString('it-IT', { 
+      weekday: 'long', 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    });
+  }, []);
 
-  const completedToday = habits.filter(habit => habit.today_completed).length;
+  // Memoized calculations
+  const completedToday = useMemo(() => {
+    return habits.filter(habit => habit.today_completed).length;
+  }, [habits]);
+
+  // Memoized tab handlers
+  const handleTabChange = useCallback((tab) => {
+    setActiveTab(tab);
+  }, []);
+
+  const handleShowAddForm = useCallback(() => {
+    setShowAddForm(true);
+  }, []);
+
+  const handleCancelAddForm = useCallback(() => {
+    setShowAddForm(false);
+  }, []);
+
+  const handleAddHabit = useCallback((habitData) => {
+    onAddHabit(habitData);
+    setShowAddForm(false);
+  }, [onAddHabit]);
+
+  // Memoized empty state
+  const emptyState = useMemo(() => (
+    <div className="empty-state">
+      <div className="empty-icon">🎯</div>
+      <h3>Nessuna abitudine ancora</h3>
+      <p>Inizia il tuo percorso di crescita personale creando la tua prima abitudine!</p>
+      <button 
+        className="cta-button"
+        onClick={handleShowAddForm}
+      >
+        ✨ Crea la tua prima abitudine
+      </button>
+    </div>
+  ), [handleShowAddForm]);
+
+  // Memoized habits list
+  const habitsList = useMemo(() => {
+    if (habits.length === 0) return emptyState;
+    
+    return habits.map(habit => (
+      <HabitCard
+        key={habit.id}
+        habit={habit}
+        onToggle={() => onToggleHabit(habit.id)}
+      />
+    ));
+  }, [habits, onToggleHabit, emptyState]);
 
   return (
     <div className="dashboard">
       <header className="dashboard-header">
         <div className="header-content">
-          <h1>🌟 Smart Habit Tracker</h1>
-          <p className="date">{today}</p>
-          <div className="daily-summary">
-            <span className="completed">{completedToday}</span>
-            <span className="separator">/</span>
-            <span className="total">{habits.length}</span>
+          <h1 className="app-title">
+            <span className="title-icon">🌟</span>
+            Smart Habit Tracker
+          </h1>
+          <p className="date" aria-label={`Oggi è ${today}`}>{today}</p>
+          <div className="daily-summary" role="status">
+            <div className="progress-circle">
+              <span className="completed">{completedToday}</span>
+              <span className="separator">/</span>
+              <span className="total">{habits.length}</span>
+            </div>
             <span className="label">abitudini completate oggi</span>
           </div>
         </div>
       </header>
 
-      <nav className="dashboard-tabs">
+      <nav className="dashboard-tabs" role="tablist">
         <button 
           className={`tab ${activeTab === 'habits' ? 'active' : ''}`}
-          onClick={() => setActiveTab('habits')}
+          onClick={() => handleTabChange('habits')}
+          role="tab"
+          aria-selected={activeTab === 'habits'}
+          aria-label="Visualizza le tue abitudini"
         >
-          📋 Le Mie Abitudini
+          <span className="tab-icon">📋</span>
+          Le Mie Abitudini
         </button>
         <button 
           className={`tab ${activeTab === 'stats' ? 'active' : ''}`}
-          onClick={() => setActiveTab('stats')}
+          onClick={() => handleTabChange('stats')}
+          role="tab"
+          aria-selected={activeTab === 'stats'}
+          aria-label="Visualizza le statistiche"
         >
-          📊 Statistiche
+          <span className="tab-icon">📊</span>
+          Statistiche
         </button>
       </nav>
 
       <main className="dashboard-content">
         {activeTab === 'habits' && (
-          <div className="habits-section">
+          <div className="habits-section" role="tabpanel">
             <div className="section-header">
-              <h2>Oggi</h2>
-              <button 
-                className="add-habit-btn"
-                onClick={() => setShowAddForm(true)}
-              >
-                ➕ Nuova Abitudine
-              </button>
+              <h2>Abitudini di Oggi</h2>
+              {habits.length > 0 && (
+                <button 
+                  className="add-habit-btn"
+                  onClick={handleShowAddForm}
+                  aria-label="Aggiungi una nuova abitudine"
+                >
+                  <span className="btn-icon">➕</span>
+                  Nuova Abitudine
+                </button>
+              )}
             </div>
 
             {showAddForm && (
               <AddHabitForm 
-                onSubmit={onAddHabit}
-                onCancel={() => setShowAddForm(false)}
+                onSubmit={handleAddHabit}
+                onCancel={handleCancelAddForm}
               />
             )}
 
             <div className="habits-grid">
-              {habits.length === 0 ? (
-                <div className="empty-state">
-                  <p>🎯 Non hai ancora creato nessuna abitudine!</p>
-                  <p>Inizia aggiungendo la tua prima abitudine quotidiana.</p>
-                </div>
-              ) : (
-                habits.map(habit => (
-                  <HabitCard
-                    key={habit.id}
-                    habit={habit}
-                    onToggle={() => onToggleHabit(habit.id)}
-                  />
-                ))
-              )}
+              {habitsList}
             </div>
           </div>
         )}
 
         {activeTab === 'stats' && (
-          <StatsPanel habits={habits} />
+          <div role="tabpanel">
+            <StatsPanel habits={habits} />
+          </div>
         )}
       </main>
     </div>
   );
-};
+});
+
+Dashboard.displayName = 'Dashboard';
 
 export default Dashboard;

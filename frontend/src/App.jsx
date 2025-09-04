@@ -1,54 +1,70 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Dashboard from './pages/Dashboard';
 import './styles/App.css';
+
+// Dati mock ottimizzati
+const MOCK_HABITS = [
+  {
+    id: 1,
+    name: "Bere Acqua",
+    description: "Bere almeno 8 bicchieri d'acqua al giorno",
+    color: "#00a8ff",
+    icon: "💧",
+    target_frequency: 7,
+    week_checks: 5,
+    week_completion: 71,
+    today_completed: false,
+    total_checks: 15
+  },
+  {
+    id: 2,
+    name: "Lettura",
+    description: "Leggere almeno 10 minuti al giorno",
+    color: "#fbc531",
+    icon: "📚",
+    target_frequency: 7,
+    week_checks: 6,
+    week_completion: 86,
+    today_completed: true,
+    total_checks: 20
+  },
+  {
+    id: 3,
+    name: "Stretching",
+    description: "Fare stretching mattutino",
+    color: "#44bd32",
+    icon: "🤸‍♂️",
+    target_frequency: 7,
+    week_checks: 4,
+    week_completion: 57,
+    today_completed: false,
+    total_checks: 12
+  },
+  {
+    id: 4,
+    name: "Meditazione",
+    description: "5 minuti di meditazione quotidiana",
+    color: "#9c88ff",
+    icon: "🧘‍♀️",
+    target_frequency: 5,
+    week_checks: 3,
+    week_completion: 60,
+    today_completed: false,
+    total_checks: 8
+  }
+];
 
 function App() {
   const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchHabits = async () => {
+  // Memoized fetch function
+  const fetchHabits = useCallback(async () => {
     try {
-      // Dati di esempio per testing senza backend
-      const mockData = [
-        {
-          id: 1,
-          name: "Bere Acqua",
-          description: "Bere almeno 8 bicchieri d'acqua al giorno",
-          color: "#00a8ff",
-          icon: "💧",
-          target_frequency: 7,
-          week_checks: 5,
-          week_completion: 71,
-          today_completed: false,
-          total_checks: 15
-        },
-        {
-          id: 2,
-          name: "Lettura",
-          description: "Leggere almeno 10 minuti al giorno",
-          color: "#fbc531",
-          icon: "📚",
-          target_frequency: 7,
-          week_checks: 6,
-          week_completion: 86,
-          today_completed: true,
-          total_checks: 20
-        },
-        {
-          id: 3,
-          name: "Stretching",
-          description: "Fare stretching mattutino",
-          color: "#44bd32",
-          icon: "🤸‍♂️",
-          target_frequency: 7,
-          week_checks: 4,
-          week_completion: 57,
-          today_completed: false,
-          total_checks: 12
-        }
-      ];
+      // Simulazione loading per UX realistica
+      await new Promise(resolve => setTimeout(resolve, 500));
       
-      setHabits(mockData);
+      setHabits(MOCK_HABITS);
       
       // Codice originale per quando il backend sarà attivo:
       /*
@@ -60,20 +76,32 @@ function App() {
       */
     } catch (error) {
       console.error('Errore nel recupero abitudini:', error);
-      // Fallback ai dati di esempio in caso di errore
       setHabits([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const toggleHabit = async (habitId) => {
+  // Ottimizzato con useCallback per prevenire re-renders
+  const toggleHabit = useCallback(async (habitId) => {
     try {
-      // Simulazione toggle per testing senza backend
       setHabits(prevHabits => 
         prevHabits.map(habit => 
           habit.id === habitId 
-            ? { ...habit, today_completed: !habit.today_completed }
+            ? { 
+                ...habit, 
+                today_completed: !habit.today_completed,
+                // Aggiorna anche le statistiche localmente
+                week_checks: habit.today_completed 
+                  ? Math.max(0, habit.week_checks - 1)
+                  : Math.min(habit.target_frequency, habit.week_checks + 1),
+                week_completion: (() => {
+                  const newWeekChecks = habit.today_completed 
+                    ? Math.max(0, habit.week_checks - 1)
+                    : Math.min(habit.target_frequency, habit.week_checks + 1);
+                  return Math.round((newWeekChecks / habit.target_frequency) * 100);
+                })()
+              }
             : habit
         )
       );
@@ -88,18 +116,16 @@ function App() {
       
       const data = await response.json();
       if (data.success) {
-        // Ricarica le abitudini per aggiornare le statistiche
         fetchHabits();
       }
       */
     } catch (error) {
       console.error('Errore nel toggle abitudine:', error);
     }
-  };
+  }, []);
 
-  const addHabit = async (habitData) => {
+  const addHabit = useCallback(async (habitData) => {
     try {
-      // Simulazione aggiunta abitudine per testing senza backend
       const newHabit = {
         id: Date.now(), // ID temporaneo
         ...habitData,
@@ -121,25 +147,28 @@ function App() {
       
       const data = await response.json();
       if (data.success) {
-        fetchHabits(); // Ricarica la lista
+        fetchHabits();
       }
       */
     } catch (error) {
       console.error('Errore nella creazione abitudine:', error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     fetchHabits();
-  }, []);
+  }, [fetchHabits]);
+
+  // Memoized loading component
+  const loadingComponent = useMemo(() => (
+    <div className="loading-container">
+      <div className="spinner"></div>
+      <p>Caricamento abitudini...</p>
+    </div>
+  ), []);
 
   if (loading) {
-    return (
-      <div className="loading-container">
-        <div className="spinner"></div>
-        <p>Caricamento abitudini...</p>
-      </div>
-    );
+    return loadingComponent;
   }
 
   return (
