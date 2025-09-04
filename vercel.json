@@ -7,17 +7,9 @@
       "config": {
         "distDir": "dist"
       }
-    },
-    {
-      "src": "backend/**/*.php",
-      "use": "vercel-php@0.7.2"
     }
   ],
   "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/backend/index.php"
-    },
     {
       "src": "/(.*)",
       "dest": "/frontend/dist/$1"
