@@ -2,65 +2,54 @@
 name: ✨ Feature Request
 about: Suggest an idea for this project
 title: '[FEATURE] '
-labels: enhancement
-assignees: ilMago8
+labels: ['enhancement', 'needs-discussion']
+assignees: ['ilMago8']
+
 ---
 
-## 🎯 Feature Description
-
+## 🚀 Feature Summary
 **A clear and concise description of the feature you'd like to see.**
 
-## 💭 Motivation
+## 💡 Motivation
+**What problem does this feature solve? Why is it needed?**
 
-**Why is this feature important? What problem does it solve?**
+## 📋 Detailed Description
+**Provide a detailed description of the feature.**
 
-## 💡 Proposed Solution
+## 🎯 User Story
+**As a [type of user], I want [an action] so that [a benefit/value].**
 
-**Describe how you envision this feature working.**
+## 🎨 Mockups/Wireframes
+**If applicable, add mockups, wireframes, or sketches.**
 
-## 🔄 User Flow
-
-**Describe the user experience step by step:**
-1. User navigates to...
-2. User clicks on...
-3. System shows...
-4. User can now...
-
-## 🎨 UI/UX Mockups
-
-**If applicable, add mockups or sketches to help visualize the feature.**
-
-## 🔧 Technical Considerations
-
-**Any technical requirements or constraints to consider:**
-- [ ] Requires database changes
-- [ ] Needs new API endpoints
-- [ ] Impacts performance
-- [ ] Requires third-party integration
-
-## 📱 Platforms
-
-**Which platforms should support this feature:**
-- [ ] Desktop
-- [ ] Mobile  
-- [ ] Tablet
-- [ ] All platforms
-
-## 🏷️ Priority
-
-- [ ] Nice to have
-- [ ] Would improve UX significantly
-- [ ] Essential for user retention
-- [ ] Critical business requirement
+## ✅ Acceptance Criteria
+**Define what "done" looks like for this feature:**
+- [ ] Criterion 1
+- [ ] Criterion 2
+- [ ] Criterion 3
 
 ## 🔄 Alternative Solutions
-
 **Describe alternatives you've considered.**
 
-## 📊 Success Metrics
+## 📱 Platform/Device Considerations
+- [ ] 🖥️ Desktop
+- [ ] 📱 Mobile
+- [ ] 🌐 All platforms
 
-**How would you measure if this feature is successful?**
+## 🏆 Impact & Priority
+**How would this feature benefit users?**
+- [ ] 🔥 High impact - Many users would benefit
+- [ ] 🟠 Medium impact - Some users would benefit
+- [ ] 🟡 Low impact - Few users would benefit
 
-## 🔗 Related Issues
+## 🛠️ Technical Considerations
+**Any technical details or constraints to consider?**
 
-**Link any related issues or discussions.**
+## 📚 References
+**Links to similar features in other apps, research, etc.**
+
+## ✅ Checklist
+- [ ] I have searched for existing feature requests
+- [ ] This feature aligns with the project's goals
+- [ ] I have provided clear acceptance criteria
+- [ ] I have considered the impact on existing features

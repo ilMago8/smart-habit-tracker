@@ -125,7 +125,7 @@ const StatsPanel = memo(({ habits }) => {
         type: 'encourage',
         icon: '💪',
         title: 'Non mollare!',
-        message: 'Ogni giorno è una nuova opportunità. Concentrati su una abitudine alla volta!'
+        message: 'Ogni giorno è una nuova opportunità. Concentrati su un\'abitudine alla volta!'
       };
     }
   }, [weeklyStats]);
