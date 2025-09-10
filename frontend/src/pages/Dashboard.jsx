@@ -2,6 +2,8 @@ import React, { useState, useMemo, useCallback, memo } from 'react';
 import HabitCard from '../components/HabitCard';
 import AddHabitForm from '../components/AddHabitForm';
 import StatsPanel from '../components/StatsPanel';
+import UserProfile from '../components/UserProfile';
+import UserProfilePage from '../components/UserProfilePage';
 
 const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onResetProgress }) => {
   const [showAddForm, setShowAddForm] = useState(false);
@@ -72,11 +74,14 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
   return (
     <div className="dashboard">
       <header className="dashboard-header">
-        <div className="header-content">
-          <h1 className="app-title">
-            Smart Habit Tracker
-          </h1>
+        <div className="dashboard-top-bar">
+          <h1 className="app-title">Smart Habit Tracker</h1>
+          <UserProfile />
+        </div>
+        
+        <div className="dashboard-info">
           <p className="date" aria-label={`Oggi è ${today}`}>{today}</p>
+          
           <div className="daily-summary" role="status">
             <div className="progress-circle">
               <span className="completed">{completedToday}</span>
@@ -106,6 +111,15 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
           aria-label="Visualizza le statistiche"
         >
           Statistiche
+        </button>
+        <button 
+          className={`tab ${activeTab === 'profile' ? 'active' : ''}`}
+          onClick={() => handleTabChange('profile')}
+          role="tab"
+          aria-selected={activeTab === 'profile'}
+          aria-label="Gestisci il tuo profilo"
+        >
+          Profilo Utente
         </button>
       </nav>
 
@@ -155,6 +169,12 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
         {activeTab === 'stats' && (
           <div role="tabpanel">
             <StatsPanel habits={habits} />
+          </div>
+        )}
+
+        {activeTab === 'profile' && (
+          <div role="tabpanel">
+            <UserProfilePage habits={habits} />
           </div>
         )}
       </main>

@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Dashboard from './pages/Dashboard';
+import AuthPage from './pages/AuthPage';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import './styles/App.css';
+import './styles/Auth.css';
+import './styles/UserProfile.css';
 
 // Dati mock ottimizzati - TUTTE LE ABITUDINI PARTONO DA 0%
 const MOCK_HABITS = [
@@ -224,4 +228,36 @@ function App() {
   );
 }
 
-export default App;
+// Wrapper App principale con il provider di autenticazione
+function AppWithAuth() {
+  return (
+    <AuthProvider>
+      <AuthenticatedApp />
+    </AuthProvider>
+  );
+}
+
+// Componente che gestisce l'autenticazione
+function AuthenticatedApp() {
+  const { currentUser, loading } = useAuth();
+  
+  // Mostra un loader mentre verifichiamo se l'utente è già loggato
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="spinner"></div>
+        <p>Caricamento...</p>
+      </div>
+    );
+  }
+  
+  // Se non c'è un utente loggato, mostra la pagina di autenticazione
+  if (!currentUser) {
+    return <AuthPage />;
+  }
+  
+  // Se l'utente è loggato, mostra l'app principale
+  return <App />;
+}
+
+export default AppWithAuth;
