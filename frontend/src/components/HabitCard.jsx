@@ -6,7 +6,6 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
     name, 
     description, 
     color, 
-    icon, 
     week_completion, 
     today_completed, 
     week_checks, 
@@ -40,8 +39,8 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
                           week_completion >= 30 ? 'average' : 'needs-attention';
 
   const buttonText = today_completed ? 
-    { icon: '✅', label: 'Completato oggi' } : 
-    { icon: '⭕', label: 'Segna come fatto' };
+    { label: 'Completato oggi' } : 
+    { label: 'Segna come fatto' };
 
   return (
     <article 
@@ -51,9 +50,7 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
       aria-label={`Abitudine: ${name}`}
     >
       <header className="habit-header">
-        <div className="habit-icon" role="img" aria-label={`Icona: ${icon}`}>
-          {icon}
-        </div>
+        <div className="habit-color-indicator" style={{ backgroundColor: color }}></div>
         <div className="habit-info">
           <h3 className="habit-name">{name}</h3>
           {description && (
@@ -70,7 +67,7 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
             aria-label={`Elimina abitudine ${name}`}
             title="Elimina abitudine"
           >
-            ✕
+            Elimina
           </button>
         )}
       </header>
@@ -108,9 +105,6 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
           aria-pressed={today_completed}
           aria-label={`${buttonText.label} per ${name}`}
         >
-          <span className="btn-icon" aria-hidden="true">
-            {buttonText.icon}
-          </span>
           <span className="btn-text">
             {buttonText.label}
           </span>

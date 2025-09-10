@@ -43,14 +43,14 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
   // Memoized empty state
   const emptyState = useMemo(() => (
     <div className="empty-state">
-      <div className="empty-icon">🎯</div>
+      <div className="empty-icon"></div>
       <h3>Nessuna abitudine ancora</h3>
       <p>Inizia il tuo percorso di crescita personale creando la tua prima abitudine!</p>
       <button 
         className="cta-button"
         onClick={handleShowAddForm}
       >
-        ✨ Crea la tua prima abitudine
+        Crea la tua prima abitudine
       </button>
     </div>
   ), [handleShowAddForm]);
@@ -74,7 +74,6 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
       <header className="dashboard-header">
         <div className="header-content">
           <h1 className="app-title">
-            <span className="title-icon">🌟</span>
             Smart Habit Tracker
           </h1>
           <p className="date" aria-label={`Oggi è ${today}`}>{today}</p>
@@ -97,7 +96,6 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
           aria-selected={activeTab === 'habits'}
           aria-label="Visualizza le tue abitudini"
         >
-          <span className="tab-icon">📋</span>
           Le Mie Abitudini
         </button>
         <button 
@@ -107,7 +105,6 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
           aria-selected={activeTab === 'stats'}
           aria-label="Visualizza le statistiche"
         >
-          <span className="tab-icon">📊</span>
           Statistiche
         </button>
       </nav>
@@ -125,7 +122,6 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
                       onClick={handleShowAddForm}
                       aria-label="Aggiungi una nuova abitudine"
                     >
-                      <span className="btn-icon">➕</span>
                       Nuova Abitudine
                     </button>
                     {onResetProgress && (
@@ -135,7 +131,6 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
                         aria-label="Resetta tutti i progressi"
                         title="Resetta tutti i progressi"
                       >
-                        <span className="btn-icon">🔄</span>
                         Reset
                       </button>
                     )}

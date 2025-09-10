@@ -86,7 +86,6 @@ const StatsPanel = memo(({ habits }) => {
     if (total_habits === 0) {
       return {
         type: 'empty',
-        icon: '🎯',
         title: 'Inizia il tuo percorso!',
         message: 'Crea la tua prima abitudine per iniziare a tracciare i progressi.'
       };
@@ -95,35 +94,30 @@ const StatsPanel = memo(({ habits }) => {
     if (average_completion >= 90) {
       return {
         type: 'excellent',
-        icon: '🏆',
         title: 'Eccellente!',
         message: 'Sei un campione delle abitudini! Continua così!'
       };
     } else if (average_completion >= 80) {
       return {
         type: 'success',
-        icon: '🎉',
         title: 'Fantastico!',
         message: 'Stai mantenendo le tue abitudini alla grande!'
       };
     } else if (average_completion >= 60) {
       return {
         type: 'good',
-        icon: '👏',
         title: 'Ottimo progresso!',
         message: 'Continua così per raggiungere i tuoi obiettivi!'
       };
     } else if (average_completion >= 30) {
       return {
         type: 'moderate',
-        icon: '📈',
         title: 'Buon inizio!',
         message: 'Stai costruendo le tue routine. Piccoli passi portano a grandi risultati!'
       };
     } else {
       return {
         type: 'encourage',
-        icon: '💪',
         title: 'Non mollare!',
         message: 'Ogni giorno è una nuova opportunità. Concentrati su un\'abitudine alla volta!'
       };
@@ -142,7 +136,6 @@ const StatsPanel = memo(({ habits }) => {
   if (error && !weeklyStats) {
     return (
       <div className="stats-error">
-        <div className="error-icon">📊</div>
         <h3>Errore nel caricamento</h3>
         <p>{error}</p>
         <button onClick={fetchStats} className="retry-btn">
@@ -158,7 +151,6 @@ const StatsPanel = memo(({ habits }) => {
     <div className="stats-panel">
       <header className="stats-header">
         <h2>
-          <span className="header-icon" aria-hidden="true">📊</span>
           Statistiche Settimanali
         </h2>
         <p className="date-range" aria-label={`Periodo dal ${new Date(summary.week_start).toLocaleDateString('it-IT')} al ${new Date(summary.week_end).toLocaleDateString('it-IT')}`}>
@@ -169,7 +161,6 @@ const StatsPanel = memo(({ habits }) => {
 
       <div className="summary-cards">
         <div className="summary-card habits-count">
-          <div className="card-icon" aria-hidden="true">🎯</div>
           <div className="card-content">
             <h3>{summary.total_habits}</h3>
             <p>Abitudini Attive</p>
@@ -177,7 +168,6 @@ const StatsPanel = memo(({ habits }) => {
         </div>
 
         <div className="summary-card average-completion">
-          <div className="card-icon" aria-hidden="true">📈</div>
           <div className="card-content">
             <h3>{summary.average_completion}%</h3>
             <p>Completamento Medio</p>
@@ -185,7 +175,6 @@ const StatsPanel = memo(({ habits }) => {
         </div>
 
         <div className="summary-card successful-habits">
-          <div className="card-icon" aria-hidden="true">⭐</div>
           <div className="card-content">
             <h3>{summary.successful_habits || 0}</h3>
             <p>Obiettivi Raggiunti</p>
@@ -198,7 +187,7 @@ const StatsPanel = memo(({ habits }) => {
         <div className="stats-list">
           {habitStats.length === 0 ? (
             <div className="empty-stats">
-              <div className="empty-icon">📋</div>
+              <div className="empty-icon"></div>
               <p>Nessuna abitudine da tracciare</p>
               <p>Crea la tua prima abitudine per vedere le statistiche!</p>
             </div>
@@ -209,7 +198,7 @@ const StatsPanel = memo(({ habits }) => {
                 <article key={habit.id} className="stat-item">
                   <header className="stat-header">
                     <div className="stat-info">
-                      <span className="habit-icon" aria-hidden="true">{habit.icon}</span>
+                      <div className="stat-color-indicator" style={{ backgroundColor: habit.color }}></div>
                       <span className="stat-name">{habit.name}</span>
                     </div>
                     <span 
@@ -253,9 +242,6 @@ const StatsPanel = memo(({ habits }) => {
       {motivationalMessage && (
         <aside className={`motivational-message ${motivationalMessage.type}`}>
           <div className="message-content">
-            <span className="message-icon" aria-hidden="true">
-              {motivationalMessage.icon}
-            </span>
             <div className="message-text">
               <h4>{motivationalMessage.title}</h4>
               <p>{motivationalMessage.message}</p>

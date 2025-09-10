@@ -3,7 +3,13 @@
   "version": "1.0.0",
   "description": "Frontend React per Smart Habit Tracker - App moderna per tracciare abitudini giornaliere",
   "type": "module",
-  "keywords": ["react", "habit-tracker", "productivity", "dashboard", "habits"],
+  "keywords": [
+    "react",
+    "habit-tracker",
+    "productivity",
+    "dashboard",
+    "habits"
+  ],
   "author": "ilMago8",
   "license": "MIT",
   "scripts": {
@@ -15,7 +21,8 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-icons": "^5.5.0"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^4.2.1",
