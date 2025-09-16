@@ -19,8 +19,8 @@ const RegisterForm = ({ onSwitchToLogin }) => {
       ...prev,
       [field]: e.target.value
     }));
-    if (errorMessage) setErrorMessage('');
-  }, [errorMessage]);
+    // Rimosso: if (errorMessage) setErrorMessage(''); - i messaggi di errore restano visibili
+  }, []);
   
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
