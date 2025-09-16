@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 const LoginForm = ({ onSwitchToRegister }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   
@@ -16,24 +18,22 @@ const LoginForm = ({ onSwitchToRegister }) => {
     }
   }, [error]);
   
-  // Pulisci gli errori quando l'utente inizia a digitare
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  // Ottimizzato: gestione input unificata
+  const handleInputChange = useCallback((field) => (e) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: e.target.value
+    }));
     if (errorMessage) setErrorMessage('');
-  };
+  }, [errorMessage]);
   
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    if (errorMessage) setErrorMessage('');
-  };
-  
-  const handleSubmit = async (e) => {
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     setErrorMessage('');
     setIsSubmitting(true);
     
     try {
-      const result = await login(email, password);
+      const result = await login(formData.email, formData.password);
       if (!result.success) {
         setErrorMessage(result.message || 'Login fallito. Controlla le tue credenziali.');
       }
@@ -43,7 +43,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [login, formData.email, formData.password]);
   
   return (
     <div className="auth-form-container">
@@ -62,8 +62,8 @@ const LoginForm = ({ onSwitchToRegister }) => {
           <input
             id="email"
             type="email"
-            value={email}
-            onChange={handleEmailChange}
+            value={formData.email}
+            onChange={handleInputChange('email')}
             required
             placeholder="La tua email"
             className={errorMessage && errorMessage.toLowerCase().includes('email') ? 'error' : ''}
@@ -75,8 +75,8 @@ const LoginForm = ({ onSwitchToRegister }) => {
           <input
             id="password"
             type="password"
-            value={password}
-            onChange={handlePasswordChange}
+            value={formData.password}
+            onChange={handleInputChange('password')}
             required
             placeholder="La tua password"
             className={errorMessage && errorMessage.toLowerCase().includes('password') ? 'error' : ''}

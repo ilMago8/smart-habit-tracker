@@ -1,22 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 const RegisterForm = ({ onSwitchToLogin }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
   const [errorMessage, setErrorMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   
   const { register } = useAuth();
   
-  const handleSubmit = async (e) => {
+  // Ottimizzato: gestione input unificata
+  const handleInputChange = useCallback((field) => (e) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: e.target.value
+    }));
+    if (errorMessage) setErrorMessage('');
+  }, [errorMessage]);
+  
+  const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     setErrorMessage('');
     
     // Controllo password
-    if (password !== confirmPassword) {
+    if (formData.password !== formData.confirmPassword) {
       setErrorMessage('Le password non corrispondono');
       return;
     }
@@ -24,7 +35,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
     setIsSubmitting(true);
     
     try {
-      const result = await register(name, email, password);
+      const result = await register(formData.name, formData.email, formData.password);
       if (!result.success) {
         setErrorMessage(result.message || 'Registrazione fallita. Riprova più tardi.');
       }
@@ -34,7 +45,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [register, formData]);
   
   return (
     <div className="auth-form-container">
@@ -53,8 +64,8 @@ const RegisterForm = ({ onSwitchToLogin }) => {
           <input
             id="name"
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={formData.name}
+            onChange={handleInputChange('name')}
             required
             placeholder="Il tuo nome"
           />
@@ -65,8 +76,8 @@ const RegisterForm = ({ onSwitchToLogin }) => {
           <input
             id="email"
             type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            value={formData.email}
+            onChange={handleInputChange('email')}
             required
             placeholder="La tua email"
           />
@@ -77,8 +88,8 @@ const RegisterForm = ({ onSwitchToLogin }) => {
           <input
             id="password"
             type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            value={formData.password}
+            onChange={handleInputChange('password')}
             required
             placeholder="Crea una password"
           />
@@ -89,8 +100,8 @@ const RegisterForm = ({ onSwitchToLogin }) => {
           <input
             id="confirm-password"
             type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            value={formData.confirmPassword}
+            onChange={handleInputChange('confirmPassword')}
             required
             placeholder="Conferma la tua password"
           />

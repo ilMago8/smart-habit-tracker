@@ -6,8 +6,8 @@ import './styles/App.css';
 import './styles/Auth.css';
 import './styles/UserProfile.css';
 
-// Dati mock ottimizzati - TUTTE LE ABITUDINI PARTONO DA 0%
-const MOCK_HABITS = [
+// Dati mock ottimizzati - starter habits
+const INITIAL_HABITS = [
   {
     id: 1,
     name: "Bere Acqua",
@@ -32,20 +32,9 @@ const MOCK_HABITS = [
   },
   {
     id: 3,
-    name: "Stretching",
-    description: "Fare stretching mattutino",
+    name: "Esercizio",
+    description: "Attività fisica quotidiana",
     color: "#5d9e7f",
-    target_frequency: 7,
-    week_checks: 0,
-    week_completion: 0,
-    today_completed: false,
-    total_checks: 0
-  },
-  {
-    id: 4,
-    name: "Meditazione",
-    description: "5 minuti di meditazione quotidiana",
-    color: "#9c6adb",
     target_frequency: 5,
     week_checks: 0,
     week_completion: 0,
@@ -64,7 +53,7 @@ function App() {
       // Simulazione loading per UX realistica
       await new Promise(resolve => setTimeout(resolve, 500));
       
-      setHabits(MOCK_HABITS);
+      setHabits(INITIAL_HABITS);
       
       // Codice originale per quando il backend sarà attivo:
       /*
