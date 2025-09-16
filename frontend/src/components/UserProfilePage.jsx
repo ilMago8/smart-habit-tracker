@@ -12,7 +12,7 @@ const UserProfilePage = ({ habits }) => {
     goals: currentUser?.goals || ''
   });
 
-  // Calcoli delle statistiche utente
+  // User statistics calculations
   const userStats = useMemo(() => {
     if (!habits || habits.length === 0) {
       return {
@@ -39,23 +39,23 @@ const UserProfilePage = ({ habits }) => {
 
   const handleEditToggle = async () => {
     if (isEditing) {
-      // Salva le modifiche
+      // Save changes
       setIsLoading(true);
       try {
         const result = await updateProfile(editForm);
         if (result.success) {
           setIsEditing(false);
         } else {
-          alert('Errore durante il salvataggio delle modifiche');
+          alert('Error saving changes');
         }
       } catch (error) {
-        console.error('Errore durante il salvataggio:', error);
-        alert('Errore durante il salvataggio delle modifiche');
+        console.error('Error saving:', error);
+        alert('Error saving changes');
       } finally {
         setIsLoading(false);
       }
     } else {
-      // Inizia l'editing
+      // Start editing
       setEditForm({
         name: currentUser?.name || '',
         email: currentUser?.email || '',
@@ -74,7 +74,7 @@ const UserProfilePage = ({ habits }) => {
   };
 
   const handleLogout = () => {
-    if (window.confirm('Sei sicuro di voler effettuare il logout?')) {
+    if (window.confirm('Are you sure you want to logout?')) {
       logout();
     }
   };
@@ -85,13 +85,13 @@ const UserProfilePage = ({ habits }) => {
 
   const joinDate = useMemo(() => {
     if (currentUser?.createdAt) {
-      return new Date(currentUser.createdAt).toLocaleDateString('it-IT', {
+      return new Date(currentUser.createdAt).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'
       });
     }
-    return 'Data non disponibile';
+    return 'Data not available';
   }, [currentUser]);
 
   return (
@@ -107,7 +107,7 @@ const UserProfilePage = ({ habits }) => {
               value={editForm.name}
               onChange={(e) => handleInputChange('name', e.target.value)}
               className="profile-name-edit"
-              placeholder="Il tuo nome"
+              placeholder="Your name"
             />
           ) : (
             <h2 className="profile-name">{currentUser?.name}</h2>
@@ -119,13 +119,13 @@ const UserProfilePage = ({ habits }) => {
               value={editForm.email}
               onChange={(e) => handleInputChange('email', e.target.value)}
               className="profile-email-edit"
-              placeholder="La tua email"
+              placeholder="Your email"
             />
           ) : (
             <p className="profile-email">{currentUser?.email}</p>
           )}
           
-          <p className="join-date">Membro dal {joinDate}</p>
+          <p className="join-date">Member since {joinDate}</p>
         </div>
         <div className="profile-actions">
           <button 
@@ -133,7 +133,7 @@ const UserProfilePage = ({ habits }) => {
             onClick={handleEditToggle}
             disabled={isLoading}
           >
-            {isLoading ? 'Salvando...' : (isEditing ? 'Salva Modifiche' : 'Modifica Profilo')}
+            {isLoading ? 'Saving...' : (isEditing ? 'Save Changes' : 'Edit Profile')}
           </button>
           <button className="logout-btn" onClick={handleLogout}>
             Logout
@@ -143,63 +143,63 @@ const UserProfilePage = ({ habits }) => {
 
       <div className="profile-content">
         <div className="profile-section">
-          <h3>Statistiche Personali</h3>
+          <h3>Personal Statistics</h3>
           <div className="stats-grid">
             <div className="stat-card">
               <div className="stat-number">{userStats.totalHabits}</div>
-              <div className="stat-label">Abitudini Totali</div>
+              <div className="stat-label">Total Habits</div>
             </div>
             <div className="stat-card">
               <div className="stat-number">{userStats.completedToday}</div>
-              <div className="stat-label">Completate Oggi</div>
+              <div className="stat-label">Completed Today</div>
             </div>
             <div className="stat-card">
               <div className="stat-number">{userStats.weeklyAverage}%</div>
-              <div className="stat-label">Media Settimanale</div>
+              <div className="stat-label">Weekly Average</div>
             </div>
             <div className="stat-card">
               <div className="stat-number">{userStats.totalCompletions}</div>
-              <div className="stat-label">Completamenti Totali</div>
+              <div className="stat-label">Total Completions</div>
             </div>
           </div>
         </div>
 
         <div className="profile-section">
-          <h3>Biografia</h3>
+          <h3>Biography</h3>
           {isEditing ? (
             <textarea
               value={editForm.bio}
               onChange={(e) => handleInputChange('bio', e.target.value)}
               className="profile-bio-edit"
-              placeholder="Raccontaci qualcosa di te..."
+              placeholder="Tell us something about yourself..."
               rows="4"
             />
           ) : (
             <p className="profile-bio">
-              {currentUser?.bio || 'Nessuna biografia disponibile. Clicca su "Modifica Profilo" per aggiungerne una.'}
+              {currentUser?.bio || 'No biography available. Click "Edit Profile" to add one.'}
             </p>
           )}
         </div>
 
         <div className="profile-section">
-          <h3>I Miei Obiettivi</h3>
+          <h3>My Goals</h3>
           {isEditing ? (
             <textarea
               value={editForm.goals}
               onChange={(e) => handleInputChange('goals', e.target.value)}
               className="profile-goals-edit"
-              placeholder="Quali sono i tuoi obiettivi?"
+              placeholder="What are your goals?"
               rows="3"
             />
           ) : (
             <p className="profile-goals">
-              {currentUser?.goals || 'Nessun obiettivo definito. Aggiungi i tuoi obiettivi per rimanere motivato!'}
+              {currentUser?.goals || 'No goals defined. Add your goals to stay motivated!'}
             </p>
           )}
         </div>
 
         <div className="profile-section">
-          <h3>Abitudini Preferite</h3>
+          <h3>Favorite Habits</h3>
           {habits && habits.length > 0 ? (
             <div className="favorite-habits">
               {habits
@@ -217,7 +217,7 @@ const UserProfilePage = ({ habits }) => {
                 ))}
             </div>
           ) : (
-            <p className="no-habits">Nessuna abitudine ancora. Inizia creando la tua prima abitudine!</p>
+            <p className="no-habits">No habits yet. Start by creating your first habit!</p>
           )}
         </div>
       </div>

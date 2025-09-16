@@ -7,14 +7,14 @@ const UserProfile = () => {
   
   if (!currentUser) return null;
   
-  // Genera l'iniziale per l'avatar
+  // Generate initial for avatar
   const getInitial = () => {
     return currentUser.name ? currentUser.name.charAt(0).toUpperCase() : 'U';
   };
   
   const handleLogout = (e) => {
     e.stopPropagation();
-    if (window.confirm('Sei sicuro di voler effettuare il logout?')) {
+    if (window.confirm('Are you sure you want to logout?')) {
       logout();
     }
   };
@@ -27,7 +27,7 @@ const UserProfile = () => {
     <div 
       className="user-profile" 
       onClick={toggleTooltip}
-      title="Clicca per gestire il tuo account"
+      title="Click to manage your account"
     >
       <div className="user-avatar">
         {getInitial()}
@@ -37,9 +37,9 @@ const UserProfile = () => {
         <button 
           className="user-logout" 
           onClick={handleLogout}
-          aria-label="Esci dall'account"
+          aria-label="Logout from account"
         >
-          Esci
+          Logout
         </button>
       </div>
     </div>

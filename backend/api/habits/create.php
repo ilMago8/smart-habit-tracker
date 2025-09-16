@@ -1,10 +1,10 @@
 <?php
-// POST /api/habits - Crea una nuova abitudine
+// POST /api/habits - Create a new habit
 $input = json_decode(file_get_contents('php://input'), true);
 
 if (!isset($input['name']) || empty(trim($input['name']))) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'error' => 'Nome abitudine richiesto']);
+    echo json_encode(['success' => false, 'error' => 'Habit name required']);
     exit;
 }
 
@@ -21,7 +21,7 @@ try {
     
     $habitId = $pdo->lastInsertId();
     
-    // Recupera l'abitudine appena creata
+    // Retrieve the newly created habit
     $query = "SELECT * FROM habits WHERE id = ?";
     $stmt = $pdo->prepare($query);
     $stmt->execute([$habitId]);

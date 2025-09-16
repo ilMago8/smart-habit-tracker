@@ -2,9 +2,9 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App.jsx';
 
-// Aggiungiamo un po' di bootstrap per assicurarci che tutto funzioni
+// Add some bootstrap to ensure everything works
 document.addEventListener('DOMContentLoaded', () => {
-  // Ottimizzazione per performance: crea il root solo una volta
+  // Performance optimization: create root only once
   const container = document.getElementById('root');
 
   if (!container) {
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const root = createRoot(container);
 
-  // Render con error boundary implicito in StrictMode
+  // Render with implicit error boundary in StrictMode
   root.render(
     <StrictMode>
       <App />

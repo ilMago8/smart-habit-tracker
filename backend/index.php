@@ -15,7 +15,7 @@ $request_uri = $_SERVER['REQUEST_URI'];
 $request_method = $_SERVER['REQUEST_METHOD'];
 $path = parse_url($request_uri, PHP_URL_PATH);
 
-// Router semplice
+// Simple router
 switch ($path) {
     case '/api/habits':
         if ($request_method === 'GET') {

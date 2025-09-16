@@ -1,58 +1,58 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 
-// Creiamo il contesto di autenticazione
+// Create authentication context
 const AuthContext = createContext(null);
 
-// Questa è la funzione di mock che simula il login verso un backend
+// Mock function that simulates backend login
 const mockAuthenticate = async (email, password) => {
-  // Simuliamo una chiamata API con un leggero ritardo
+  // Simulate API call with slight delay
   await new Promise(resolve => setTimeout(resolve, 800));
   
-  // Controllo base della validità dei dati
+  // Basic data validation
   if (!email || !password) {
     return { 
       success: false, 
-      message: 'Email e password sono richiesti.' 
+      message: 'Email and password are required.' 
     };
   }
   
   if (password.length < 6) {
     return { 
       success: false, 
-      message: 'La password deve contenere almeno 6 caratteri.' 
+      message: 'Password must contain at least 6 characters.' 
     };
   }
   
-  // Controllo email formato
+  // Email format validation
   if (!email.includes('@') || !email.includes('.')) {
     return { 
       success: false, 
-      message: 'Inserisci un indirizzo email valido.' 
+      message: 'Please enter a valid email address.' 
     };
   }
   
-  // Simuliamo un database di utenti per il controllo delle credenziali
+  // Simulate user database for credential checking
   const mockUsers = JSON.parse(localStorage.getItem('smartHabitUsers') || '[]');
   
-  // Cerchiamo l'utente per email
+  // Search for user by email
   const existingUser = mockUsers.find(user => user.email === email);
   
   if (!existingUser) {
     return { 
       success: false, 
-      message: 'Nessun account trovato con questa email. Registrati prima.' 
+      message: 'No account found with this email. Please register first.' 
     };
   }
   
-  // Controlliamo la password
+  // Check password
   if (existingUser.password !== password) {
     return { 
       success: false, 
-      message: 'Password errata. Controlla le tue credenziali e riprova.' 
+      message: 'Incorrect password. Check your credentials and try again.' 
     };
   }
   
-  // Login riuscito
+  // Login successful
   return { 
     success: true, 
     user: {
@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Controllo se c'è un utente salvato al caricamento
+  // Check if there's a saved user on load
   useEffect(() => {
     const checkLoggedIn = () => {
       try {
@@ -81,8 +81,8 @@ export const AuthProvider = ({ children }) => {
           setCurrentUser(JSON.parse(userData));
         }
       } catch (err) {
-        console.error('Errore nel recupero dei dati utente:', err);
-        // In caso di errore, ripuliamo lo storage
+        console.error('Error retrieving user data:', err);
+        // Clean storage in case of error
         localStorage.removeItem('smartHabitUser');
       } finally {
         setLoading(false);
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }) => {
     checkLoggedIn();
   }, []);
 
-  // Funzione di login
+  // Login function
   const login = useCallback(async (email, password) => {
     setLoading(true);
     setError(null);
@@ -109,8 +109,8 @@ export const AuthProvider = ({ children }) => {
         return { success: false, message: result.message };
       }
     } catch (err) {
-      console.error('Errore durante il login:', err);
-      const errorMsg = 'Si è verificato un errore durante il login. Riprova più tardi.';
+      console.error('Error during login:', err);
+      const errorMsg = 'An error occurred during login. Please try again later.';
       setError(errorMsg);
       return { success: false, message: errorMsg };
     } finally {
@@ -118,57 +118,57 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Funzione di registrazione (simile al login in questa implementazione demo)
+  // Registration function (similar to login in this demo implementation)
   const register = useCallback(async (name, email, password) => {
     setLoading(true);
     setError(null);
     
     try {
       if (!name || name.length < 2) {
-        setError('Il nome deve contenere almeno 2 caratteri');
-        return { success: false, message: 'Il nome deve contenere almeno 2 caratteri' };
+        setError('Name must contain at least 2 characters');
+        return { success: false, message: 'Name must contain at least 2 characters' };
       }
       
-      // Controllo email semplice
+      // Simple email validation
       if (!email || !email.includes('@') || !email.includes('.')) {
-        setError('Inserisci un indirizzo email valido');
-        return { success: false, message: 'Inserisci un indirizzo email valido' };
+        setError('Please enter a valid email address');
+        return { success: false, message: 'Please enter a valid email address' };
       }
       
-      // Controllo password
+      // Password validation
       if (!password || password.length < 6) {
-        setError('La password deve contenere almeno 6 caratteri');
-        return { success: false, message: 'La password deve contenere almeno 6 caratteri' };
+        setError('Password must contain at least 6 characters');
+        return { success: false, message: 'Password must contain at least 6 characters' };
       }
       
-      // Simuliamo una chiamata API con un leggero ritardo
+      // Simulate API call with slight delay
       await new Promise(resolve => setTimeout(resolve, 800));
       
-      // Controlliamo se l'utente esiste già
+      // Check if user already exists
       const mockUsers = JSON.parse(localStorage.getItem('smartHabitUsers') || '[]');
       const existingUser = mockUsers.find(user => user.email === email);
       
       if (existingUser) {
-        setError('Un account con questa email esiste già. Prova ad accedere.');
-        return { success: false, message: 'Un account con questa email esiste già. Prova ad accedere.' };
+        setError('An account with this email already exists. Try logging in.');
+        return { success: false, message: 'An account with this email already exists. Try logging in.' };
       }
       
-      // Creiamo un nuovo utente
+      // Create new user
       const newUser = {
         id: Date.now(),
         name,
         email,
-        password, // In un'app reale, questa sarebbe hashata
+        password, // In a real app, this would be hashed
         bio: '',
         goals: '',
         createdAt: new Date().toISOString()
       };
       
-      // Salviamo l'utente nel "database" mock
+      // Save user to mock "database"
       mockUsers.push(newUser);
       localStorage.setItem('smartHabitUsers', JSON.stringify(mockUsers));
       
-      // Salviamo l'utente corrente (senza password)
+      // Save current user (without password)
       const userForState = {
         id: newUser.id,
         name: newUser.name,
@@ -183,8 +183,8 @@ export const AuthProvider = ({ children }) => {
       return { success: true };
       
     } catch (err) {
-      console.error('Errore durante la registrazione:', err);
-      const errorMsg = 'Si è verificato un errore durante la registrazione. Riprova più tardi.';
+      console.error('Error during registration:', err);
+      const errorMsg = 'An error occurred during registration. Please try again later.';
       setError(errorMsg);
       return { success: false, message: errorMsg };
     } finally {
@@ -192,13 +192,13 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Funzione per aggiornare il profilo utente
+  // Function to update user profile
   const updateProfile = useCallback(async (updatedData) => {
     setLoading(true);
     setError(null);
     
     try {
-      // Simuliamo una chiamata API per aggiornare il profilo
+      // Simulate API call to update profile
       await new Promise(resolve => setTimeout(resolve, 500));
       
       const updatedUser = {
@@ -213,8 +213,8 @@ export const AuthProvider = ({ children }) => {
       return { success: true };
       
     } catch (err) {
-      console.error('Errore durante l\'aggiornamento del profilo:', err);
-      const errorMsg = 'Si è verificato un errore durante l\'aggiornamento del profilo.';
+      console.error('Error updating profile:', err);
+      const errorMsg = 'An error occurred while updating the profile.';
       setError(errorMsg);
       return { success: false, message: errorMsg };
     } finally {
@@ -222,7 +222,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [currentUser]);
 
-  // Funzione di logout
+  // Logout function
   const logout = useCallback(() => {
     setCurrentUser(null);
     localStorage.removeItem('smartHabitUser');
@@ -241,11 +241,11 @@ export const AuthProvider = ({ children }) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// Hook personalizzato per usare il contesto di autenticazione
+// Custom hook to use authentication context
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth deve essere usato all\'interno di un AuthProvider');
+    throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
 };

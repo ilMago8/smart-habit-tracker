@@ -1,6 +1,6 @@
 -- Smart Habit Tracker - Database Schema
--- Versione: 1.0
--- Compatibilità: MySQL 8.0+
+-- Version: 1.0
+-- Compatibility: MySQL 8.0+
 
 -- ====================================
 -- DATABASE SETUP
@@ -13,66 +13,66 @@ COLLATE utf8mb4_unicode_ci;
 USE smart_habit_tracker;
 
 -- ====================================
--- TABELLE PRINCIPALI
+-- MAIN TABLES
 -- ====================================
 
--- Tabella per le abitudini degli utenti
+-- Table for user habits
 CREATE TABLE habits (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     description TEXT,
-    color VARCHAR(7) DEFAULT '#007bff' COMMENT 'Colore hex per UI',
-    icon VARCHAR(50) DEFAULT '📋' COMMENT 'Emoji o icona Unicode',
-    target_frequency INT DEFAULT 7 COMMENT 'Obiettivo settimanale (1-7 giorni)',
-    is_active BOOLEAN DEFAULT TRUE COMMENT 'Abitudine attiva/archiviata',
+    color VARCHAR(7) DEFAULT '#007bff' COMMENT 'Hex color for UI',
+    icon VARCHAR(50) DEFAULT '📋' COMMENT 'Emoji or Unicode icon',
+    target_frequency INT DEFAULT 7 COMMENT 'Weekly target (1-7 days)',
+    is_active BOOLEAN DEFAULT TRUE COMMENT 'Active/archived habit',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
-    -- Indici per performance
+    -- Performance indexes
     INDEX idx_active (is_active),
     INDEX idx_created (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Tabella per i check giornalieri
+-- Table for daily checks
 CREATE TABLE habit_checks (
     id INT AUTO_INCREMENT PRIMARY KEY,
     habit_id INT NOT NULL,
     check_date DATE NOT NULL,
     completed BOOLEAN DEFAULT TRUE,
-    notes TEXT COMMENT 'Note opzionali per il check',
+    notes TEXT COMMENT 'Optional check notes',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     
-    -- Relazioni
+    -- Relations
     FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE,
     
     -- Constraints
     UNIQUE KEY unique_habit_date (habit_id, check_date),
     
-    -- Indici per performance
+    -- Performance indexes
     INDEX idx_habit_date (habit_id, check_date),
     INDEX idx_date (check_date),
     INDEX idx_completed (completed)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ====================================
--- DATI DI ESEMPIO
+-- SAMPLE DATA
 -- ====================================
 
 INSERT INTO habits (name, description, color, icon, target_frequency) VALUES
-('Bere Acqua', 'Bere almeno 8 bicchieri d\'acqua al giorno per mantenersi idratati', '#00a8ff', '💧', 7),
-('Lettura', 'Leggere almeno 10 minuti al giorno per stimolare la mente', '#fbc531', '📚', 7),
-('Stretching', 'Fare stretching mattutino per migliorare la flessibilità', '#44bd32', '🤸‍♂️', 6),
-('Meditazione', 'Praticare 5 minuti di meditazione per ridurre lo stress', '#9c88ff', '🧘‍♀️', 5),
-('Camminata', 'Camminata di 20 minuti per mantenersi attivi', '#fd7e14', '🚶‍♂️', 5),
-('Sonno Regolare', 'Andare a letto entro le 23:00 per un riposo ottimale', '#6f42c1', '😴', 7);
+('Drink Water', 'Drink at least 8 glasses of water daily to stay hydrated', '#00a8ff', '💧', 7),
+('Reading', 'Read at least 10 minutes daily to stimulate the mind', '#fbc531', '📚', 7),
+('Stretching', 'Do morning stretching to improve flexibility', '#44bd32', '🤸‍♂️', 6),
+('Meditation', 'Practice 5 minutes of meditation to reduce stress', '#9c88ff', '🧘‍♀️', 5),
+('Walking', '20-minute walk to stay active', '#fd7e14', '🚶‍♂️', 5),
+('Regular Sleep', 'Go to bed by 11:00 PM for optimal rest', '#6f42c1', '😴', 7);
 
 -- ====================================
--- DATI DI TEST (Check esempio)
+-- TEST DATA (Example checks)
 -- ====================================
 
--- Alcuni check di esempio per testing
+-- Some example checks for testing
 INSERT INTO habit_checks (habit_id, check_date, completed) VALUES
--- Settimana corrente (esempi)
+-- Current week (examples)
 (1, CURDATE() - INTERVAL 6 DAY, TRUE),
 (1, CURDATE() - INTERVAL 5 DAY, TRUE),
 (1, CURDATE() - INTERVAL 3 DAY, TRUE),
@@ -87,10 +87,10 @@ INSERT INTO habit_checks (habit_id, check_date, completed) VALUES
 (3, CURDATE() - INTERVAL 1 DAY, TRUE);
 
 -- ====================================
--- VISTE UTILI (Opzionale)
+-- USEFUL VIEWS (Optional)
 -- ====================================
 
--- Vista per statistiche settimanali
+-- View for weekly statistics
 CREATE VIEW weekly_stats AS
 SELECT 
     h.id,
@@ -107,12 +107,12 @@ WHERE h.is_active = TRUE
 GROUP BY h.id;
 
 -- ====================================
--- PROCEDURE UTILI (Opzionale)
+-- USEFUL PROCEDURES (Optional)
 -- ====================================
 
 DELIMITER //
 
--- Procedure per ottenere statistiche complete di una abitudine
+-- Procedure to get complete habit statistics
 CREATE PROCEDURE GetHabitStats(IN habit_id_param INT)
 BEGIN
     SELECT 
@@ -130,20 +130,20 @@ END //
 DELIMITER ;
 
 -- ====================================
--- INDICI AGGIUNTIVI PER PERFORMANCE
+-- ADDITIONAL PERFORMANCE INDEXES
 -- ====================================
 
--- Indice composito per query comuni
+-- Composite index for common queries
 CREATE INDEX idx_habit_check_recent ON habit_checks (habit_id, check_date DESC, completed);
 
 -- ====================================
--- COMMENTI FINALI
+-- FINAL COMMENTS
 -- ====================================
 
--- Schema ottimizzato per:
--- ✅ Performance con indici appropriati
--- ✅ Integrità dei dati con constraints
--- ✅ Scalabilità con InnoDB engine
--- ✅ Unicode support con utf8mb4
--- ✅ Flessibilità con campi opzionali
--- ✅ Testing con dati di esempio
+-- Schema optimized for:
+-- ✅ Performance with appropriate indexes
+-- ✅ Data integrity with constraints
+-- ✅ Scalability with InnoDB engine
+-- ✅ Unicode support with utf8mb4
+-- ✅ Flexibility with optional fields
+-- ✅ Testing with sample data

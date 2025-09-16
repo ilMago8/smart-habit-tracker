@@ -5,7 +5,7 @@ const StatsPanel = memo(({ habits }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Memoized calculations per evitare ricalcoli inutili
+  // Memoized calculations to avoid unnecessary recalculations
   const statsData = useMemo(() => {
     if (!habits || habits.length === 0) {
       return {
@@ -42,18 +42,18 @@ const StatsPanel = memo(({ habits }) => {
     };
   }, [habits]);
 
-  // Fetch ottimizzato con error handling
+  // Optimized fetch with error handling
   const fetchStats = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
       
-      // Simulazione loading realistico
+      // Realistic loading simulation
       await new Promise(resolve => setTimeout(resolve, 300));
       
       setWeeklyStats(statsData);
       
-      // Codice per backend futuro:
+      // Future backend code:
       /*
       const response = await fetch('/api/habits/stats');
       if (!response.ok) throw new Error('Network response was not ok');
@@ -65,9 +65,9 @@ const StatsPanel = memo(({ habits }) => {
       }
       */
     } catch (error) {
-      console.error('Errore nel recupero statistiche:', error);
-      setError('Impossibile caricare le statistiche');
-      setWeeklyStats(statsData); // Fallback ai dati locali
+      console.error('Error fetching statistics:', error);
+      setError('Unable to load statistics');
+      setWeeklyStats(statsData); // Fallback to local data
     } finally {
       setLoading(false);
     }
@@ -86,40 +86,40 @@ const StatsPanel = memo(({ habits }) => {
     if (total_habits === 0) {
       return {
         type: 'empty',
-        title: 'Inizia il tuo percorso!',
-        message: 'Crea la tua prima abitudine per iniziare a tracciare i progressi.'
+        title: 'Start your journey!',
+        message: 'Create your first habit to start tracking progress.'
       };
     }
     
     if (average_completion >= 90) {
       return {
         type: 'excellent',
-        title: 'Eccellente!',
-        message: 'Sei un campione delle abitudini! Continua così!'
+        title: 'Excellent!',
+        message: 'You are a habit champion! Keep it up!'
       };
     } else if (average_completion >= 80) {
       return {
         type: 'success',
-        title: 'Fantastico!',
-        message: 'Stai mantenendo le tue abitudini alla grande!'
+        title: 'Fantastic!',
+        message: 'You are maintaining your habits wonderfully!'
       };
     } else if (average_completion >= 60) {
       return {
         type: 'good',
-        title: 'Ottimo progresso!',
-        message: 'Continua così per raggiungere i tuoi obiettivi!'
+        title: 'Great progress!',
+        message: 'Keep going to reach your goals!'
       };
     } else if (average_completion >= 30) {
       return {
         type: 'moderate',
-        title: 'Buon inizio!',
-        message: 'Stai costruendo le tue routine. Piccoli passi portano a grandi risultati!'
+        title: 'Good start!',
+        message: 'You are building your routines. Small steps lead to big results!'
       };
     } else {
       return {
         type: 'encourage',
-        title: 'Non mollare!',
-        message: 'Ogni giorno è una nuova opportunità. Concentrati su un\'abitudine alla volta!'
+        title: 'Don\'t give up!',
+        message: 'Every day is a new opportunity. Focus on one habit at a time!'
       };
     }
   }, [weeklyStats]);
@@ -128,7 +128,7 @@ const StatsPanel = memo(({ habits }) => {
     return (
       <div className="stats-loading">
         <div className="spinner large"></div>
-        <p>Caricamento statistiche...</p>
+        <p>Loading statistics...</p>
       </div>
     );
   }
@@ -136,10 +136,10 @@ const StatsPanel = memo(({ habits }) => {
   if (error && !weeklyStats) {
     return (
       <div className="stats-error">
-        <h3>Errore nel caricamento</h3>
+        <h3>Loading error</h3>
         <p>{error}</p>
         <button onClick={fetchStats} className="retry-btn">
-          Riprova
+          Retry
         </button>
       </div>
     );
@@ -151,11 +151,11 @@ const StatsPanel = memo(({ habits }) => {
     <div className="stats-panel">
       <header className="stats-header">
         <h2>
-          Statistiche Settimanali
+          Weekly Statistics
         </h2>
-        <p className="date-range" aria-label={`Periodo dal ${new Date(summary.week_start).toLocaleDateString('it-IT')} al ${new Date(summary.week_end).toLocaleDateString('it-IT')}`}>
-          {new Date(summary.week_start).toLocaleDateString('it-IT')} - {' '}
-          {new Date(summary.week_end).toLocaleDateString('it-IT')}
+        <p className="date-range" aria-label={`Period from ${new Date(summary.week_start).toLocaleDateString('en-US')} to ${new Date(summary.week_end).toLocaleDateString('en-US')}`}>
+          {new Date(summary.week_start).toLocaleDateString('en-US')} - {' '}
+          {new Date(summary.week_end).toLocaleDateString('en-US')}
         </p>
       </header>
 
@@ -163,37 +163,37 @@ const StatsPanel = memo(({ habits }) => {
         <div className="summary-card habits-count">
           <div className="card-content">
             <h3>{summary.total_habits}</h3>
-            <p>Abitudini Attive</p>
+            <p>Active Habits</p>
           </div>
         </div>
 
         <div className="summary-card average-completion">
           <div className="card-content">
             <h3>{summary.average_completion}%</h3>
-            <p>Completamento Medio</p>
+            <p>Average Completion</p>
           </div>
         </div>
 
         <div className="summary-card successful-habits">
           <div className="card-content">
             <h3>{summary.successful_habits || 0}</h3>
-            <p>Obiettivi Raggiunti</p>
+            <p>Goals Achieved</p>
           </div>
         </div>
       </div>
 
       <section className="habits-stats">
-        <h3>Dettaglio per Abitudine</h3>
+        <h3>Habit Details</h3>
         <div className="stats-list">
           {habitStats.length === 0 ? (
             <div className="empty-stats">
               <div className="empty-icon"></div>
-              <p>Nessuna abitudine da tracciare</p>
-              <p>Crea la tua prima abitudine per vedere le statistiche!</p>
+              <p>No habits to track</p>
+              <p>Create your first habit to see statistics!</p>
             </div>
           ) : (
             habitStats
-              .sort((a, b) => b.completion_percentage - a.completion_percentage) // Ordina per performance
+              .sort((a, b) => b.completion_percentage - a.completion_percentage) // Sort by performance
               .map(habit => (
                 <article key={habit.id} className="stat-item">
                   <header className="stat-header">
@@ -206,7 +206,7 @@ const StatsPanel = memo(({ habits }) => {
                         habit.completion_percentage >= 80 ? 'high' : 
                         habit.completion_percentage >= 50 ? 'medium' : 'low'
                       }`}
-                      aria-label={`Completamento ${habit.completion_percentage}%`}
+                      aria-label={`Completion ${habit.completion_percentage}%`}
                     >
                       {habit.completion_percentage}%
                     </span>
@@ -222,15 +222,15 @@ const StatsPanel = memo(({ habits }) => {
                       aria-valuenow={habit.completion_percentage}
                       aria-valuemin={0}
                       aria-valuemax={100}
-                      aria-label={`Progresso ${habit.name}: ${habit.completion_percentage}%`}
+                      aria-label={`Progress ${habit.name}: ${habit.completion_percentage}%`}
                     />
                   </div>
                   <div className="stat-details">
                     <span>
-                      {habit.completed_days}/{habit.target_frequency} giorni completati
+                      {habit.completed_days}/{habit.target_frequency} days completed
                     </span>
                     <span className="frequency-info">
-                      (obiettivo: {habit.target_frequency === 7 ? 'quotidiano' : `${habit.target_frequency}x/settimana`})
+                      (target: {habit.target_frequency === 7 ? 'daily' : `${habit.target_frequency}x/week`})
                     </span>
                   </div>
                 </article>

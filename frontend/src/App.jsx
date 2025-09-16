@@ -6,12 +6,12 @@ import './styles/App.css';
 import './styles/Auth.css';
 import './styles/UserProfile.css';
 
-// Dati mock ottimizzati - starter habits
+// Optimized mock data - starter habits
 const INITIAL_HABITS = [
   {
     id: 1,
-    name: "Bere Acqua",
-    description: "Bere almeno 8 bicchieri d'acqua al giorno",
+    name: "Drink Water",
+    description: "Drink at least 8 glasses of water per day",
     color: "#4a90e2",
     target_frequency: 7,
     week_checks: 0,
@@ -21,8 +21,8 @@ const INITIAL_HABITS = [
   },
   {
     id: 2,
-    name: "Lettura",
-    description: "Leggere almeno 10 minuti al giorno",
+    name: "Reading",
+    description: "Read for at least 10 minutes a day",
     color: "#e4b363",
     target_frequency: 7,
     week_checks: 0,
@@ -32,8 +32,8 @@ const INITIAL_HABITS = [
   },
   {
     id: 3,
-    name: "Esercizio",
-    description: "Attività fisica quotidiana",
+    name: "Exercise",
+    description: "Daily physical activity",
     color: "#5d9e7f",
     target_frequency: 5,
     week_checks: 0,
@@ -50,12 +50,12 @@ function App() {
   // Memoized fetch function
   const fetchHabits = useCallback(async () => {
     try {
-      // Simulazione loading per UX realistica
+      // Simulation loading for realistic UX
       await new Promise(resolve => setTimeout(resolve, 500));
       
       setHabits(INITIAL_HABITS);
       
-      // Codice originale per quando il backend sarà attivo:
+      // Original code for when backend is active:
       /*
       const response = await fetch('/api/habits');
       const data = await response.json();
@@ -64,21 +64,21 @@ function App() {
       }
       */
     } catch (error) {
-      console.error('Errore nel recupero abitudini:', error);
+      console.error('Error fetching habits:', error);
       setHabits([]);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  // Ottimizzato con useCallback per prevenire re-renders
+  // Optimized with useCallback to prevent re-renders
   const toggleHabit = useCallback(async (habitId) => {
     try {
       setHabits(prevHabits => 
         prevHabits.map(habit => {
           if (habit.id !== habitId) return habit;
           
-          // Calcola i nuovi valori
+          // Calculate new values
           const willBeCompleted = !habit.today_completed;
           const newWeekChecks = willBeCompleted 
             ? habit.week_checks + 1
@@ -88,7 +88,7 @@ function App() {
             ? habit.total_checks + 1
             : Math.max(0, habit.total_checks - 1);
           
-          // Calcola la percentuale dinamicamente
+          // Calculate percentage dynamically
           const newWeekCompletion = habit.target_frequency > 0 
             ? Math.round((newWeekChecks / habit.target_frequency) * 100)
             : 0;
@@ -97,13 +97,13 @@ function App() {
             ...habit,
             today_completed: willBeCompleted,
             week_checks: newWeekChecks,
-            week_completion: Math.min(100, newWeekCompletion), // Cap al 100%
+            week_completion: Math.min(100, newWeekCompletion), // Cap at 100%
             total_checks: newTotalChecks
           };
         })
       );
       
-      // Codice originale per quando il backend sarà attivo:
+      // Original code for when backend is active:
       /*
       const response = await fetch('/api/habits/check', {
         method: 'POST',
@@ -117,14 +117,14 @@ function App() {
       }
       */
     } catch (error) {
-      console.error('Errore nel toggle abitudine:', error);
+      console.error('Error toggling habit:', error);
     }
   }, []);
 
   const addHabit = useCallback(async (habitData) => {
     try {
       const newHabit = {
-        id: Date.now(), // ID temporaneo
+        id: Date.now(), // Temporary ID
         ...habitData,
         week_checks: 0,
         week_completion: 0,
@@ -134,7 +134,7 @@ function App() {
       
       setHabits(prevHabits => [...prevHabits, newHabit]);
       
-      // Codice originale per quando il backend sarà attivo:
+      // Original code for when backend is active:
       /*
       const response = await fetch('/api/habits', {
         method: 'POST',
@@ -148,16 +148,16 @@ function App() {
       }
       */
     } catch (error) {
-      console.error('Errore nella creazione abitudine:', error);
+      console.error('Error creating habit:', error);
     }
   }, []);
 
-  // Funzione per eliminare un'abitudine
+  // Function to delete a habit
   const deleteHabit = useCallback(async (habitId) => {
     try {
       setHabits(prevHabits => prevHabits.filter(habit => habit.id !== habitId));
       
-      // Codice originale per quando il backend sarà attivo:
+      // Original code for when backend is active:
       /*
       const response = await fetch(`/api/habits/${habitId}`, {
         method: 'DELETE'
@@ -169,13 +169,13 @@ function App() {
       }
       */
     } catch (error) {
-      console.error('Errore nell\'eliminazione abitudine:', error);
+      console.error('Error deleting habit:', error);
     }
   }, []);
 
-  // Funzione per resettare tutti i progressi (utile per demo)
+  // Function to reset all progress (useful for demo)
   const resetAllProgress = useCallback(() => {
-    if (window.confirm('Sei sicuro di voler resettare tutti i progressi? Questa azione non può essere annullata.')) {
+    if (window.confirm('Are you sure you want to reset all progress? This action cannot be undone.')) {
       setHabits(prevHabits => 
         prevHabits.map(habit => ({
           ...habit,
@@ -196,7 +196,7 @@ function App() {
   const loadingComponent = useMemo(() => (
     <div className="loading-container">
       <div className="spinner"></div>
-      <p>Caricamento abitudini...</p>
+      <p>Loading habits...</p>
     </div>
   ), []);
 
@@ -217,7 +217,7 @@ function App() {
   );
 }
 
-// Wrapper App principale con il provider di autenticazione
+// Main App wrapper with authentication provider
 function AppWithAuth() {
   return (
     <AuthProvider>
@@ -226,26 +226,26 @@ function AppWithAuth() {
   );
 }
 
-// Componente che gestisce l'autenticazione
+// Component that handles authentication
 function AuthenticatedApp() {
   const { currentUser, loading } = useAuth();
   
-  // Mostra un loader mentre verifichiamo se l'utente è già loggato
+  // Show loader while checking if user is already logged in
   if (loading) {
     return (
       <div className="loading-container">
         <div className="spinner"></div>
-        <p>Caricamento...</p>
+        <p>Loading...</p>
       </div>
     );
   }
   
-  // Se non c'è un utente loggato, mostra la pagina di autenticazione
+  // If no user is logged in, show authentication page
   if (!currentUser) {
     return <AuthPage />;
   }
   
-  // Se l'utente è loggato, mostra l'app principale
+  // If user is logged in, show main app
   return <App />;
 }
 

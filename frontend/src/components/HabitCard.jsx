@@ -20,12 +20,12 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
   const handleDelete = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (onDelete && window.confirm(`Sei sicuro di voler eliminare l'abitudine "${name}"?`)) {
+    if (onDelete && window.confirm(`Are you sure you want to delete the habit "${name}"?`)) {
       onDelete();
     }
   }, [onDelete, name]);
 
-  // Funzione per gestire la pressione di tasti (accessibilità)
+  // Function to handle key press (accessibility)
   const handleKeyPress = useCallback((e) => {
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
@@ -33,21 +33,21 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
     }
   }, [handleToggle]);
 
-  // Calcolo stato visuale
+  // Visual status calculation
   const completionStatus = week_completion >= 80 ? 'excellent' : 
                           week_completion >= 60 ? 'good' : 
                           week_completion >= 30 ? 'average' : 'needs-attention';
 
   const buttonText = today_completed ? 
-    { label: 'Completato oggi' } : 
-    { label: 'Segna come fatto' };
+    { label: 'Completed today' } : 
+    { label: 'Mark as done' };
 
   return (
     <article 
       className={`habit-card ${completionStatus}`}
       style={{ '--habit-color': color }}
       role="article"
-      aria-label={`Abitudine: ${name}`}
+      aria-label={`Habit: ${name}`}
     >
       <header className="habit-header">
         <div className="habit-color-indicator" style={{ backgroundColor: color }}></div>
@@ -64,10 +64,10 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
             type="button"
             className="delete-btn"
             onClick={handleDelete}
-            aria-label={`Elimina abitudine ${name}`}
-            title="Elimina abitudine"
+            aria-label={`Delete habit ${name}`}
+            title="Delete habit"
           >
-            Elimina
+            Delete
           </button>
         )}
       </header>
@@ -79,7 +79,7 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
           aria-valuenow={week_completion}
           aria-valuemin={0}
           aria-valuemax={100}
-          aria-label={`Progresso settimanale: ${week_completion}%`}
+          aria-label={`Weekly progress: ${week_completion}%`}
         >
           <div 
             className="progress-fill" 
@@ -88,10 +88,10 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
         </div>
         <div className="progress-info">
           <span className="progress-text">
-            {week_completion}% questa settimana
+            {week_completion}% this week
           </span>
           <span className="progress-detail">
-            ({week_checks}/{target_frequency} giorni)
+            ({week_checks}/{target_frequency} days)
           </span>
         </div>
       </div>
@@ -103,7 +103,7 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
           onClick={handleToggle}
           onKeyDown={handleKeyPress}
           aria-pressed={today_completed}
-          aria-label={`${buttonText.label} per ${name}`}
+          aria-label={`${buttonText.label} for ${name}`}
         >
           <span className="btn-text">
             {buttonText.label}

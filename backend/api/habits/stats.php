@@ -1,5 +1,5 @@
 <?php
-// GET /api/habits/stats - Statistiche settimanali
+// GET /api/habits/stats - Weekly statistics
 try {
     $query = "
         SELECT 
@@ -25,7 +25,7 @@ try {
     $stmt->execute();
     $stats = $stmt->fetchAll();
     
-    // Statistiche generali
+    // General statistics
     $totalHabits = count($stats);
     $avgCompletion = $totalHabits > 0 ? 
         array_sum(array_column($stats, 'completion_percentage')) / $totalHabits : 0;

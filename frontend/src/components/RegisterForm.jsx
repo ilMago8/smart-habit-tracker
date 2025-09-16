@@ -13,22 +13,22 @@ const RegisterForm = ({ onSwitchToLogin }) => {
   
   const { register } = useAuth();
   
-  // Ottimizzato: gestione input unificata
+  // Optimized: unified input handling
   const handleInputChange = useCallback((field) => (e) => {
     setFormData(prev => ({
       ...prev,
       [field]: e.target.value
     }));
-    // Rimosso: if (errorMessage) setErrorMessage(''); - i messaggi di errore restano visibili
+    // Removed: if (errorMessage) setErrorMessage(''); - error messages remain visible
   }, []);
   
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
     setErrorMessage('');
     
-    // Controllo password
+    // Password validation
     if (formData.password !== formData.confirmPassword) {
-      setErrorMessage('Le password non corrispondono');
+      setErrorMessage('Passwords do not match');
       return;
     }
     
@@ -37,11 +37,11 @@ const RegisterForm = ({ onSwitchToLogin }) => {
     try {
       const result = await register(formData.name, formData.email, formData.password);
       if (!result.success) {
-        setErrorMessage(result.message || 'Registrazione fallita. Riprova più tardi.');
+        setErrorMessage(result.message || 'Registration failed. Please try again later.');
       }
     } catch (error) {
-      console.error('Errore durante la registrazione:', error);
-      setErrorMessage('Si è verificato un errore. Riprova più tardi.');
+      console.error('Error during registration:', error);
+      setErrorMessage('An error occurred. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }
@@ -49,8 +49,8 @@ const RegisterForm = ({ onSwitchToLogin }) => {
   
   return (
     <div className="auth-form-container">
-      <h2 className="auth-title">Crea un account</h2>
-      <p className="auth-subtitle">Inizia a tracciare le tue abitudini e a migliorare la tua vita</p>
+      <h2 className="auth-title">Create Account</h2>
+      <p className="auth-subtitle">Start tracking your habits and improve your life</p>
       
       {errorMessage && (
         <div className="auth-error-message">
@@ -60,14 +60,14 @@ const RegisterForm = ({ onSwitchToLogin }) => {
       
       <form className="auth-form" onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="name">Nome</label>
+          <label htmlFor="name">Name</label>
           <input
             id="name"
             type="text"
             value={formData.name}
             onChange={handleInputChange('name')}
             required
-            placeholder="Il tuo nome"
+            placeholder="Your name"
           />
         </div>
         
@@ -79,7 +79,7 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             value={formData.email}
             onChange={handleInputChange('email')}
             required
-            placeholder="La tua email"
+            placeholder="Your email"
           />
         </div>
         
@@ -91,19 +91,19 @@ const RegisterForm = ({ onSwitchToLogin }) => {
             value={formData.password}
             onChange={handleInputChange('password')}
             required
-            placeholder="Crea una password"
+            placeholder="Create a password"
           />
         </div>
         
         <div className="form-group">
-          <label htmlFor="confirm-password">Conferma Password</label>
+          <label htmlFor="confirm-password">Confirm Password</label>
           <input
             id="confirm-password"
             type="password"
             value={formData.confirmPassword}
             onChange={handleInputChange('confirmPassword')}
             required
-            placeholder="Conferma la tua password"
+            placeholder="Confirm your password"
           />
         </div>
         
@@ -112,17 +112,17 @@ const RegisterForm = ({ onSwitchToLogin }) => {
           className="auth-submit-button"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Registrazione in corso...' : 'Registrati'}
+          {isSubmitting ? 'Creating account...' : 'Sign Up'}
         </button>
       </form>
       
       <div className="auth-switch">
-        <p>Hai già un account?</p>
+        <p>Already have an account?</p>
         <button 
           className="auth-switch-button" 
           onClick={onSwitchToLogin}
         >
-          Accedi
+          Sign In
         </button>
       </div>
     </div>

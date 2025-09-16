@@ -11,7 +11,7 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
 
   // Memoized date formatting
   const today = useMemo(() => {
-    return new Date().toLocaleDateString('it-IT', { 
+    return new Date().toLocaleDateString('en-US', { 
       weekday: 'long', 
       year: 'numeric', 
       month: 'long', 
@@ -46,13 +46,13 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
   const emptyState = useMemo(() => (
     <div className="empty-state">
       <div className="empty-icon"></div>
-      <h3>Nessuna abitudine ancora</h3>
-      <p>Inizia il tuo percorso di crescita personale creando la tua prima abitudine!</p>
+      <h3>No habits yet</h3>
+      <p>Start your personal growth journey by creating your first habit!</p>
       <button 
         className="cta-button"
         onClick={handleShowAddForm}
       >
-        Crea la tua prima abitudine
+        Create your first habit
       </button>
     </div>
   ), [handleShowAddForm]);
@@ -80,7 +80,7 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
         </div>
         
         <div className="dashboard-info">
-          <p className="date" aria-label={`Oggi è ${today}`}>{today}</p>
+          <p className="date" aria-label={`Today is ${today}`}>{today}</p>
           
           <div className="daily-summary" role="status">
             <div className="progress-circle">
@@ -88,7 +88,7 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
               <span className="separator">/</span>
               <span className="total">{habits.length}</span>
             </div>
-            <span className="label">abitudini completate oggi</span>
+            <span className="label">habits completed today</span>
           </div>
         </div>
       </header>
@@ -99,27 +99,27 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
           onClick={() => handleTabChange('habits')}
           role="tab"
           aria-selected={activeTab === 'habits'}
-          aria-label="Visualizza le tue abitudini"
+          aria-label="View your habits"
         >
-          Le Mie Abitudini
+          My Habits
         </button>
         <button 
           className={`tab ${activeTab === 'stats' ? 'active' : ''}`}
           onClick={() => handleTabChange('stats')}
           role="tab"
           aria-selected={activeTab === 'stats'}
-          aria-label="Visualizza le statistiche"
+          aria-label="View statistics"
         >
-          Statistiche
+          Statistics
         </button>
         <button 
           className={`tab ${activeTab === 'profile' ? 'active' : ''}`}
           onClick={() => handleTabChange('profile')}
           role="tab"
           aria-selected={activeTab === 'profile'}
-          aria-label="Gestisci il tuo profilo"
+          aria-label="Manage your profile"
         >
-          Profilo Utente
+          User Profile
         </button>
       </nav>
 
@@ -127,23 +127,23 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
         {activeTab === 'habits' && (
           <div className="habits-section" role="tabpanel">
             <div className="section-header">
-              <h2>Abitudini di Oggi</h2>
+              <h2>Today's Habits</h2>
               <div className="header-actions">
                 {habits.length > 0 && (
                   <>
                     <button 
                       className="add-habit-btn"
                       onClick={handleShowAddForm}
-                      aria-label="Aggiungi una nuova abitudine"
+                      aria-label="Add a new habit"
                     >
-                      Nuova Abitudine
+                      New Habit
                     </button>
                     {onResetProgress && (
                       <button 
                         className="reset-btn"
                         onClick={onResetProgress}
-                        aria-label="Resetta tutti i progressi"
-                        title="Resetta tutti i progressi"
+                        aria-label="Reset all progress"
+                        title="Reset all progress"
                       >
                         Reset
                       </button>

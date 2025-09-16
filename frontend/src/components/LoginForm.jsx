@@ -11,20 +11,20 @@ const LoginForm = ({ onSwitchToRegister }) => {
   
   const { login, error } = useAuth();
   
-  // Aggiorna il messaggio di errore quando cambia l'errore del contesto
+  // Update error message when context error changes
   useEffect(() => {
     if (error) {
       setErrorMessage(error);
     }
   }, [error]);
   
-  // Ottimizzato: gestione input unificata
+  // Optimized: unified input handling
   const handleInputChange = useCallback((field) => (e) => {
     setFormData(prev => ({
       ...prev,
       [field]: e.target.value
     }));
-    // Rimosso: if (errorMessage) setErrorMessage(''); - i messaggi di errore restano visibili
+    // Removed: if (errorMessage) setErrorMessage(''); - error messages remain visible
   }, []);
   
   const handleSubmit = useCallback(async (e) => {
@@ -35,11 +35,11 @@ const LoginForm = ({ onSwitchToRegister }) => {
     try {
       const result = await login(formData.email, formData.password);
       if (!result.success) {
-        setErrorMessage(result.message || 'Login fallito. Controlla le tue credenziali.');
+        setErrorMessage(result.message || 'Login failed. Check your credentials.');
       }
     } catch (error) {
-      console.error('Errore durante il login:', error);
-      setErrorMessage('Si è verificato un errore. Riprova più tardi.');
+      console.error('Error during login:', error);
+      setErrorMessage('An error occurred. Please try again later.');
     } finally {
       setIsSubmitting(false);
     }
@@ -47,8 +47,8 @@ const LoginForm = ({ onSwitchToRegister }) => {
   
   return (
     <div className="auth-form-container">
-      <h2 className="auth-title">Accedi</h2>
-      <p className="auth-subtitle">Bentornato! Accedi per continuare a tracciare le tue abitudini</p>
+      <h2 className="auth-title">Sign In</h2>
+      <p className="auth-subtitle">Welcome back! Sign in to continue tracking your habits</p>
       
       {errorMessage && (
         <div className="auth-error-message">
@@ -65,7 +65,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
             value={formData.email}
             onChange={handleInputChange('email')}
             required
-            placeholder="La tua email"
+            placeholder="Your email"
             className={errorMessage && errorMessage.toLowerCase().includes('email') ? 'error' : ''}
           />
         </div>
@@ -78,7 +78,7 @@ const LoginForm = ({ onSwitchToRegister }) => {
             value={formData.password}
             onChange={handleInputChange('password')}
             required
-            placeholder="La tua password"
+            placeholder="Your password"
             className={errorMessage && errorMessage.toLowerCase().includes('password') ? 'error' : ''}
           />
         </div>
@@ -88,17 +88,17 @@ const LoginForm = ({ onSwitchToRegister }) => {
           className="auth-submit-button"
           disabled={isSubmitting}
         >
-          {isSubmitting ? 'Accesso in corso...' : 'Accedi'}
+          {isSubmitting ? 'Signing in...' : 'Sign In'}
         </button>
       </form>
       
       <div className="auth-switch">
-        <p>Non hai ancora un account?</p>
+        <p>Don't have an account yet?</p>
         <button 
           className="auth-switch-button" 
           onClick={onSwitchToRegister}
         >
-          Registrati
+          Sign Up
         </button>
       </div>
     </div>

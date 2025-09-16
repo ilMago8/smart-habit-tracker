@@ -1,6 +1,6 @@
 <?php
-// Configurazione database
-// Per produzione, usare environment variables
+// Database configuration
+// For production, use environment variables
 $host = $_ENV['DB_HOST'] ?? 'localhost';
 $dbname = $_ENV['DB_NAME'] ?? 'smart_habit_tracker';
 $username = $_ENV['DB_USER'] ?? 'root';

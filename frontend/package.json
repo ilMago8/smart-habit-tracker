@@ -1,7 +1,7 @@
 {
   "name": "smart-habit-tracker-frontend",
   "version": "1.0.0",
-  "description": "Frontend React per Smart Habit Tracker - App moderna per tracciare abitudini giornaliere",
+  "description": "React Frontend for Smart Habit Tracker - Modern app to track daily habits",
   "type": "module",
   "keywords": [
     "react",

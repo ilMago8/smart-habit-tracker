@@ -1,6 +1,6 @@
 # 🌟 Smart Habit Tracker
 
-**Un'applicazione moderna per il tracciamento delle abitudini giornaliere con interfaccia React colorata e intuitiva.**
+**A modern application for tracking daily habits with a colorful and intuitive React interface.**
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=for-the-badge&logo=vercel)](https://smart-habit-tracker.vercel.app)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/ilMago8/smart-habit-tracker)
@@ -9,120 +9,120 @@
 
 ---
 
-## 🚀 Demo Live
+## 🚀 Live Demo
 
-✨ **L'app è live e funzionante!** → [smart-habit-tracker.vercel.app](https://smart-habit-tracker.vercel.app)
-
----
-
-## 🎯 Caratteristiche Principali
-
-### 📊 Dashboard Interattiva
-- **Visualizzazione abitudini** con card colorate e animate
-- **Progress bar** che mostrano il completamento settimanale  
-- **Contatore giornaliero** delle abitudini completate
-- **Design responsive** ottimizzato per mobile e desktop
-
-### ⚡ Gestione Abitudini
-- **Creazione rapida** con form intuitivo e validazione
-- **Personalizzazione completa**: 12 icone + 10 colori predefiniti
-- **Obiettivi flessibili**: da 1 a 7 giorni a settimana
-- **Stati visuali** per feedback immediato
-
-### 📈 Statistiche Avanzate  
-- **Dashboard dedicata** con metriche dettagliate
-- **Visualizzazioni grafiche** con progress bar colorate
-- **Percentuali di completamento** in tempo reale
-- **Messaggi motivazionali** dinamici basati sui progressi
-
-### 🎨 UI/UX Moderna
-- **Design system** coerente con CSS custom properties
-- **Animazioni fluide** e transizioni ottimizzate
-- **Accessibilità WCAG** con ARIA labels e keyboard navigation
-- **Performance** ottimizzate con React.memo e lazy loading
+✨ **The app is live and running!** → [smart-habit-tracker.vercel.app](https://smart-habit-tracker.vercel.app)
 
 ---
 
-## 🛠️ Stack Tecnologico
+## 🎯 Key Features
+
+### 📊 Interactive Dashboard
+- **Habit visualization** with colorful and animated cards
+- **Progress bars** showing weekly completion  
+- **Daily counter** of completed habits
+- **Responsive design** optimized for mobile and desktop
+
+### ⚡ Habit Management
+- **Quick creation** with intuitive form and validation
+- **Complete customization**: 12 icons + 10 predefined colors
+- **Flexible goals**: from 1 to 7 days per week
+- **Visual states** for immediate feedback
+
+### 📈 Advanced Statistics  
+- **Dedicated dashboard** with detailed metrics
+- **Graphic visualizations** with colored progress bars
+- **Real-time completion percentages**
+- **Dynamic motivational messages** based on progress
+
+### 🎨 Modern UI/UX
+- **Consistent design system** with CSS custom properties
+- **Smooth animations** and optimized transitions
+- **WCAG accessibility** with ARIA labels and keyboard navigation
+- **Optimized performance** with React.memo and lazy loading
+
+---
+
+## 🛠️ Technology Stack
 
 ### Frontend
-- **React 18** - Hooks moderni e Concurrent Features
-- **Vite 5.4** - Build tool velocissimo con HMR
-- **CSS3 moderno** - Custom properties, Container Queries
-- **ESLint + Prettier** - Linting e formattazione automatica
+- **React 18** - Modern Hooks and Concurrent Features
+- **Vite 5.4** - Lightning-fast build tool with HMR
+- **Modern CSS3** - Custom properties, Container Queries
+- **ESLint + Prettier** - Automatic linting and formatting
 
-### Performance & Ottimizzazioni
-- **Code Splitting** - Bundle ottimizzato con lazy loading  
-- **React.memo** - Prevenzione re-render inutili
-- **useCallback/useMemo** - Ottimizzazioni hook
-- **GPU Acceleration** - Animazioni hardware accelerate
+### Performance & Optimizations
+- **Code Splitting** - Optimized bundle with lazy loading  
+- **React.memo** - Prevention of unnecessary re-renders
+- **useCallback/useMemo** - Hook optimizations
+- **GPU Acceleration** - Hardware-accelerated animations
 
 ### Deploy & DevOps
-- **Vercel** - Deploy automatico con GitHub integration
+- **Vercel** - Automatic deploy with GitHub integration
 - **GitHub Actions** - CI/CD pipeline (future)
-- **Progressive Web App** - PWA ready con manifest
+- **Progressive Web App** - PWA ready with manifest
 
 ---
 
 ## 🏃‍♂️ Quick Start
 
-### Prerequisiti
+### Prerequisites
 - **Node.js** 18+ 
-- **npm** 8+ o **yarn** 1.22+
+- **npm** 8+ or **yarn** 1.22+
 - **Git** 2.30+
 
-### Installazione
+### Installation
 ```bash
-# Clona il repository
+# Clone the repository
 git clone https://github.com/ilMago8/smart-habit-tracker.git
 cd smart-habit-tracker
 
-# Installa dipendenze frontend
+# Install frontend dependencies
 cd frontend
 npm install
 
-# Avvia server di sviluppo
+# Start development server
 npm run dev
 ```
 
-🎉 **App disponibile su:** http://localhost:3000
+🎉 **App available at:** http://localhost:3000
 
-### Scripts Disponibili
+### Available Scripts
 ```bash
-npm run dev      # Server di sviluppo
-npm run build    # Build produzione  
-npm run preview  # Anteprima build
-npm run lint     # Controllo codice
+npm run dev      # Development server
+npm run build    # Production build  
+npm run preview  # Build preview
+npm run lint     # Code check
 ```
 
 ---
 
-## �️ Architettura del Progetto
+## 🏗️ Project Architecture
 
 ```
 smart-habit-tracker/
 ├── frontend/           # React app
 │   ├── src/
-│   │   ├── components/    # Componenti riutilizzabili
-│   │   ├── pages/         # Pagine principali
-│   │   ├── styles/        # CSS e design system
-│   │   └── utils/         # Utilities e helpers
-│   ├── public/           # Assets statici
+│   │   ├── components/    # Reusable components
+│   │   ├── pages/         # Main pages
+│   │   ├── styles/        # CSS and design system
+│   │   └── utils/         # Utilities and helpers
+│   ├── public/           # Static assets
 │   └── dist/            # Build output
 ├── backend/             # PHP API (ready for future)
 ├── database/            # MySQL schema
-└── docs/               # Documentazione
+└── docs/               # Documentation
 ```
 
 ---
 
 ## 🎨 Design System
 
-### Palette Colori
+### Color Palette
 ```css
---primary: #007bff     /* Blu principale */
---success: #28a745     /* Verde successo */
---warning: #ffc107     /* Giallo attenzione */
+--primary: #007bff     /* Main blue */
+--success: #28a745     /* Success green */
+--warning: #ffc107     /* Warning yellow */
 --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%)
 ```
 
@@ -148,23 +148,23 @@ smart-habit-tracker/
 ### Dashboard
 ![Dashboard](https://via.placeholder.com/800x400/667eea/ffffff?text=Dashboard+Screenshot)
 
-### Creazione Abitudine
+### Habit Creation
 ![Form](https://via.placeholder.com/800x400/28a745/ffffff?text=Add+Habit+Form)
 
-### Statistiche  
+### Statistics  
 ![Stats](https://via.placeholder.com/800x400/ffc107/000000?text=Statistics+Panel)
 
 ---
 
 ## 🚀 Deployment
 
-### Vercel (Raccomandato)
-1. Fork questo repository
-2. Collega account Vercel a GitHub
-3. Importa il progetto su Vercel
-4. Deploy automatico ad ogni push!
+### Vercel (Recommended)
+1. Fork this repository
+2. Connect Vercel account to GitHub
+3. Import project on Vercel
+4. Automatic deploy on every push!
 
-### Configurazione Build
+### Build Configuration
 ```json
 {
   "buildCommand": "cd frontend && npm run build",
@@ -173,100 +173,100 @@ smart-habit-tracker/
 }
 ```
 
-### Altri Provider
-- **Netlify**: Drag & drop della cartella `frontend/dist`
+### Other Providers
+- **Netlify**: Drag & drop the `frontend/dist` folder
 - **GitHub Pages**: Via GitHub Actions
-- **Railway**: Collegamento diretto repository
+- **Railway**: Direct repository connection
 
 ---
 
 ## 🗺️ Roadmap
 
-### 🎯 V1.1 - Miglioramenti UX (In corso)
-- [ ] **Dark mode** toggle con persistenza
-- [ ] **Streak tracking** per serie consecutive  
-- [ ] **Habit templates** predefiniti
-- [ ] **Export dati** in CSV/JSON
+### 🎯 V1.1 - UX Improvements (In Progress)
+- [ ] **Dark mode** toggle with persistence
+- [ ] **Streak tracking** for consecutive series  
+- [ ] **Predefined habit templates**
+- [ ] **Data export** in CSV/JSON
 
 ### 🎯 V2.0 - Backend Integration
-- [ ] **Database MySQL** per persistenza reale
-- [ ] **API REST** con autenticazione JWT
-- [ ] **Multi-utente** con profili personali
-- [ ] **Sincronizzazione cloud** cross-device
+- [ ] **MySQL database** for real persistence
+- [ ] **REST API** with JWT authentication
+- [ ] **Multi-user** with personal profiles
+- [ ] **Cloud synchronization** cross-device
 
-### 🎯 V2.1 - Features Avanzate
-- [ ] **Push notifications** per reminder
-- [ ] **Habit insights** con analytics avanzate  
-- [ ] **Goal setting** con obiettivi a lungo termine
-- [ ] **Integration** con Google Calendar
+### 🎯 V2.1 - Advanced Features
+- [ ] **Push notifications** for reminders
+- [ ] **Habit insights** with advanced analytics  
+- [ ] **Goal setting** with long-term objectives
+- [ ] **Integration** with Google Calendar
 
 ### 🎯 V3.0 - Social Features
-- [ ] **Condivisione progressi** sui social
-- [ ] **Challenges** tra amici
-- [ ] **Leaderboard** settimanali
-- [ ] **Achievement system** con badges
+- [ ] **Progress sharing** on social media
+- [ ] **Challenges** between friends
+- [ ] **Weekly leaderboards**
+- [ ] **Achievement system** with badges
 
 ---
 
-## 🤝 Contribuire
+## 🤝 Contributing
 
-Contributi, issue e feature request sono benvenuti!
+Contributions, issues and feature requests are welcome!
 
-### Come Contribuire
-1. **Fork** il progetto
-2. **Crea branch** (`git checkout -b feature/amazing-feature`)
+### How to Contribute
+1. **Fork** the project
+2. **Create branch** (`git checkout -b feature/amazing-feature`)
 3. **Commit** (`git commit -m 'Add amazing feature'`)
 4. **Push** (`git push origin feature/amazing-feature`)
-5. **Pull Request** con descrizione dettagliata
+5. **Pull Request** with detailed description
 
 ### Guidelines
-- Segui le convenzioni ESLint esistenti
-- Scrivi test per nuove funzionalità
-- Aggiorna documentazione quando necessario
-- Usa commit messages descrittivi
+- Follow existing ESLint conventions
+- Write tests for new features
+- Update documentation when necessary
+- Use descriptive commit messages
 
 ---
 
-## 🐛 Issues e Support
+## 🐛 Issues and Support
 
-Hai trovato un bug o hai una feature request?
+Found a bug or have a feature request?
 
-### Segnala Bug
-- Usa il [template issue](https://github.com/ilMago8/smart-habit-tracker/issues/new?template=bug_report.md)
-- Includi screenshot se possibile
-- Specifica browser e versione OS
+### Report Bug
+- Use the [issue template](https://github.com/ilMago8/smart-habit-tracker/issues/new?template=bug_report.md)
+- Include screenshots if possible
+- Specify browser and OS version
 
 ### Feature Request  
-- Usa il [template feature](https://github.com/ilMago8/smart-habit-tracker/issues/new?template=feature_request.md)
-- Descrivi il caso d'uso
-- Spiega il beneficio per gli utenti
+- Use the [feature template](https://github.com/ilMago8/smart-habit-tracker/issues/new?template=feature_request.md)
+- Describe the use case
+- Explain the benefit for users
 
 ---
 
-## 📄 Licenza
+## 📄 License
 
-Questo progetto è rilasciato sotto **Licenza MIT**.
+This project is released under **MIT License**.
 
-Vedi il file [LICENSE](LICENSE) per tutti i dettagli.
+See the [LICENSE](LICENSE) file for all details.
 
 ---
 
-## 👨‍💻 Autore
+## 👨‍💻 Author
 
 **ilMago8**
 - GitHub: [@ilMago8](https://github.com/ilMago8)
-- LinkedIn: [Profilo LinkedIn](#)
+- LinkedIn: [LinkedIn Profile](#)
 - Twitter: [@ilMago8](#)
 
 ---
 
-## 🙏 Ringraziamenti
+## 🙏 Acknowledgments
 
-- **React Team** per la fantastica libreria
-- **Vite Team** per il build tool incredibilmente veloce  
-- **Vercel** per l'hosting gratuito eccellente
-- **Open Source Community** per l'ispirazione continua
-- **Beta testers** per feedback e suggerimenti
+- **React Team** for the fantastic library
+- **Vite Team** for the incredibly fast build tool  
+- **Vercel** for excellent free hosting
+- **Open Source Community** for continuous inspiration
+- **Beta testers** for feedback and suggestions
 
 ---
 
@@ -279,6 +279,6 @@ Vedi il file [LICENSE](LICENSE) per tutti i dettagli.
 
 ---
 
-**⭐ Se il progetto ti è piaciuto, lascia una stella! Aiuta altri sviluppatori a scoprirlo.**
+**⭐ If you liked the project, leave a star! Help other developers discover it.**
 
-**🔄 Condividi con la community e aiutaci a crescere!**
+**🔄 Share with the community and help us grow!**

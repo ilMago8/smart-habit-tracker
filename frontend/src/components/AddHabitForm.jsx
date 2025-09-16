@@ -1,40 +1,40 @@
 import React, { useState, useCallback, memo, useEffect, useRef } from 'react';
 
-// Configurazioni statiche ottimizzate
+// Optimized static configurations
 const HABIT_ICONS = [
-  { value: '📋', label: 'Generale', category: 'base' },
-  { value: '💧', label: 'Acqua', category: 'salute' },
-  { value: '📚', label: 'Lettura', category: 'apprendimento' },
+  { value: '📋', label: 'General', category: 'base' },
+  { value: '💧', label: 'Water', category: 'health' },
+  { value: '📚', label: 'Reading', category: 'learning' },
   { value: '🤸‍♂️', label: 'Stretching', category: 'fitness' },
-  { value: '🧘‍♀️', label: 'Meditazione', category: 'benessere' },
-  { value: '🏃‍♂️', label: 'Corsa', category: 'fitness' },
-  { value: '🥗', label: 'Alimentazione', category: 'salute' },
-  { value: '💤', label: 'Sonno', category: 'salute' },
-  { value: '🎯', label: 'Obiettivi', category: 'produttività' },
-  { value: '✍️', label: 'Scrittura', category: 'creatività' },
-  { value: '🎨', label: 'Arte', category: 'creatività' },
-  { value: '🚶‍♂️', label: 'Camminata', category: 'fitness' }
+  { value: '🧘‍♀️', label: 'Meditation', category: 'wellness' },
+  { value: '🏃‍♂️', label: 'Running', category: 'fitness' },
+  { value: '🥗', label: 'Nutrition', category: 'health' },
+  { value: '💤', label: 'Sleep', category: 'health' },
+  { value: '🎯', label: 'Goals', category: 'productivity' },
+  { value: '✍️', label: 'Writing', category: 'creativity' },
+  { value: '🎨', label: 'Art', category: 'creativity' },
+  { value: '🚶‍♂️', label: 'Walking', category: 'fitness' }
 ];
 
 const HABIT_COLORS = [
-  { value: '#007bff', name: 'Blu', category: 'base' },
-  { value: '#00a8ff', name: 'Azzurro', category: 'freddi' },
-  { value: '#fbc531', name: 'Giallo', category: 'caldi' },
-  { value: '#44bd32', name: 'Verde', category: 'naturali' },
-  { value: '#9c88ff', name: 'Viola', category: 'freddi' },
-  { value: '#e84393', name: 'Rosa', category: 'caldi' },
-  { value: '#fd79a8', name: 'Rosa chiaro', category: 'caldi' },
-  { value: '#fdcb6e', name: 'Arancio', category: 'caldi' },
-  { value: '#6c5ce7', name: 'Indaco', category: 'freddi' },
-  { value: '#00b894', name: 'Verde acqua', category: 'naturali' }
+  { value: '#007bff', name: 'Blue', category: 'base' },
+  { value: '#00a8ff', name: 'Light Blue', category: 'cool' },
+  { value: '#fbc531', name: 'Yellow', category: 'warm' },
+  { value: '#44bd32', name: 'Green', category: 'natural' },
+  { value: '#9c88ff', name: 'Purple', category: 'cool' },
+  { value: '#e84393', name: 'Pink', category: 'warm' },
+  { value: '#fd79a8', name: 'Light Pink', category: 'warm' },
+  { value: '#fdcb6e', name: 'Orange', category: 'warm' },
+  { value: '#6c5ce7', name: 'Indigo', category: 'cool' },
+  { value: '#00b894', name: 'Teal', category: 'natural' }
 ];
 
 const TARGET_OPTIONS = [
-  { value: 1, label: '1 volta a settimana', description: 'Obiettivo leggero' },
-  { value: 2, label: '2 volte a settimana', description: 'Inizio graduale' },
-  { value: 3, label: '3 volte a settimana', description: 'Frequenza moderata' },
-  { value: 5, label: '5 volte a settimana', description: 'Routine forte' },
-  { value: 7, label: 'Tutti i giorni', description: 'Impegno massimo' }
+  { value: 1, label: '1 time per week', description: 'Light goal' },
+  { value: 2, label: '2 times per week', description: 'Gradual start' },
+  { value: 3, label: '3 times per week', description: 'Moderate frequency' },
+  { value: 5, label: '5 times per week', description: 'Strong routine' },
+  { value: 7, label: 'Every day', description: 'Maximum commitment' }
 ];
 
 const AddHabitForm = memo(({ onSubmit, onCancel }) => {
@@ -72,20 +72,20 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
     return () => document.removeEventListener('keydown', handleEscape);
   }, [onCancel]);
 
-  // Validazione form
+  // Form validation
   const validateForm = useCallback(() => {
     const newErrors = {};
     
     if (!formData.name.trim()) {
-      newErrors.name = 'Il nome è obbligatorio';
+      newErrors.name = 'Name is required';
     } else if (formData.name.trim().length < 2) {
-      newErrors.name = 'Il nome deve avere almeno 2 caratteri';
+      newErrors.name = 'Name must be at least 2 characters';
     } else if (formData.name.trim().length > 50) {
-      newErrors.name = 'Il nome non può superare i 50 caratteri';
+      newErrors.name = 'Name cannot exceed 50 characters';
     }
 
     if (formData.description && formData.description.length > 200) {
-      newErrors.description = 'La descrizione non può superare i 200 caratteri';
+      newErrors.description = 'Description cannot exceed 200 characters';
     }
 
     setErrors(newErrors);
@@ -110,8 +110,8 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
       
       await onSubmit(cleanedData);
     } catch (error) {
-      console.error('Errore nella creazione abitudine:', error);
-      setErrors({ submit: 'Errore nella creazione dell\'abitudine' });
+      console.error('Error creating habit:', error);
+      setErrors({ submit: 'Error creating habit' });
     } finally {
       setIsSubmitting(false);
     }
@@ -119,7 +119,7 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
 
   const handleChange = useCallback((field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
-    // Rimuovi l'errore quando l'utente inizia a correggere
+    // Remove error when user starts correcting
     if (errors[field]) {
       setErrors(prev => {
         const newErrors = { ...prev };
@@ -147,13 +147,13 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
         <header className="form-header">
           <h3 id="form-title">
             <span aria-hidden="true">➕</span>
-            Nuova Abitudine
+            New Habit
           </h3>
           <button 
             type="button"
             className="close-btn" 
             onClick={onCancel}
-            aria-label="Chiudi modulo"
+            aria-label="Close form"
           >
             ✕
           </button>
@@ -162,7 +162,7 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
         <form onSubmit={handleSubmit} noValidate>
           <div className="form-group">
             <label htmlFor="habit-name">
-              Nome abitudine *
+              Habit Name *
             </label>
             <input
               id="habit-name"
@@ -170,7 +170,7 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
               type="text"
               value={formData.name}
               onChange={(e) => handleChange('name', e.target.value)}
-              placeholder="es. Bere 8 bicchieri d'acqua"
+              placeholder="e.g. Drink 8 glasses of water"
               required
               maxLength={50}
               aria-describedby={errors.name ? 'name-error' : undefined}
@@ -185,13 +185,13 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
 
           <div className="form-group">
             <label htmlFor="habit-description">
-              Descrizione (opzionale)
+              Description (optional)
             </label>
             <textarea
               id="habit-description"
               value={formData.description}
               onChange={(e) => handleChange('description', e.target.value)}
-              placeholder="Descrizione dell'abitudine..."
+              placeholder="Habit description..."
               maxLength={200}
               rows={3}
               aria-describedby={errors.description ? 'description-error' : undefined}
@@ -206,7 +206,7 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
 
           <div className="form-row">
             <fieldset className="form-group">
-              <legend>Icona</legend>
+              <legend>Icon</legend>
               <div className="icon-selector" role="radiogroup">
                 {HABIT_ICONS.map(({ value, label }) => (
                   <button
@@ -214,7 +214,7 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
                     type="button"
                     className={`icon-option ${formData.icon === value ? 'selected' : ''}`}
                     onClick={() => handleChange('icon', value)}
-                    aria-label={`Seleziona icona ${label}`}
+                    aria-label={`Select icon ${label}`}
                     role="radio"
                     aria-checked={formData.icon === value}
                     title={label}
@@ -226,7 +226,7 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
             </fieldset>
 
             <fieldset className="form-group">
-              <legend>Colore</legend>
+              <legend>Color</legend>
               <div className="color-selector" role="radiogroup">
                 {HABIT_COLORS.map(({ value, name }) => (
                   <button
@@ -235,7 +235,7 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
                     className={`color-option ${formData.color === value ? 'selected' : ''}`}
                     style={{ backgroundColor: value }}
                     onClick={() => handleChange('color', value)}
-                    aria-label={`Seleziona colore ${name}`}
+                    aria-label={`Select color ${name}`}
                     role="radio"
                     aria-checked={formData.color === value}
                     title={name}
@@ -247,7 +247,7 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
 
           <div className="form-group">
             <label htmlFor="target-frequency">
-              Obiettivo settimanale
+              Weekly Goal
             </label>
             <select
               id="target-frequency"
@@ -275,7 +275,7 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
               className="cancel-btn"
               disabled={isSubmitting}
             >
-              Annulla
+              Cancel
             </button>
             <button 
               type="submit" 
@@ -285,10 +285,10 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
               {isSubmitting ? (
                 <>
                   <span className="spinner" aria-hidden="true"></span>
-                  Creazione...
+                  Creating...
                 </>
               ) : (
-                'Crea Abitudine'
+                'Create Habit'
               )}
             </button>
           </footer>

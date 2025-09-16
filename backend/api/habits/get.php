@@ -1,5 +1,5 @@
 <?php
-// GET /api/habits - Recupera tutte le abitudini con statistiche
+// GET /api/habits - Retrieve all habits with statistics
 try {
     $query = "
         SELECT 
@@ -23,7 +23,7 @@ try {
     $stmt->execute();
     $habits = $stmt->fetchAll();
     
-    // Calcola percentuali settimanali
+    // Calculate weekly percentages
     foreach ($habits as &$habit) {
         $habit['week_completion'] = $habit['target_frequency'] > 0 
             ? round(($habit['week_checks'] / $habit['target_frequency']) * 100) 

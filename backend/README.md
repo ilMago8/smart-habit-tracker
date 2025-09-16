@@ -1,80 +1,107 @@
-# Backend PHP - Smart Habit Tracker
+# PHP Backend - Smart Habit Tracker
 
-🚧 **Stato: Pronto per sviluppo futuro**
+🚧 **Status: Ready for future development**
 
-Questo backend PHP contiene API REST complete per la versione futura dell'app con database MySQL.
+This PHP backend contains complete REST APIs for the future version of the app with MySQL database.
 
-## 🏗️ **Architettura API**
 
-### **Endpoints disponibili:**
+
+## 🏗️ **API Architecture**
+
+### **Available endpoints:**
+
+
 
 #### **🔍 GET /api/habits**
-- Recupera tutte le abitudini con statistiche
-- Include conteggi settimanali e completamenti giornalieri
-- Response con percentuali calcolate
+
+- Retrieve all habits with statistics
+- Includes weekly counts and daily completions
+- Response with calculated percentages
 
 #### **➕ POST /api/habits** 
-- Crea una nuova abitudine
-- Valida input richiesti
-- Ritorna abitudine creata con ID
+
+- Create a new habit
+- Validates required input
+- Returns created habit with ID
 
 #### **✅ POST /api/habits/check**
-- Toggle completamento giornaliero
-- Gestisce stati esistenti/nuovi
-- Aggiorna statistiche automaticamente
+
+- Toggle daily completion
+- Handles existing/new states
+
+- Updates statistics automatically
 
 #### **📊 GET /api/habits/stats**
-- Statistiche settimanali dettagliate
-- Metriche aggregate per dashboard
-- Calcoli percentuali avanzati
+
+- Detailed weekly statistics
+- Aggregate metrics for dashboard
+- Advanced percentage calculations
+
+
 
 ## 🗄️ **Database Schema**
 
-Il database è definito in `/database/schema.sql`:
-- **habits** - Tabella principale abitudini
-- **habit_checks** - Check giornalieri con date
+The database is defined in `/database/schema.sql`:
 
-## 🚀 **Setup per V2.0 (Futuro)**
+- **habits** - Main habits table
+- **habit_checks** - Daily checks with dates
 
-### **Prerequisiti:**
+## 🚀 **Setup for V2.0 (Future)**
+
+
+
+### **Prerequisites:**
+
 - PHP 8+
 - MySQL 8+
-- Composer (per dipendenze future)
+- Composer (for future dependencies)
 
-### **Configurazione:**
-1. **Database**: Creare DB e importare schema
-2. **Config**: Aggiornare `config/database.php` 
+### **Configuration:**
+
+1. **Database**: Create DB and import schema
+
+2. **Config**: Update `config/database.php`
 3. **Server**: `php -S localhost:8000`
-4. **Frontend**: Decommentare chiamate API reali
+4. **Frontend**: Uncomment real API calls
 
 ### **Environment Variables:**
+
 ```php
-// Per produzione, spostare in .env
+// For production, move to .env
+
 DB_HOST=localhost
-DB_NAME=smart_habit_tracker  
+DB_NAME=smart_habit_tracker
 DB_USER=your_user
 DB_PASS=your_password
 ```
 
-## 🔧 **Features implementate:**
 
-- ✅ **CORS headers** per frontend
-- ✅ **Router RESTful** con switch/case
-- ✅ **Error handling** con try/catch
-- ✅ **SQL injection protection** con prepared statements
-- ✅ **Response standardizzate** JSON
-- ✅ **Query ottimizzate** con JOIN e aggregazioni
 
-## 🎯 **Roadmap V2.0:**
+## 🔧 **Implemented features:**
 
-- [ ] **Environment config** con dotenv
-- [ ] **Validation layer** per input
-- [ ] **Authentication** JWT
-- [ ] **Rate limiting** per security
-- [ ] **Logging** per debugging
-- [ ] **Unit tests** per API
-- [ ] **OpenAPI docs** per documentation
+
+
+- ✅ **CORS headers** for frontend
+- ✅ **RESTful router** with switch/case
+- ✅ **Error handling** with try/catch
+- ✅ **SQL injection protection** with prepared statements
+- ✅ **Standardized JSON responses**
+- ✅ **Optimized queries** with JOIN and aggregations
+
+
+
+## 🎯 **V2.0 Roadmap:**
+
+- [ ] **Environment config** with dotenv
+- [ ] **Validation layer** for input
+- [ ] **JWT Authentication**
+- [ ] **Rate limiting** for security
+- [ ] **Logging** for debugging
+- [ ] **Unit tests** for API
+- [ ] **OpenAPI docs** for documentation
+
+
 
 ---
 
-**💡 Questo backend è pronto per essere attivato quando serve un database persistente!**
+**💡 This backend is ready to be activated when persistent database is needed!**

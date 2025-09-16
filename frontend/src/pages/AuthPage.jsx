@@ -14,7 +14,7 @@ const AuthPage = () => {
       <div className="auth-container">
         <div className="auth-branding">
           <h1 className="auth-app-title">Smart Habit Tracker</h1>
-          <p className="auth-app-tagline">Trasforma le tue abitudini, trasforma la tua vita</p>
+          <p className="auth-app-tagline">Transform your habits, transform your life</p>
         </div>
         
         {currentForm === 'login' ? (

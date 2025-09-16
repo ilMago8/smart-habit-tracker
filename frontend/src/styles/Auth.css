@@ -1,4 +1,4 @@
-/* Stili per l'autenticazione */
+/* Authentication styles */
 .auth-page {
   display: flex;
   align-items: center;
@@ -181,14 +181,14 @@
   margin-bottom: 0;
 }
 
-/* Design innovativo del profilo utente */
+/* Innovative user profile design */
 .user-profile {
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
   background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 50px; /* Forma a pillola */
-  padding: 6px 16px 6px 6px; /* Asimmetrico per design */
+  border-radius: 50px; /* Pill shape */
+  padding: 6px 16px 6px 6px; /* Asymmetric for design */
   transition: all 0.2s ease;
   border: 1px solid rgba(255, 255, 255, 0.2);
   cursor: pointer;
