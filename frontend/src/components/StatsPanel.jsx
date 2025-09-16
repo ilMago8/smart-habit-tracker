@@ -27,7 +27,6 @@ const StatsPanel = memo(({ habits }) => {
         id: habit.id,
         name: habit.name,
         color: habit.color,
-        icon: habit.icon,
         target_frequency: habit.target_frequency || 7,
         completed_days: habit.week_checks || 0,
         completion_percentage: habit.week_completion || 0

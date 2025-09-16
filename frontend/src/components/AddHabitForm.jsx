@@ -1,21 +1,6 @@
 import React, { useState, useCallback, memo, useEffect, useRef } from 'react';
 
 // Optimized static configurations
-const HABIT_ICONS = [
-  { value: '📋', label: 'General', category: 'base' },
-  { value: '💧', label: 'Water', category: 'health' },
-  { value: '📚', label: 'Reading', category: 'learning' },
-  { value: '🤸‍♂️', label: 'Stretching', category: 'fitness' },
-  { value: '🧘‍♀️', label: 'Meditation', category: 'wellness' },
-  { value: '🏃‍♂️', label: 'Running', category: 'fitness' },
-  { value: '🥗', label: 'Nutrition', category: 'health' },
-  { value: '💤', label: 'Sleep', category: 'health' },
-  { value: '🎯', label: 'Goals', category: 'productivity' },
-  { value: '✍️', label: 'Writing', category: 'creativity' },
-  { value: '🎨', label: 'Art', category: 'creativity' },
-  { value: '🚶‍♂️', label: 'Walking', category: 'fitness' }
-];
-
 const HABIT_COLORS = [
   { value: '#007bff', name: 'Blue', category: 'base' },
   { value: '#00a8ff', name: 'Light Blue', category: 'cool' },
@@ -42,7 +27,6 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
     name: '',
     description: '',
     color: '#007bff',
-    icon: '📋',
     target_frequency: 7
   });
   
@@ -205,26 +189,6 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
           </div>
 
           <div className="form-row">
-            <fieldset className="form-group">
-              <legend>Icon</legend>
-              <div className="icon-selector" role="radiogroup">
-                {HABIT_ICONS.map(({ value, label }) => (
-                  <button
-                    key={value}
-                    type="button"
-                    className={`icon-option ${formData.icon === value ? 'selected' : ''}`}
-                    onClick={() => handleChange('icon', value)}
-                    aria-label={`Select icon ${label}`}
-                    role="radio"
-                    aria-checked={formData.icon === value}
-                    title={label}
-                  >
-                    {value}
-                  </button>
-                ))}
-              </div>
-            </fieldset>
-
             <fieldset className="form-group">
               <legend>Color</legend>
               <div className="color-selector" role="radiogroup">
