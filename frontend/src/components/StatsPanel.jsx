@@ -1,6 +1,9 @@
 import React, { useState, useEffect, useMemo, memo, useCallback } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import HabitService from '../services/habitService';
 
 const StatsPanel = memo(({ habits }) => {
+  const { currentUser } = useAuth();
   const [weeklyStats, setWeeklyStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -43,26 +46,23 @@ const StatsPanel = memo(({ habits }) => {
 
   // Optimized fetch with error handling
   const fetchStats = useCallback(async () => {
+    if (!currentUser) {
+      setWeeklyStats(statsData);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
       
-      // Realistic loading simulation
-      await new Promise(resolve => setTimeout(resolve, 300));
+      const data = await HabitService.getStats(currentUser.id);
       
-      setWeeklyStats(statsData);
-      
-      // Future backend code:
-      /*
-      const response = await fetch('/api/habits/stats');
-      if (!response.ok) throw new Error('Network response was not ok');
-      const data = await response.json();
       if (data.success) {
         setWeeklyStats(data.data);
       } else {
-        throw new Error(data.message || 'Failed to fetch stats');
+        throw new Error(data.error || 'Failed to fetch stats');
       }
-      */
     } catch (error) {
       console.error('Error fetching statistics:', error);
       setError('Unable to load statistics');
@@ -70,7 +70,7 @@ const StatsPanel = memo(({ habits }) => {
     } finally {
       setLoading(false);
     }
-  }, [statsData]);
+  }, [statsData, currentUser]);
 
   useEffect(() => {
     fetchStats();

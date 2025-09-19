@@ -2,78 +2,48 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import Dashboard from './pages/Dashboard';
 import AuthPage from './pages/AuthPage';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import HabitService from './services/habitService';
 import './styles/App.css';
 import './styles/Auth.css';
 import './styles/UserProfile.css';
 
-// Optimized mock data - starter habits
-const INITIAL_HABITS = [
-  {
-    id: 1,
-    name: "Drink Water",
-    description: "Drink at least 8 glasses of water per day",
-    color: "#4a90e2",
-    target_frequency: 7,
-    week_checks: 0,
-    week_completion: 0,
-    today_completed: false,
-    total_checks: 0
-  },
-  {
-    id: 2,
-    name: "Reading",
-    description: "Read for at least 10 minutes a day",
-    color: "#e4b363",
-    target_frequency: 7,
-    week_checks: 0,
-    week_completion: 0,
-    today_completed: false,
-    total_checks: 0
-  },
-  {
-    id: 3,
-    name: "Exercise",
-    description: "Daily physical activity",
-    color: "#5d9e7f",
-    target_frequency: 5,
-    week_checks: 0,
-    week_completion: 0,
-    today_completed: false,
-    total_checks: 0
-  }
-];
-
 function App() {
+  const { currentUser } = useAuth();
   const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Memoized fetch function
   const fetchHabits = useCallback(async () => {
+    if (!currentUser) {
+      setHabits([]);
+      setLoading(false);
+      return;
+    }
+
     try {
-      // Simulation loading for realistic UX
-      await new Promise(resolve => setTimeout(resolve, 500));
+      setLoading(true);
+      const data = await HabitService.getHabits(currentUser.id);
       
-      setHabits(INITIAL_HABITS);
-      
-      // Original code for when backend is active:
-      /*
-      const response = await fetch('/api/habits');
-      const data = await response.json();
       if (data.success) {
         setHabits(data.data);
+      } else {
+        console.error('Failed to fetch habits:', data.error);
+        setHabits([]);
       }
-      */
     } catch (error) {
       console.error('Error fetching habits:', error);
       setHabits([]);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [currentUser]);
 
   // Optimized with useCallback to prevent re-renders
   const toggleHabit = useCallback(async (habitId) => {
+    if (!currentUser) return;
+
     try {
+      // Optimistically update the UI
       setHabits(prevHabits => 
         prevHabits.map(habit => {
           if (habit.id !== habitId) return habit;
@@ -97,96 +67,82 @@ function App() {
             ...habit,
             today_completed: willBeCompleted,
             week_checks: newWeekChecks,
-            week_completion: Math.min(100, newWeekCompletion), // Cap at 100%
+            week_completion: Math.min(100, newWeekCompletion),
             total_checks: newTotalChecks
           };
         })
       );
+
+      // Call the API
+      await HabitService.toggleHabit(currentUser.id, habitId);
       
-      // Original code for when backend is active:
-      /*
-      const response = await fetch('/api/habits/check', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ habit_id: habitId })
-      });
+      // Optionally refresh habits from server
+      // fetchHabits();
       
-      const data = await response.json();
-      if (data.success) {
-        fetchHabits();
-      }
-      */
     } catch (error) {
       console.error('Error toggling habit:', error);
+      // Revert optimistic update on error
+      fetchHabits();
     }
-  }, []);
+  }, [currentUser, fetchHabits]);
 
   const addHabit = useCallback(async (habitData) => {
-    try {
-      const newHabit = {
-        id: Date.now(), // Temporary ID
-        ...habitData,
-        week_checks: 0,
-        week_completion: 0,
-        today_completed: false,
-        total_checks: 0
-      };
-      
-      setHabits(prevHabits => [...prevHabits, newHabit]);
-      
-      // Original code for when backend is active:
-      /*
-      const response = await fetch('/api/habits', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(habitData)
-      });
-      
-      const data = await response.json();
-      if (data.success) {
-        fetchHabits();
-      }
-      */
-    } catch (error) {
-      console.error('Error creating habit:', error);
-    }
-  }, []);
+    if (!currentUser) return;
 
-  // Function to delete a habit
-  const deleteHabit = useCallback(async (habitId) => {
     try {
-      setHabits(prevHabits => prevHabits.filter(habit => habit.id !== habitId));
+      const data = await HabitService.createHabit(currentUser.id, habitData);
       
-      // Original code for when backend is active:
-      /*
-      const response = await fetch(`/api/habits/${habitId}`, {
-        method: 'DELETE'
-      });
-      
-      const data = await response.json();
       if (data.success) {
-        fetchHabits();
-      }
-      */
-    } catch (error) {
-      console.error('Error deleting habit:', error);
-    }
-  }, []);
-
-  // Function to reset all progress (useful for demo)
-  const resetAllProgress = useCallback(() => {
-    if (window.confirm('Are you sure you want to reset all progress? This action cannot be undone.')) {
-      setHabits(prevHabits => 
-        prevHabits.map(habit => ({
-          ...habit,
+        // Add the new habit to the state
+        setHabits(prevHabits => [...prevHabits, {
+          ...data.data,
           week_checks: 0,
           week_completion: 0,
           today_completed: false,
           total_checks: 0
-        }))
-      );
+        }]);
+      } else {
+        console.error('Failed to create habit:', data.error);
+      }
+    } catch (error) {
+      console.error('Error creating habit:', error);
     }
-  }, []);
+  }, [currentUser]);
+
+  // Function to delete a habit
+  const deleteHabit = useCallback(async (habitId) => {
+    if (!currentUser) return;
+    
+    try {
+      await HabitService.deleteHabit(currentUser.id, habitId);
+      
+      // Update local state
+      setHabits(prevHabits => prevHabits.filter(habit => habit.id !== habitId));
+      
+    } catch (error) {
+      console.error('Error deleting habit:', error);
+      // Revert the local state change by refetching
+      fetchHabits();
+    }
+  }, [currentUser, fetchHabits]);
+
+  // Function to reset all progress (useful for demo)
+  const resetAllProgress = useCallback(async () => {
+    if (!currentUser) return;
+    
+    if (window.confirm('Are you sure you want to reset all progress? This action cannot be undone.')) {
+      try {
+        await HabitService.resetProgress(currentUser.id);
+        
+        // Refresh habits to show updated progress
+        await fetchHabits();
+        
+      } catch (error) {
+        console.error('Error resetting progress:', error);
+        alert('Failed to reset progress. Please try again.');
+      }
+    }
+  }, [currentUser, fetchHabits]);
 
   useEffect(() => {
     fetchHabits();
@@ -230,7 +186,6 @@ function AppWithAuth() {
 function AuthenticatedApp() {
   const { currentUser, loading } = useAuth();
   
-  // Show loader while checking if user is already logged in
   if (loading) {
     return (
       <div className="loading-container">
@@ -240,13 +195,7 @@ function AuthenticatedApp() {
     );
   }
   
-  // If no user is logged in, show authentication page
-  if (!currentUser) {
-    return <AuthPage />;
-  }
-  
-  // If user is logged in, show main app
-  return <App />;
+  return currentUser ? <App /> : <AuthPage />;
 }
 
 export default AppWithAuth;

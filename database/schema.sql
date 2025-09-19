@@ -16,9 +16,26 @@ USE smart_habit_tracker;
 -- MAIN TABLES
 -- ====================================
 
+-- Table for users
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    bio TEXT COMMENT 'User biography',
+    goals TEXT COMMENT 'User goals and motivations',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    
+    -- Performance indexes
+    INDEX idx_email (email),
+    INDEX idx_created (created_at)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- Table for user habits
 CREATE TABLE habits (
     id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
     name VARCHAR(255) NOT NULL,
     description TEXT,
     color VARCHAR(7) DEFAULT '#007bff' COMMENT 'Hex color for UI',
@@ -28,9 +45,14 @@ CREATE TABLE habits (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     
+    -- Relations
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    
     -- Performance indexes
+    INDEX idx_user_id (user_id),
     INDEX idx_active (is_active),
-    INDEX idx_created (created_at)
+    INDEX idx_created (created_at),
+    INDEX idx_user_active (user_id, is_active)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Table for daily checks
@@ -58,13 +80,19 @@ CREATE TABLE habit_checks (
 -- SAMPLE DATA
 -- ====================================
 
-INSERT INTO habits (name, description, color, icon, target_frequency) VALUES
-('Drink Water', 'Drink at least 8 glasses of water daily to stay hydrated', '#00a8ff', '💧', 7),
-('Reading', 'Read at least 10 minutes daily to stimulate the mind', '#fbc531', '📚', 7),
-('Stretching', 'Do morning stretching to improve flexibility', '#44bd32', '🤸‍♂️', 6),
-('Meditation', 'Practice 5 minutes of meditation to reduce stress', '#9c88ff', '🧘‍♀️', 5),
-('Walking', '20-minute walk to stay active', '#fd7e14', '🚶‍♂️', 5),
-('Regular Sleep', 'Go to bed by 11:00 PM for optimal rest', '#6f42c1', '😴', 7);
+-- Insert sample user for testing
+INSERT INTO users (name, email, password_hash, bio, goals) VALUES
+('Demo User', 'demo@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 
+ 'Demo user for testing the Smart Habit Tracker application', 
+ 'Build healthy habits and maintain consistency in daily routines');
+
+INSERT INTO habits (user_id, name, description, color, icon, target_frequency) VALUES
+(1, 'Drink Water', 'Drink at least 8 glasses of water daily to stay hydrated', '#00a8ff', '💧', 7),
+(1, 'Reading', 'Read at least 10 minutes daily to stimulate the mind', '#fbc531', '📚', 7),
+(1, 'Stretching', 'Do morning stretching to improve flexibility', '#44bd32', '🤸‍♂️', 6),
+(1, 'Meditation', 'Practice 5 minutes of meditation to reduce stress', '#9c88ff', '🧘‍♀️', 5),
+(1, 'Walking', '20-minute walk to stay active', '#fd7e14', '🚶‍♂️', 5),
+(1, 'Regular Sleep', 'Go to bed by 11:00 PM for optimal rest', '#6f42c1', '😴', 7);
 
 -- ====================================
 -- TEST DATA (Example checks)
@@ -94,6 +122,7 @@ INSERT INTO habit_checks (habit_id, check_date, completed) VALUES
 CREATE VIEW weekly_stats AS
 SELECT 
     h.id,
+    h.user_id,
     h.name,
     h.color,
     h.target_frequency,

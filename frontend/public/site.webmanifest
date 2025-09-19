@@ -1,0 +1,12 @@
+{
+  "name": "Smart Habit Tracker",
+  "short_name": "Habit Tracker",
+  "description": "Modern app to track and monitor your daily habits",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "categories": ["productivity", "utilities", "lifestyle"],
+  "lang": "it"
+}

@@ -84,8 +84,10 @@ const UserProfilePage = ({ habits }) => {
   };
 
   const joinDate = useMemo(() => {
-    if (currentUser?.createdAt) {
-      return new Date(currentUser.createdAt).toLocaleDateString('en-US', {
+    // Check for both camelCase (createdAt) and snake_case (created_at) formats
+    const dateField = currentUser?.createdAt || currentUser?.created_at;
+    if (dateField) {
+      return new Date(dateField).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'long',
         day: 'numeric'

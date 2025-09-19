@@ -22,6 +22,8 @@ switch ($path) {
             include 'api/habits/get.php';
         } elseif ($request_method === 'POST') {
             include 'api/habits/create.php';
+        } elseif ($request_method === 'DELETE') {
+            include 'api/habits/delete.php';
         }
         break;
     
@@ -34,6 +36,18 @@ switch ($path) {
     case '/api/habits/stats':
         if ($request_method === 'GET') {
             include 'api/habits/stats.php';
+        }
+        break;
+    
+    case '/api/habits/reset':
+        if ($request_method === 'POST') {
+            include 'api/habits/reset.php';
+        }
+        break;
+    
+    case '/api/habits/manage':
+        if ($request_method === 'POST') {
+            include 'api/habits/manage.php';
         }
         break;
     

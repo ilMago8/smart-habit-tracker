@@ -3,68 +3,90 @@ import React, { createContext, useState, useContext, useEffect, useCallback } fr
 // Create authentication context
 const AuthContext = createContext(null);
 
-// Mock function that simulates backend login
-const mockAuthenticate = async (email, password) => {
-  // Simulate API call with slight delay
-  await new Promise(resolve => setTimeout(resolve, 800));
-  
-  // Basic data validation
-  if (!email || !password) {
-    return { 
-      success: false, 
-      message: 'Email and password are required.' 
+// API base URL - adjust this based on your backend setup
+const API_BASE_URL = 'http://localhost:8000/api';
+
+// Function to authenticate user via backend API
+const authenticate = async (email, password) => {
+  try {
+    console.log('Attempting to authenticate user with URL:', `${API_BASE_URL}/auth/login.php`);
+    const response = await fetch(`${API_BASE_URL}/auth/login.php`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password })
+    });
+    
+    const result = await response.json();
+    
+    if (response.ok && result.success) {
+      return {
+        success: true,
+        user: result.user,
+        token: result.token
+      };
+    } else {
+      return {
+        success: false,
+        message: result.error || 'Login failed'
+      };
+    }
+  } catch (error) {
+    console.error('Login error:', error);
+    // Check if it's a network error
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      return {
+        success: false,
+        message: 'Cannot connect to server. Please make sure the backend is running on http://localhost:8000'
+      };
+    }
+    return {
+      success: false,
+      message: 'Network error. Please check your connection.'
     };
   }
-  
-  if (password.length < 6) {
-    return { 
-      success: false, 
-      message: 'Password must contain at least 6 characters.' 
+};
+
+// Function to register user via backend API
+const registerUser = async (name, email, password, bio = '', goals = '') => {
+  try {
+    console.log('Attempting to register user with URL:', `${API_BASE_URL}/auth/register.php`);
+    const response = await fetch(`${API_BASE_URL}/auth/register.php`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email, password, bio, goals })
+    });
+    
+    const result = await response.json();
+    
+    if (response.ok && result.success) {
+      return {
+        success: true,
+        user: result.user
+      };
+    } else {
+      return {
+        success: false,
+        message: result.error || 'Registration failed'
+      };
+    }
+  } catch (error) {
+    console.error('Registration error:', error);
+    // Check if it's a network error
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      return {
+        success: false,
+        message: 'Cannot connect to server. Please make sure the backend is running on http://localhost:8000'
+      };
+    }
+    return {
+      success: false,
+      message: 'Network error. Please check your connection.'
     };
   }
-  
-  // Email format validation
-  if (!email.includes('@') || !email.includes('.')) {
-    return { 
-      success: false, 
-      message: 'Please enter a valid email address.' 
-    };
-  }
-  
-  // Simulate user database for credential checking
-  const mockUsers = JSON.parse(localStorage.getItem('smartHabitUsers') || '[]');
-  
-  // Search for user by email
-  const existingUser = mockUsers.find(user => user.email === email);
-  
-  if (!existingUser) {
-    return { 
-      success: false, 
-      message: 'No account found with this email. Please register first.' 
-    };
-  }
-  
-  // Check password
-  if (existingUser.password !== password) {
-    return { 
-      success: false, 
-      message: 'Incorrect password. Check your credentials and try again.' 
-    };
-  }
-  
-  // Login successful
-  return { 
-    success: true, 
-    user: {
-      id: existingUser.id,
-      name: existingUser.name,
-      email: existingUser.email,
-      bio: existingUser.bio || '',
-      goals: existingUser.goals || '',
-      createdAt: existingUser.createdAt
-    },
-    token: 'mock-jwt-token-' + Math.random().toString(36).substring(2)
-  };
 };
 
 export const AuthProvider = ({ children }) => {
@@ -77,13 +99,15 @@ export const AuthProvider = ({ children }) => {
     const checkLoggedIn = () => {
       try {
         const userData = localStorage.getItem('smartHabitUser');
-        if (userData) {
+        const userToken = localStorage.getItem('smartHabitToken');
+        if (userData && userToken) {
           setCurrentUser(JSON.parse(userData));
         }
       } catch (err) {
         console.error('Error retrieving user data:', err);
         // Clean storage in case of error
         localStorage.removeItem('smartHabitUser');
+        localStorage.removeItem('smartHabitToken');
       } finally {
         setLoading(false);
       }
@@ -98,11 +122,12 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     
     try {
-      const result = await mockAuthenticate(email, password);
+      const result = await authenticate(email, password);
       
       if (result.success) {
         setCurrentUser(result.user);
         localStorage.setItem('smartHabitUser', JSON.stringify(result.user));
+        localStorage.setItem('smartHabitToken', result.token);
         return { success: true };
       } else {
         setError(result.message);
@@ -118,69 +143,39 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Registration function (similar to login in this demo implementation)
+  // Registration function
   const register = useCallback(async (name, email, password) => {
     setLoading(true);
     setError(null);
     
     try {
+      // Basic validation (additional to backend validation)
       if (!name || name.length < 2) {
         setError('Name must contain at least 2 characters');
         return { success: false, message: 'Name must contain at least 2 characters' };
       }
       
-      // Simple email validation
       if (!email || !email.includes('@') || !email.includes('.')) {
         setError('Please enter a valid email address');
         return { success: false, message: 'Please enter a valid email address' };
       }
       
-      // Password validation
       if (!password || password.length < 6) {
         setError('Password must contain at least 6 characters');
         return { success: false, message: 'Password must contain at least 6 characters' };
       }
       
-      // Simulate API call with slight delay
-      await new Promise(resolve => setTimeout(resolve, 800));
+      const result = await registerUser(name, email, password);
       
-      // Check if user already exists
-      const mockUsers = JSON.parse(localStorage.getItem('smartHabitUsers') || '[]');
-      const existingUser = mockUsers.find(user => user.email === email);
-      
-      if (existingUser) {
-        setError('An account with this email already exists. Try logging in.');
-        return { success: false, message: 'An account with this email already exists. Try logging in.' };
+      if (result.success) {
+        setCurrentUser(result.user);
+        localStorage.setItem('smartHabitUser', JSON.stringify(result.user));
+        // Note: For registration, we'll need to auto-login or redirect to login
+        return { success: true };
+      } else {
+        setError(result.message);
+        return { success: false, message: result.message };
       }
-      
-      // Create new user
-      const newUser = {
-        id: Date.now(),
-        name,
-        email,
-        password, // In a real app, this would be hashed
-        bio: '',
-        goals: '',
-        createdAt: new Date().toISOString()
-      };
-      
-      // Save user to mock "database"
-      mockUsers.push(newUser);
-      localStorage.setItem('smartHabitUsers', JSON.stringify(mockUsers));
-      
-      // Save current user (without password)
-      const userForState = {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        bio: newUser.bio,
-        goals: newUser.goals,
-        createdAt: newUser.createdAt
-      };
-      
-      setCurrentUser(userForState);
-      localStorage.setItem('smartHabitUser', JSON.stringify(userForState));
-      return { success: true };
       
     } catch (err) {
       console.error('Error during registration:', err);
@@ -198,19 +193,31 @@ export const AuthProvider = ({ children }) => {
     setError(null);
     
     try {
-      // Simulate API call to update profile
-      await new Promise(resolve => setTimeout(resolve, 500));
+      if (!currentUser) {
+        throw new Error('No user logged in');
+      }
       
-      const updatedUser = {
-        ...currentUser,
-        ...updatedData,
-        updatedAt: new Date().toISOString()
-      };
+      const response = await fetch(`${API_BASE_URL}/auth/profile.php`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: currentUser.id,
+          ...updatedData
+        })
+      });
       
-      setCurrentUser(updatedUser);
-      localStorage.setItem('smartHabitUser', JSON.stringify(updatedUser));
+      const result = await response.json();
       
-      return { success: true };
+      if (response.ok && result.success) {
+        setCurrentUser(result.user);
+        localStorage.setItem('smartHabitUser', JSON.stringify(result.user));
+        return { success: true };
+      } else {
+        setError(result.error || 'Profile update failed');
+        return { success: false, message: result.error || 'Profile update failed' };
+      }
       
     } catch (err) {
       console.error('Error updating profile:', err);
@@ -226,6 +233,7 @@ export const AuthProvider = ({ children }) => {
   const logout = useCallback(() => {
     setCurrentUser(null);
     localStorage.removeItem('smartHabitUser');
+    localStorage.removeItem('smartHabitToken');
   }, []);
 
   const value = {

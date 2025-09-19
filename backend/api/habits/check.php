@@ -1,16 +1,48 @@
 <?php
-// POST /api/habits/check - Mark/remove daily check
+// Add CORS headers
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
+
+// POST /api/habits/check - Mark/remove daily check (user-specific)
+
+// Include database connection
+require_once '../../config/database.php';
+
 $input = json_decode(file_get_contents('php://input'), true);
 
-if (!isset($input['habit_id'])) {
+if (!$input) {
     http_response_code(400);
-    echo json_encode(['success' => false, 'error' => 'habit_id required']);
+    echo json_encode(['success' => false, 'error' => 'Invalid JSON input']);
+    exit;
+}
+
+if (!isset($input['habit_id']) || !isset($input['user_id'])) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'error' => 'habit_id and user_id are required']);
     exit;
 }
 
 try {
     $habitId = $input['habit_id'];
+    $userId = $input['user_id'];
     $checkDate = $input['date'] ?? date('Y-m-d');
+    
+    // Verify that the habit belongs to the user
+    $habitCheck = $pdo->prepare("SELECT id FROM habits WHERE id = ? AND user_id = ?");
+    $habitCheck->execute([$habitId, $userId]);
+    
+    if (!$habitCheck->fetch()) {
+        http_response_code(404);
+        echo json_encode(['success' => false, 'error' => 'Habit not found or does not belong to this user']);
+        exit;
+    }
     
     // Check if a check already exists for today
     $query = "SELECT id, completed FROM habit_checks WHERE habit_id = ? AND check_date = ?";
