@@ -51,12 +51,18 @@ try {
     $existingCheck = $stmt->fetch();
     
     if ($existingCheck) {
-        // Toggle status
-        $newStatus = $existingCheck['completed'] ? 0 : 1; // Convertire esplicitamente a 0 o 1
+        // Ensure we have a valid numeric value (0 or 1)
+        $currentStatus = (isset($existingCheck['completed']) && $existingCheck['completed'] == 1) ? 1 : 0;
+        $newStatus = ($currentStatus == 1) ? 0 : 1;
+        
+        // Debug info
+        error_log("Current status: " . var_export($currentStatus, true));
+        error_log("New status: " . var_export($newStatus, true));
+        
         $query = "UPDATE habit_checks SET completed = ? WHERE id = ?";
         $stmt = $pdo->prepare($query);
         $stmt->execute([$newStatus, $existingCheck['id']]);
-        $completed = (bool)$newStatus;
+        $completed = ($newStatus == 1);
     } else {
         // Create new check
         $query = "INSERT INTO habit_checks (habit_id, check_date, completed) VALUES (?, ?, 1)";
