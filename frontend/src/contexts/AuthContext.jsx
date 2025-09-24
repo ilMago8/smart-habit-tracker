@@ -4,7 +4,8 @@ import React, { createContext, useState, useContext, useEffect, useCallback } fr
 const AuthContext = createContext(null);
 
 // API base URL - adjust this based on your backend setup
-const API_BASE_URL = 'http://localhost:8000/api';
+// In production, Vercel redirects /api/* to the public server
+const API_BASE_URL = '/api';
 
 // Function to authenticate user via backend API
 const authenticate = async (email, password) => {

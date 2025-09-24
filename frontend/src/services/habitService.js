@@ -1,5 +1,6 @@
 // API service for habit-related operations
-const API_BASE_URL = 'http://localhost:8000/api';
+// In production, Vercel redirects /api/* to the public server
+const API_BASE_URL = '/api';
 
 class HabitService {
   // Get all habits for a user
