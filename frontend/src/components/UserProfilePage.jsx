@@ -39,10 +39,12 @@ const UserProfilePage = ({ habits }) => {
 
   const handleEditToggle = async () => {
     if (isEditing) {
-      // Save changes
+      // Save changes (escludi l'email per impedire la modifica)
       setIsLoading(true);
       try {
-        const result = await updateProfile(editForm);
+        // Crea una copia dell'oggetto editForm senza la proprietà email
+        const { email, ...dataToUpdate } = editForm;
+        const result = await updateProfile(dataToUpdate);
         if (result.success) {
           setIsEditing(false);
         } else {
@@ -115,17 +117,8 @@ const UserProfilePage = ({ habits }) => {
             <h2 className="profile-name">{currentUser?.name}</h2>
           )}
           
-          {isEditing ? (
-            <input
-              type="email"
-              value={editForm.email}
-              onChange={(e) => handleInputChange('email', e.target.value)}
-              className="profile-email-edit"
-              placeholder="Your email"
-            />
-          ) : (
-            <p className="profile-email">{currentUser?.email}</p>
-          )}
+          {/* L'email non è modificabile */}
+          <p className="profile-email">{currentUser?.email}</p>
           
           <p className="join-date">Member since {joinDate}</p>
         </div>
