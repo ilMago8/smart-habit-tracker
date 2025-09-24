@@ -39,8 +39,8 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
                           week_completion >= 30 ? 'average' : 'needs-attention';
 
   const buttonText = today_completed ? 
-    { label: 'Completed today' } : 
-    { label: 'Mark as done' };
+    { label: 'Completed ✓', action: 'Click to undo' } : 
+    { label: 'Mark as done', action: 'Click to complete' };
 
   return (
     <article 
@@ -104,6 +104,7 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
           onKeyDown={handleKeyPress}
           aria-pressed={today_completed}
           aria-label={`${buttonText.label} for ${name}`}
+          title={buttonText.action}
         >
           <span className="btn-text">
             {buttonText.label}
