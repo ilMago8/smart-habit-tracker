@@ -1,6 +1,6 @@
 -- Smart Habit Tracker - Database Schema
 -- Version: 1.0
--- Compatibility: MySQL 8.0+
+-- Compatibility: MySQL 8.0+SELECT User, Host FROM mysql.user WHERE User = 'habituser';systemctl restart apache2
 
 -- ====================================
 -- DATABASE SETUP
