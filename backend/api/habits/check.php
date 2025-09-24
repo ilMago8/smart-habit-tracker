@@ -52,11 +52,11 @@ try {
     
     if ($existingCheck) {
         // Toggle status
-        $newStatus = !$existingCheck['completed'];
+        $newStatus = $existingCheck['completed'] ? 0 : 1; // Convertire esplicitamente a 0 o 1
         $query = "UPDATE habit_checks SET completed = ? WHERE id = ?";
         $stmt = $pdo->prepare($query);
         $stmt->execute([$newStatus, $existingCheck['id']]);
-        $completed = $newStatus;
+        $completed = (bool)$newStatus;
     } else {
         // Create new check
         $query = "INSERT INTO habit_checks (habit_id, check_date, completed) VALUES (?, ?, 1)";
