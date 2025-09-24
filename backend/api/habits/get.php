@@ -44,7 +44,7 @@ try {
             h.created_at,
             COUNT(hc.id) as total_checks,
             COUNT(CASE WHEN hc.check_date >= CURDATE() - INTERVAL 7 DAY THEN 1 END) as week_checks,
-            (SELECT COUNT(*) FROM habit_checks WHERE habit_id = h.id AND check_date = CURDATE()) as today_completed
+            COALESCE((SELECT completed FROM habit_checks WHERE habit_id = h.id AND check_date = CURDATE() LIMIT 1), 0) as today_completed
         FROM habits h
         LEFT JOIN habit_checks hc ON h.id = hc.habit_id AND hc.completed = 1
         WHERE h.user_id = ? AND h.is_active = 1
