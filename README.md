@@ -13,27 +13,42 @@
 
 ✨ **The app is live and running!** → [smart-habit-tracker.vercel.app](https://smart-habit-tracker.vercel.app)
 
+*Complete full-stack application with user authentication and real-time data persistence*
+
 ---
 
 ## 🎯 Key Features
+
+### 🔐 User Authentication
+- **Secure registration** with email validation
+- **Login/logout** with session management  
+- **User profiles** with editable bio and goals
+- **Password encryption** with secure hashing
+- **Multi-user support** with data isolation
 
 ### 📊 Interactive Dashboard
 - **Habit visualization** with colorful and animated cards
 - **Progress bars** showing weekly completion  
 - **Daily counter** of completed habits
 - **Responsive design** optimized for mobile and desktop
+- **Real-time updates** with database synchronization
 
 ### ⚡ Habit Management
 - **Quick creation** with intuitive form and validation
 - **Complete customization**: 12 icons + 10 predefined colors
 - **Flexible goals**: from 1 to 7 days per week
 - **Visual states** for immediate feedback
+- **Toggle completion** - mark/unmark habits as done
+- **Delete habits** with confirmation
+- **Reset progress** functionality
 
 ### 📈 Advanced Statistics  
 - **Dedicated dashboard** with detailed metrics
 - **Graphic visualizations** with colored progress bars
 - **Real-time completion percentages**
 - **Dynamic motivational messages** based on progress
+- **Weekly tracking** and completion rates
+- **Personal insights** and habit analytics
 
 ### 🎨 Modern UI/UX
 - **Consistent design system** with CSS custom properties
@@ -50,6 +65,31 @@
 - **Vite 5.4** - Lightning-fast build tool with HMR
 - **Modern CSS3** - Custom properties, Container Queries
 - **ESLint + Prettier** - Automatic linting and formatting
+
+### Backend
+- **PHP 8+** - Modern server-side scripting
+- **MySQL 8** - Robust relational database
+- **REST API** - Complete CRUD operations
+- **JWT-ready** - Token-based authentication system
+- **CORS enabled** - Cross-origin resource sharing
+
+### Database
+- **MySQL schema** - Optimized with indexes
+- **Foreign key constraints** - Data integrity
+- **Multi-user architecture** - Secure data isolation
+- **Prepared statements** - SQL injection protection
+
+### Security
+- **Password hashing** - Bcrypt encryption
+- **Input validation** - Server and client-side
+- **SQL injection protection** - Prepared statements
+- **XSS prevention** - Content sanitization
+
+### Deployment
+- **Vercel** - Frontend hosting with API rewrites
+- **IONOS VPS** - Backend PHP server deployment
+- **Apache** - Web server configuration
+- **Environment variables** - Secure configuration
 
 ### Performance & Optimizations
 - **Code Splitting** - Optimized bundle with lazy loading  
@@ -70,8 +110,10 @@
 - **Node.js** 18+ 
 - **npm** 8+ or **yarn** 1.22+
 - **Git** 2.30+
+- **PHP** 8+ (for local backend development)
+- **MySQL** 8+ (for local backend development)
 
-### Installation
+### Frontend Only (Demo Mode)
 ```bash
 # Clone the repository
 git clone https://github.com/ilMago8/smart-habit-tracker.git
@@ -85,7 +127,21 @@ npm install
 npm run dev
 ```
 
+### Full-Stack Development
+```bash
+# Frontend setup
+cd frontend && npm install && npm run dev
+
+# Backend setup (in a new terminal)
+cd backend
+php -S localhost:8000
+
+# Database setup
+mysql -u root -p < ../database/schema.sql
+```
+
 🎉 **App available at:** http://localhost:3000
+🔗 **API available at:** http://localhost:8000
 
 ### Available Scripts
 ```bash
@@ -101,16 +157,23 @@ npm run lint     # Code check
 
 ```
 smart-habit-tracker/
-├── frontend/           # React app
+├── frontend/           # React app (Deployed on Vercel)
 │   ├── src/
 │   │   ├── components/    # Reusable components
-│   │   ├── pages/         # Main pages
-│   │   ├── styles/        # CSS and design system
-│   │   └── utils/         # Utilities and helpers
+│   │   ├── contexts/      # React contexts (Auth, etc.)
+│   │   ├── pages/         # Main pages (Dashboard, Auth)
+│   │   ├── services/      # API service layer
+│   │   └── styles/        # CSS and design system
 │   ├── public/           # Static assets
 │   └── dist/            # Build output
-├── backend/             # PHP API (ready for future)
-├── database/            # MySQL schema
+├── backend/             # PHP API (Deployed on IONOS VPS)
+│   ├── api/
+│   │   ├── auth/         # Authentication endpoints
+│   │   └── habits/       # Habit management endpoints
+│   ├── config/          # Database configuration
+│   └── index.php        # API router
+├── database/            # MySQL schema and migrations
+│   └── schema.sql       # Database structure
 └── docs/               # Documentation
 ```
 
@@ -182,29 +245,65 @@ smart-habit-tracker/
 
 ## 🗺️ Roadmap
 
-### 🎯 V1.1 - UX Improvements (In Progress)
+### ✅ V2.0 - Backend Integration (COMPLETED!)
+- [x] **MySQL database** for real persistence
+- [x] **REST API** with secure authentication
+- [x] **Multi-user** with personal profiles
+- [x] **User registration** and login system
+- [x] **Cloud deployment** on production servers
+- [x] **Data security** with password encryption
+- [x] **Habit toggle** functionality
+- [x] **Real-time statistics** and analytics
+
+### 🎯 V2.1 - UX Improvements (In Progress)
 - [ ] **Dark mode** toggle with persistence
 - [ ] **Streak tracking** for consecutive series  
 - [ ] **Predefined habit templates**
 - [ ] **Data export** in CSV/JSON
+- [ ] **Improved mobile** responsive design
+- [ ] **Loading states** and better UX feedback
 
-### 🎯 V2.0 - Backend Integration
-- [ ] **MySQL database** for real persistence
-- [ ] **REST API** with JWT authentication
-- [ ] **Multi-user** with personal profiles
-- [ ] **Cloud synchronization** cross-device
-
-### 🎯 V2.1 - Advanced Features
+### 🎯 V3.0 - Advanced Features
 - [ ] **Push notifications** for reminders
 - [ ] **Habit insights** with advanced analytics  
 - [ ] **Goal setting** with long-term objectives
 - [ ] **Integration** with Google Calendar
+- [ ] **Habit categories** and tagging system
+- [ ] **Progress charts** and visual analytics
+- [ ] **Integration** with Google Calendar
 
-### 🎯 V3.0 - Social Features
+### 🎯 V4.0 - Social Features
 - [ ] **Progress sharing** on social media
 - [ ] **Challenges** between friends
 - [ ] **Weekly leaderboards**
 - [ ] **Achievement system** with badges
+
+---
+
+## 📋 API Documentation
+
+### Authentication Endpoints
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Authenticate user  
+- `GET /api/auth/profile?user_id={id}` - Get user profile
+- `PUT /api/auth/profile` - Update user profile
+
+### Habit Management Endpoints  
+- `GET /api/habits/get.php?user_id={id}` - Get user habits
+- `POST /api/habits/create.php` - Create new habit
+- `POST /api/habits/check.php` - Toggle habit completion
+- `POST /api/habits/manage.php` - Delete habit or reset progress
+- `GET /api/habits/stats.php?user_id={id}` - Get habit statistics
+
+### Request/Response Format
+All endpoints use JSON format with standardized response structure:
+```json
+{
+  "success": true/false,
+  "data": {...},
+  "error": "error message if applicable"
+}
+```
 
 ---
 
