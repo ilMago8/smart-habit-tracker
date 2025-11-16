@@ -2,7 +2,7 @@
 
 **A modern application for tracking daily habits with a colorful and intuitive React interface.**
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=for-the-badge&logo=vercel)](https://smart-habit-tracker.vercel.app)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=for-the-badge&logo=vercel)](https://smart-habit-tracker-orpin.vercel.app)
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/ilMago8/smart-habit-tracker)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
@@ -11,7 +11,7 @@
 
 ## 🚀 Live Demo
 
-✨ **The app is live and running!** → [smart-habit-tracker.vercel.app](https://smart-habit-tracker.vercel.app)
+✨ **The app is live and running!** → [smart-habit-tracker-orpin.vercel.app](https://smart-habit-tracker-orpin.vercel.app)
 
 *Complete full-stack application with user authentication and real-time data persistence*
 
@@ -475,8 +475,7 @@ See the [LICENSE](LICENSE) file for all details.
 
 **ilMago8**
 - GitHub: [@ilMago8](https://github.com/ilMago8)
-- LinkedIn: [LinkedIn Profile](#)
-- Twitter: [@ilMago8](#)
+- LinkedIn: [Manuel Morlin](https://www.linkedin.com/in/manuel-morlin-732b83349/)
 
 ---
 
