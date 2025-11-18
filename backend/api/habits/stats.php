@@ -32,6 +32,12 @@ try {
         exit;
     }
     
+    // Calculate Monday and Sunday of the current week
+    // DAYOFWEEK returns 1=Sunday, 2=Monday, ..., 7=Saturday
+    // We want Monday (2) as the first day
+    $weekStart = "DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY)";
+    $weekEnd = "DATE_ADD(DATE_SUB(CURDATE(), INTERVAL WEEKDAY(CURDATE()) DAY), INTERVAL 6 DAY)";
+    
     $query = "
         SELECT 
             h.id,
@@ -47,7 +53,8 @@ try {
             ) as daily_checks
         FROM habits h
         LEFT JOIN habit_checks hc ON h.id = hc.habit_id 
-            AND hc.check_date >= CURDATE() - INTERVAL 7 DAY
+            AND hc.check_date >= $weekStart
+            AND hc.check_date <= $weekEnd
             AND hc.completed = 1
         WHERE h.user_id = ? AND h.is_active = 1
         GROUP BY h.id
@@ -63,6 +70,12 @@ try {
     $avgCompletion = $totalHabits > 0 ? 
         array_sum(array_column($stats, 'completion_percentage')) / $totalHabits : 0;
     
+    // Calculate Monday and Sunday of the current week for the response
+    $currentDayOfWeek = date('N'); // 1 (Monday) to 7 (Sunday)
+    $daysToMonday = $currentDayOfWeek - 1;
+    $weekStartDate = date('Y-m-d', strtotime("-$daysToMonday days"));
+    $weekEndDate = date('Y-m-d', strtotime("-$daysToMonday days +6 days"));
+    
     echo json_encode([
         'success' => true, 
         'data' => [
@@ -70,8 +83,8 @@ try {
             'summary' => [
                 'total_habits' => $totalHabits,
                 'average_completion' => round($avgCompletion),
-                'week_start' => date('Y-m-d', strtotime('-6 days')),
-                'week_end' => date('Y-m-d')
+                'week_start' => $weekStartDate,
+                'week_end' => $weekEndDate
             ]
         ]
     ]);

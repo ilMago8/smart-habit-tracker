@@ -8,16 +8,35 @@ const StatsPanel = memo(({ habits }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Helper function to get Monday and Sunday of current week
+  const getWeekRange = () => {
+    const now = new Date();
+    const dayOfWeek = now.getDay(); // 0 (Sunday) to 6 (Saturday)
+    const daysToMonday = dayOfWeek === 0 ? 6 : dayOfWeek - 1; // If Sunday, go back 6 days
+    
+    const monday = new Date(now);
+    monday.setDate(now.getDate() - daysToMonday);
+    
+    const sunday = new Date(monday);
+    sunday.setDate(monday.getDate() + 6);
+    
+    return {
+      week_start: monday.toISOString().split('T')[0],
+      week_end: sunday.toISOString().split('T')[0]
+    };
+  };
+
   // Memoized calculations to avoid unnecessary recalculations
   const statsData = useMemo(() => {
+    const weekRange = getWeekRange();
+    
     if (!habits || habits.length === 0) {
       return {
         habits: [],
         summary: {
           total_habits: 0,
           average_completion: 0,
-          week_start: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-          week_end: new Date().toISOString().split('T')[0]
+          ...weekRange
         }
       };
     }
@@ -38,8 +57,7 @@ const StatsPanel = memo(({ habits }) => {
         total_habits: habits.length,
         average_completion: averageCompletion,
         successful_habits: habits.filter(h => (h.week_completion || 0) >= 80).length,
-        week_start: new Date(Date.now() - 6 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-        week_end: new Date().toISOString().split('T')[0]
+        ...weekRange
       }
     };
   }, [habits]);
