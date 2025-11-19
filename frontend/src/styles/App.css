@@ -1696,8 +1696,8 @@ body.dark-mode .icon-option:hover svg {
 }
 
 .submit-btn:hover {
-  background: var(--primary-hover);
-  border-color: var(--primary-hover);
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
   box-shadow: var(--shadow-md);
 }
 
