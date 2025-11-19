@@ -90,7 +90,7 @@
 }
 
 .edit-profile-btn:hover {
-  background-color: var(--primary-hover);
+  background-color: var(--primary-dark);
 }
 
 .edit-profile-btn.save {
@@ -98,7 +98,7 @@
 }
 
 .edit-profile-btn.save:hover {
-  background-color: var(--success-hover);
+  background-color: var(--success-dark);
 }
 
 .logout-btn {
@@ -113,7 +113,7 @@
 }
 
 .logout-btn:hover {
-  background-color: var(--danger-hover);
+  background-color: var(--danger-dark);
 }
 
 .profile-content {
