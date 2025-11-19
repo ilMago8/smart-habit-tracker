@@ -128,6 +128,62 @@
   --text-inverse: #0f172a;
   
   /* Dark Border colors */
+
+/* Toasts */
+.toast-container {
+  position: fixed;
+  bottom: var(--space-4);
+  right: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  z-index: 3000;
+  max-width: 340px;
+}
+
+.toast {
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 16px -4px rgba(0,0,0,0.4), 0 0 0 1px var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: 0.95rem;
+  line-height: 1.3;
+  animation: toastIn 240ms cubic-bezier(.33,.98,.52,.99);
+  position: relative;
+  overflow: hidden;
+}
+
+.toast-info { border-left: 4px solid var(--color-accent); }
+.toast-success { border-left: 4px solid #3cb371; }
+.toast-error { border-left: 4px solid var(--color-danger); }
+
+.toast-message { flex: 1; }
+
+.toast-close {
+  background: transparent;
+  border: none;
+  color: var(--color-text-dim);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0 var(--space-1);
+  line-height: 1;
+  transition: color .15s ease;
+}
+.toast-close:hover { color: var(--color-text); }
+
+@keyframes toastIn {
+  from { transform: translateY(8px) scale(.96); opacity: 0; }
+  to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes toastOut {
+  from { transform: translateY(0) scale(1); opacity: 1; }
+  to { transform: translateY(-4px) scale(.96); opacity: 0; }
+}
   --border-color: #334155;
   --border-hover: #475569;
   
@@ -211,15 +267,18 @@ body {
 
 /* Optimized Dashboard Layout */
 .dashboard {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
-  padding: var(--spacing-lg);
+  padding: var(--spacing-lg) var(--space-8) var(--space-6);
   container-type: inline-size;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Modern Flat Header */
 .dashboard-header {
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-6);
   display: flex;
   flex-direction: column;
 }
@@ -229,7 +288,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-6) 0;
+  padding: var(--space-4) 0 var(--space-3);
 }
 
 .app-title {
@@ -245,7 +304,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-5) 0;
+  padding: var(--space-4) 0 var(--space-2);
 }
 
 .date {
@@ -589,10 +648,10 @@ body,
 .dashboard-tabs {
   display: flex;
   justify-content: center;
-  margin-bottom: var(--space-8);
+  margin-bottom: var(--space-6);
   gap: var(--space-2);
   flex-wrap: wrap;
-  padding: var(--space-2);
+  padding: var(--space-1);
 }
 
 .tab {
@@ -631,6 +690,9 @@ body,
 /* Content */
 .dashboard-content {
   padding: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .section-header {
@@ -697,6 +759,24 @@ body,
   transform: translateY(-1px);
 }
 
+.reset-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.reset-btn.loading::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
+  border: 2px solid rgba(255,255,255,0.6);
+  border-top-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+}
+
 .reset-btn:active {
   transform: translateY(0);
 }
@@ -704,8 +784,10 @@ body,
 /* Habits Grid */
 .habits-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 28px;
+  align-items: stretch;
+  padding-bottom: var(--space-2);
 }
 
 .empty-state {
@@ -1075,6 +1157,92 @@ body,
 .dark-mode .close-btn:hover {
   color: var(--text-primary);
   background: var(--gray-200);
+}
+
+/* Dark mode modal refinements */
+body.dark-mode .add-habit-overlay,
+body.dark-mode .edit-habit-overlay {
+  background: rgba(0,0,0,0.65);
+  backdrop-filter: blur(4px);
+}
+
+body.dark-mode .add-habit-form,
+body.dark-mode .edit-habit-modal {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 12px 48px -12px rgba(0,0,0,0.6);
+}
+
+body.dark-mode .add-habit-form .form-header h3,
+body.dark-mode .edit-habit-modal .edit-habit-header h2 {
+  color: var(--color-text);
+}
+
+body.dark-mode .add-habit-form label,
+body.dark-mode .edit-habit-modal label,
+body.dark-mode .add-habit-form legend,
+body.dark-mode .edit-habit-modal legend {
+  color: var(--color-text-dim);
+}
+
+body.dark-mode .add-habit-form input[type="text"],
+body.dark-mode .add-habit-form textarea,
+body.dark-mode .add-habit-form select,
+body.dark-mode .edit-habit-modal input[type="text"],
+body.dark-mode .edit-habit-modal textarea,
+body.dark-mode .edit-habit-modal select {
+  background: var(--color-surface-alt);
+  border-color: var(--color-border);
+  color: var(--color-text);
+}
+
+body.dark-mode .add-habit-form input[type="text"]::placeholder,
+body.dark-mode .add-habit-form textarea::placeholder,
+body.dark-mode .edit-habit-modal input[type="text"]::placeholder,
+body.dark-mode .edit-habit-modal textarea::placeholder {
+  color: var(--color-text-dim);
+}
+
+body.dark-mode .add-habit-form input[type="text"]:focus,
+body.dark-mode .add-habit-form textarea:focus,
+body.dark-mode .add-habit-form select:focus,
+body.dark-mode .edit-habit-modal input[type="text"]:focus,
+body.dark-mode .edit-habit-modal textarea:focus,
+body.dark-mode .edit-habit-modal select:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(79,139,255,0.25);
+}
+
+body.dark-mode .color-option.selected {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+body.dark-mode .icon-option.selected {
+  background: var(--color-surface-alt);
+  box-shadow: 0 0 0 2px var(--color-accent);
+}
+
+body.dark-mode .cancel-btn {
+  background: var(--color-surface-alt);
+  color: var(--color-text-dim);
+  border: 1px solid var(--color-border);
+}
+body.dark-mode .cancel-btn:hover:not(:disabled) {
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+body.dark-mode .submit-btn {
+  background: var(--color-accent);
+  color: #fff;
+}
+body.dark-mode .submit-btn:hover:not(:disabled) {
+  background: var(--color-accent-hover);
+}
+
+body.dark-mode .error-message {
+  color: var(--color-danger);
 }
 
 /* Form inputs */

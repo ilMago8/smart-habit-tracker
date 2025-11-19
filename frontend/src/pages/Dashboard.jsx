@@ -6,7 +6,7 @@ import StatsPanel from '../components/StatsPanel';
 import UserProfile from '../components/UserProfile';
 import UserProfilePage from '../components/UserProfilePage';
 
-const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onUpdateHabit, onDeleteHabit, onResetProgress }) => {
+const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onUpdateHabit, onDeleteHabit, onResetProgress, isResetting = false }) => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingHabit, setEditingHabit] = useState(null);
   const [activeTab, setActiveTab] = useState('habits');
@@ -186,12 +186,13 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onUpdateHabit, onDe
                     </button>
                     {onResetProgress && (
                       <button 
-                        className="reset-btn"
+                        className={`reset-btn ${isResetting ? 'loading' : ''}`}
                         onClick={onResetProgress}
                         aria-label="Reset all progress"
                         title="Reset all progress"
+                        disabled={isResetting}
                       >
-                        Reset
+                        {isResetting ? 'Resetting…' : 'Reset'}
                       </button>
                     )}
                   </>

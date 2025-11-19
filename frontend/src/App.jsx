@@ -11,6 +11,7 @@ function App() {
   const { currentUser } = useAuth();
   const [habits, setHabits] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [resetting, setResetting] = useState(false);
 
   // Memoized fetch function
   const fetchHabits = useCallback(async () => {
@@ -153,17 +154,25 @@ function App() {
   // Function to reset all progress (useful for demo)
   const resetAllProgress = useCallback(async () => {
     if (!currentUser) return;
-    
     if (window.confirm('Are you sure you want to reset all progress? This action cannot be undone.')) {
       try {
+        setResetting(true);
+        // Optimistic local reset for immediate UI feedback
+        setHabits(prev => prev.map(h => ({
+          ...h,
+          today_completed: false,
+          week_checks: 0,
+          week_completion: 0
+        })));
         await HabitService.resetProgress(currentUser.id);
-        
-        // Refresh habits to show updated progress
         await fetchHabits();
-        
       } catch (error) {
         console.error('Error resetting progress:', error);
         alert('Failed to reset progress. Please try again.');
+        // Revert optimistic change by refetching
+        fetchHabits();
+      } finally {
+        setResetting(false);
       }
     }
   }, [currentUser, fetchHabits]);
@@ -193,6 +202,7 @@ function App() {
         onUpdateHabit={updateHabit}
         onDeleteHabit={deleteHabit}
         onResetProgress={resetAllProgress}
+        isResetting={resetting}
       />
     </div>
   );
