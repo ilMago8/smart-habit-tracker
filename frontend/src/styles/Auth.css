@@ -20,10 +20,6 @@
   flex-direction: column;
   width: 100%;
   max-width: 420px;
-  background-color: var(--card-bg);
-  border-radius: var(--border-radius-lg);
-  box-shadow: var(--card-shadow);
-  overflow: hidden;
   padding: var(--spacing-xl);
 }
 

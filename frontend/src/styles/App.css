@@ -212,14 +212,9 @@ body {
 
 /* Modern Flat Header */
 .dashboard-header {
-  background-color: white;
   margin-bottom: var(--space-8);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-sm);
-  overflow: hidden;
   display: flex;
   flex-direction: column;
-  border: 2px solid var(--border-color);
 }
 
 /* Top bar with title and user profile */
@@ -227,9 +222,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-6) var(--space-8);
-  background-color: var(--gray-50);
-  border-bottom: 2px solid var(--border-color);
+  padding: var(--space-6) 0;
 }
 
 .app-title {
@@ -245,7 +238,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: var(--space-5) var(--space-8);
+  padding: var(--space-5) 0;
 }
 
 .date {
@@ -449,11 +442,7 @@ body,
   margin-bottom: var(--space-8);
   gap: var(--space-2);
   flex-wrap: wrap;
-  background: white;
   padding: var(--space-2);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
-  border: 2px solid var(--border-color);
 }
 
 .tab {
@@ -491,10 +480,7 @@ body,
 
 /* Content */
 .dashboard-content {
-  background: white;
-  border-radius: var(--border-radius);
-  padding: 30px;
-  box-shadow: var(--card-shadow);
+  padding: 0;
 }
 
 .section-header {
