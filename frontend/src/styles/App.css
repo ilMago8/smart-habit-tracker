@@ -1307,10 +1307,15 @@ body.dark-mode .edit-habit-modal .edit-habit-header h2 {
 }
 
 body.dark-mode .add-habit-form label,
-body.dark-mode .edit-habit-modal label,
+body.dark-mode .edit-habit-modal label {
+  color: var(--text-secondary);
+}
+
+/* Color and Icon legends must be white in dark mode */
 body.dark-mode .add-habit-form legend,
 body.dark-mode .edit-habit-modal legend {
-  color: var(--text-secondary);
+  color: #ffffff;
+  font-weight: var(--font-weight-semibold);
 }
 
 body.dark-mode .add-habit-form input[type="text"],
@@ -1376,9 +1381,11 @@ body.dark-mode .error-message {
 /* Improve Icon section readability in dark mode */
 body.dark-mode .icon-selector {
   background: var(--gray-100);
+  border-color: var(--border-color);
 }
 body.dark-mode .icon-category-label {
-  color: var(--text-secondary);
+  color: #ffffff;
+  font-weight: var(--font-weight-medium);
 }
 body.dark-mode .icon-option svg {
   color: var(--gray-300);
@@ -1574,6 +1581,15 @@ body.dark-mode .icon-option:hover svg {
 .dark-mode .color-selector {
   background: var(--gray-100);
   border-color: var(--border-color);
+}
+
+/* Ensure icon options are well visible with better contrast */
+.dark-mode .icon-option {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.dark-mode .icon-option:hover {
+  border-color: var(--primary-color);
 }
 
 .icon-category {
