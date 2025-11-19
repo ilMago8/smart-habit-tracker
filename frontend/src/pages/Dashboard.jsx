@@ -106,7 +106,7 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onUpdateHabit, onDe
             </span>
             Smart Habit Tracker
           </h1>
-          <UserProfile />
+          <UserProfile onGoProfile={() => setActiveTab('profile')} />
         </div>
         
         <div className="dashboard-info">

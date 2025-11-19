@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
-const UserProfile = () => {
+const UserProfile = ({ onGoProfile }) => {
   const { currentUser, logout } = useAuth();
   const [showTooltip, setShowTooltip] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
@@ -36,8 +36,10 @@ const UserProfile = () => {
     }
   };
   
-  const toggleTooltip = () => {
-    setShowTooltip(!showTooltip);
+  const handleGoProfile = () => {
+    if (onGoProfile) {
+      onGoProfile();
+    }
   };
   
   const toggleDarkMode = (e) => {
@@ -74,8 +76,12 @@ const UserProfile = () => {
       
       <div 
         className="user-profile" 
-        onClick={toggleTooltip}
-        title="Click to manage your account"
+        onClick={handleGoProfile}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleGoProfile(); } }}
+        role="button"
+        tabIndex={0}
+        title="Open user profile"
+        aria-label="Open user profile"
       >
         <div className="user-avatar">
           {getInitial()}
