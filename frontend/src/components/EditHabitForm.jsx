@@ -18,7 +18,9 @@ const EditHabitForm = ({ habit, onSubmit, onCancel }) => {
     { value: 1, label: '1 time per week', description: 'Light goal' },
     { value: 2, label: '2 times per week', description: 'Gradual start' },
     { value: 3, label: '3 times per week', description: 'Moderate frequency' },
+    { value: 4, label: '4 times per week', description: 'Regular routine' },
     { value: 5, label: '5 times per week', description: 'Strong routine' },
+    { value: 6, label: '6 times per week', description: 'Almost daily' },
     { value: 7, label: 'Every day', description: 'Maximum commitment' }
   ];
 
