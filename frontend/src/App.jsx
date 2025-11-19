@@ -20,7 +20,7 @@ function App() {
   const [pendingHabit, setPendingHabit] = useState(null); // for single delete
   const { addToast } = useToast();
 
-  // Memoized fetch function
+  // Memoized fetch function - depends only on user ID to avoid refetch on profile updates
   const fetchHabits = useCallback(async () => {
     if (!currentUser) {
       setHabits([]);
@@ -44,7 +44,7 @@ function App() {
     } finally {
       setLoading(false);
     }
-  }, [currentUser]);
+  }, [currentUser?.id]);
 
   // Optimized with useCallback to prevent re-renders
   const toggleHabit = useCallback(async (habitId) => {
