@@ -743,8 +743,8 @@ body,
 
 .reset-btn {
   background: white;
-  color: var(--danger-color);
-  border: 2px solid var(--danger-color);
+  color: var(--warning-color);
+  border: 2px solid var(--warning-color);
   padding: var(--space-3) var(--space-5);
   border-radius: var(--radius-md);
   cursor: pointer;
@@ -754,8 +754,9 @@ body,
 }
 
 .reset-btn:hover {
-  background: var(--danger-color);
-  color: white;
+  background: var(--warning-color);
+  border-color: var(--warning-color);
+  color: #fff;
   transform: translateY(-1px);
 }
 
@@ -778,6 +779,49 @@ body,
 }
 
 .reset-btn:active {
+  transform: translateY(0);
+}
+
+/* Delete All Button (danger) */
+.delete-all-btn {
+  background: white;
+  color: var(--danger-dark);
+  border: 2px solid var(--danger-dark);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+}
+
+.delete-all-btn:hover {
+  background: var(--danger-dark);
+  border-color: var(--danger-dark);
+  color: #fff;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.delete-all-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.delete-all-btn.loading::after {
+  content: '';
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
+  border: 2px solid rgba(255,255,255,0.6);
+  border-top-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.8s linear infinite;
+}
+
+.delete-all-btn:active {
   transform: translateY(0);
 }
 
@@ -817,6 +861,72 @@ body.dark-mode .empty-icon {
   border: 2px solid var(--border-color);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
 }
+
+/* Confirm dialog */
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  backdrop-filter: blur(2px);
+}
+
+.confirm-modal {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: min(480px, 92vw);
+  padding: var(--space-6);
+}
+
+.confirm-title {
+  margin: 0 0 var(--space-2);
+  font-size: var(--font-size-xl);
+}
+
+.confirm-message {
+  margin: 0 0 var(--space-6);
+  color: var(--text-secondary);
+}
+
+.confirm-actions {
+  display: flex;
+  gap: var(--space-3);
+  justify-content: flex-end;
+}
+
+.confirm-btn {
+  background: var(--danger-color);
+  color: #fff;
+  border: 2px solid var(--danger-color);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  font-weight: var(--font-weight-semibold);
+}
+
+.confirm-btn:hover { 
+  background: var(--danger-dark);
+  border-color: var(--danger-dark);
+  transform: translateY(-1px);
+}
+
+.confirm-btn.loading { opacity: 0.8; cursor: progress; }
+
+/* Toasts (override and align to theme tokens) */
+.toast-container { position: fixed; bottom: var(--space-4); right: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); z-index: 3000; max-width: 340px; }
+.toast { background: var(--card-bg); color: var(--text-primary); padding: var(--space-3) var(--space-4); border-radius: var(--radius-md); box-shadow: var(--shadow-md); border: 1px solid var(--border-color); display: flex; align-items: center; gap: var(--space-3); font-size: .95rem; line-height: 1.3; }
+.toast-info { border-left: 4px solid var(--primary-color); }
+.toast-success { border-left: 4px solid var(--success-color); }
+.toast-error { border-left: 4px solid var(--danger-color); }
+.toast-close { background: transparent; border: none; color: var(--text-secondary); font-size: 1.1rem; cursor: pointer; padding: 0 var(--space-1); line-height: 1; }
+.toast-close:hover { color: var(--text-primary); }
 
 .empty-state h3 {
   font-size: 1.5rem;
@@ -1186,21 +1296,21 @@ body.dark-mode .edit-habit-overlay {
 
 body.dark-mode .add-habit-form,
 body.dark-mode .edit-habit-modal {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
   box-shadow: 0 12px 48px -12px rgba(0,0,0,0.6);
 }
 
 body.dark-mode .add-habit-form .form-header h3,
 body.dark-mode .edit-habit-modal .edit-habit-header h2 {
-  color: var(--color-text);
+  color: var(--text-primary);
 }
 
 body.dark-mode .add-habit-form label,
 body.dark-mode .edit-habit-modal label,
 body.dark-mode .add-habit-form legend,
 body.dark-mode .edit-habit-modal legend {
-  color: var(--color-text-dim);
+  color: var(--text-secondary);
 }
 
 body.dark-mode .add-habit-form input[type="text"],
@@ -1209,16 +1319,16 @@ body.dark-mode .add-habit-form select,
 body.dark-mode .edit-habit-modal input[type="text"],
 body.dark-mode .edit-habit-modal textarea,
 body.dark-mode .edit-habit-modal select {
-  background: var(--color-surface-alt);
-  border-color: var(--color-border);
-  color: var(--color-text);
+  background: var(--gray-100);
+  border-color: var(--border-color);
+  color: var(--text-primary);
 }
 
 body.dark-mode .add-habit-form input[type="text"]::placeholder,
 body.dark-mode .add-habit-form textarea::placeholder,
 body.dark-mode .edit-habit-modal input[type="text"]::placeholder,
 body.dark-mode .edit-habit-modal textarea::placeholder {
-  color: var(--color-text-dim);
+  color: var(--text-secondary);
 }
 
 body.dark-mode .add-habit-form input[type="text"]:focus,
@@ -1227,40 +1337,54 @@ body.dark-mode .add-habit-form select:focus,
 body.dark-mode .edit-habit-modal input[type="text"]:focus,
 body.dark-mode .edit-habit-modal textarea:focus,
 body.dark-mode .edit-habit-modal select:focus {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(79,139,255,0.25);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.25);
 }
 
 body.dark-mode .color-option.selected {
-  outline: 3px solid var(--color-accent);
+  outline: 3px solid var(--primary-color);
   outline-offset: 2px;
 }
 
 body.dark-mode .icon-option.selected {
-  background: var(--color-surface-alt);
-  box-shadow: 0 0 0 2px var(--color-accent);
+  background: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color);
 }
 
 body.dark-mode .cancel-btn {
-  background: var(--color-surface-alt);
-  color: var(--color-text-dim);
-  border: 1px solid var(--color-border);
+  background: var(--gray-100);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-color);
 }
 body.dark-mode .cancel-btn:hover:not(:disabled) {
-  color: var(--color-text);
-  background: var(--color-surface);
+  color: var(--text-primary);
+  background: var(--card-bg);
 }
 
 body.dark-mode .submit-btn {
-  background: var(--color-accent);
+  background: var(--primary-color);
   color: #fff;
 }
 body.dark-mode .submit-btn:hover:not(:disabled) {
-  background: var(--color-accent-hover);
+  background: var(--primary-dark);
 }
 
 body.dark-mode .error-message {
-  color: var(--color-danger);
+  color: var(--danger-color);
+}
+
+/* Improve Icon section readability in dark mode */
+body.dark-mode .icon-selector {
+  background: var(--gray-100);
+}
+body.dark-mode .icon-category-label {
+  color: var(--text-secondary);
+}
+body.dark-mode .icon-option svg {
+  color: var(--gray-300);
+}
+body.dark-mode .icon-option:hover svg {
+  color: var(--primary-light);
 }
 
 /* Form inputs */
@@ -1380,11 +1504,33 @@ body.dark-mode .error-message {
 .color-option.selected {
   border-color: var(--text-primary);
   box-shadow: var(--shadow-md);
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
+}
+
+.color-option.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--font-weight-bold);
+  font-size: 0.85rem;
+  box-shadow: var(--shadow-xs);
 }
 
 /* Dark mode specific adjustments */
 .dark-mode .color-option.selected {
   border-color: var(--gray-50);
+  outline-color: var(--primary-light);
 }
 
 .dark-mode .icon-selector {

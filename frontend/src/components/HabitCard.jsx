@@ -22,10 +22,10 @@ const HabitCard = memo(({ habit, onToggle, onDelete, onEdit }) => {
   const handleDelete = useCallback((e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (onDelete && window.confirm(`Are you sure you want to delete the habit "${name}"?`)) {
+    if (onDelete) {
       onDelete();
     }
-  }, [onDelete, name]);
+  }, [onDelete]);
 
   const handleEdit = useCallback((e) => {
     e.preventDefault();

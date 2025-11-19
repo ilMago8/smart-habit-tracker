@@ -1,8 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../contexts/ToastContext';
 
 const UserProfilePage = ({ habits }) => {
   const { currentUser, updateProfile } = useAuth();
+  const { addToast } = useToast();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [editForm, setEditForm] = useState({
@@ -47,12 +49,13 @@ const UserProfilePage = ({ habits }) => {
         const result = await updateProfile(dataToUpdate);
         if (result.success) {
           setIsEditing(false);
+          addToast('Profilo aggiornato con successo', { type: 'success' });
         } else {
-          alert('Error saving changes');
+          addToast('Errore nel salvataggio delle modifiche', { type: 'error' });
         }
       } catch (error) {
         console.error('Error saving:', error);
-        alert('Error saving changes');
+        addToast('Errore nel salvataggio del profilo', { type: 'error' });
       } finally {
         setIsLoading(false);
       }
@@ -77,6 +80,7 @@ const UserProfilePage = ({ habits }) => {
       goals: currentUser?.goals || ''
     });
     setIsEditing(false);
+    addToast('Modifiche annullate', { type: 'info' });
   };
 
   const handleInputChange = (field, value) => {

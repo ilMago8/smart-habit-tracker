@@ -190,9 +190,8 @@ export const AuthProvider = ({ children }) => {
 
   // Function to update user profile
   const updateProfile = useCallback(async (updatedData) => {
-    setLoading(true);
+    // Do not flip global loading when updating profile to avoid remounts
     setError(null);
-    
     try {
       if (!currentUser) {
         throw new Error('No user logged in');
@@ -219,14 +218,11 @@ export const AuthProvider = ({ children }) => {
         setError(result.error || 'Profile update failed');
         return { success: false, message: result.error || 'Profile update failed' };
       }
-      
     } catch (err) {
       console.error('Error updating profile:', err);
       const errorMsg = 'An error occurred while updating the profile.';
       setError(errorMsg);
       return { success: false, message: errorMsg };
-    } finally {
-      setLoading(false);
     }
   }, [currentUser]);
 

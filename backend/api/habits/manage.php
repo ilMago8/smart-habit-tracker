@@ -106,10 +106,23 @@ try {
                 'deleted_checks' => $deletedChecks
             ]);
             break;
+        
+        case 'delete_all':
+            // Delete all habits for the user (CASCADE will remove related habit_checks)
+            $stmt = $pdo->prepare("DELETE FROM habits WHERE user_id = ?");
+            $stmt->execute([$userId]);
+            
+            $deletedHabits = $stmt->rowCount();
+            echo json_encode([
+                'success' => true,
+                'message' => 'All habits deleted successfully',
+                'deleted_habits' => $deletedHabits
+            ]);
+            break;
             
         default:
             http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Invalid action. Supported actions: delete, reset']);
+            echo json_encode(['success' => false, 'error' => 'Invalid action. Supported actions: delete, reset, delete_all']);
             break;
     }
     

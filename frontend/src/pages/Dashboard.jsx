@@ -6,7 +6,7 @@ import StatsPanel from '../components/StatsPanel';
 import UserProfile from '../components/UserProfile';
 import UserProfilePage from '../components/UserProfilePage';
 
-const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onUpdateHabit, onDeleteHabit, onResetProgress, isResetting = false }) => {
+const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onUpdateHabit, onDeleteHabit, onResetProgress, onDeleteAllHabits, onLogout, isResetting = false, isDeletingAll = false }) => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingHabit, setEditingHabit] = useState(null);
   const [activeTab, setActiveTab] = useState('habits');
@@ -106,7 +106,7 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onUpdateHabit, onDe
             </span>
             Smart Habit Tracker
           </h1>
-          <UserProfile onGoProfile={() => setActiveTab('profile')} />
+          <UserProfile onGoProfile={() => setActiveTab('profile')} onLogout={onLogout} />
         </div>
         
         <div className="dashboard-info">
@@ -188,11 +188,33 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onUpdateHabit, onDe
                       <button 
                         className={`reset-btn ${isResetting ? 'loading' : ''}`}
                         onClick={onResetProgress}
-                        aria-label="Reset all progress"
-                        title="Reset all progress"
+                        aria-label="Azzera i progressi di tutte le abitudini (non elimina le abitudini)"
+                        title="Azzera i progressi di tutte le abitudini (non elimina le abitudini)"
                         disabled={isResetting}
                       >
-                        {isResetting ? 'Resetting…' : 'Reset'}
+                        {isResetting ? (
+                          'Azzero…'
+                        ) : (
+                          <>
+                            {/* refresh icon */}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{marginRight:8}}>
+                              <path d="M21 12a9 9 0 1 1-3-6.7"/>
+                              <polyline points="21 3 21 9 15 9"/>
+                            </svg>
+                            Azzera progressi
+                          </>
+                        )}
+                      </button>
+                    )}
+                    {onDeleteAllHabits && (
+                      <button
+                        className={`delete-all-btn ${isDeletingAll ? 'loading' : ''}`}
+                        onClick={onDeleteAllHabits}
+                        aria-label="Elimina tutte le attività"
+                        title="Elimina tutte le attività"
+                        disabled={isDeletingAll}
+                      >
+                        {isDeletingAll ? 'Elimino…' : 'Elimina tutte'}
                       </button>
                     )}
                   </>

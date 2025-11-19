@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { useToast } from '../contexts/ToastContext';
 
-const UserProfile = ({ onGoProfile }) => {
+const UserProfile = ({ onGoProfile, onLogout }) => {
   const { currentUser, logout } = useAuth();
+  const { addToast } = useToast();
   const [showTooltip, setShowTooltip] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     // Check localStorage or system preference
@@ -31,8 +33,11 @@ const UserProfile = ({ onGoProfile }) => {
   
   const handleLogout = (e) => {
     e.stopPropagation();
-    if (window.confirm('Are you sure you want to logout?')) {
+    if (onLogout) {
+      onLogout();
+    } else {
       logout();
+      addToast('Logout effettuato', { type: 'success' });
     }
   };
   
@@ -44,7 +49,9 @@ const UserProfile = ({ onGoProfile }) => {
   
   const toggleDarkMode = (e) => {
     e.stopPropagation();
-    setDarkMode(!darkMode);
+    const next = !darkMode;
+    setDarkMode(next);
+    addToast(next ? 'Modalità scura attivata' : 'Modalità chiara attivata', { type: 'info' });
   };
   
   return (

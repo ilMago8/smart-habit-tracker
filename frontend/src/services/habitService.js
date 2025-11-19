@@ -222,6 +222,37 @@ class HabitService {
       throw error;
     }
   }
+
+  // Delete all habits for a user
+  static async deleteAllHabits(userId) {
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/habits/manage.php`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          action: 'delete_all',
+          user_id: userId
+        })
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to delete all habits');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Error deleting all habits:', error);
+      throw error;
+    }
+  }
 }
 
 export default HabitService;
