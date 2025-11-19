@@ -1,12 +1,14 @@
 import React, { useState, useMemo, useCallback, memo } from 'react';
 import HabitCard from '../components/HabitCard';
 import AddHabitForm from '../components/AddHabitForm';
+import EditHabitForm from '../components/EditHabitForm';
 import StatsPanel from '../components/StatsPanel';
 import UserProfile from '../components/UserProfile';
 import UserProfilePage from '../components/UserProfilePage';
 
-const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onResetProgress }) => {
+const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onUpdateHabit, onDeleteHabit, onResetProgress }) => {
   const [showAddForm, setShowAddForm] = useState(false);
+  const [editingHabit, setEditingHabit] = useState(null);
   const [activeTab, setActiveTab] = useState('habits');
 
   // Memoized date formatting
@@ -42,6 +44,25 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
     setShowAddForm(false);
   }, [onAddHabit]);
 
+  const handleEditHabit = useCallback((habit) => {
+    setEditingHabit(habit);
+  }, []);
+
+  const handleUpdateHabit = useCallback(async (habitData) => {
+    if (!editingHabit) return;
+    
+    try {
+      await onUpdateHabit(editingHabit.id, habitData);
+      setEditingHabit(null);
+    } catch (error) {
+      throw error;
+    }
+  }, [editingHabit, onUpdateHabit]);
+
+  const handleCancelEdit = useCallback(() => {
+    setEditingHabit(null);
+  }, []);
+
   // Memoized empty state
   const emptyState = useMemo(() => (
     <div className="empty-state">
@@ -66,10 +87,11 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
         key={habit.id}
         habit={habit}
         onToggle={() => onToggleHabit(habit.id)}
+        onEdit={handleEditHabit}
         onDelete={onDeleteHabit ? () => onDeleteHabit(habit.id) : undefined}
       />
     ));
-  }, [habits, onToggleHabit, onDeleteHabit, emptyState]);
+  }, [habits, onToggleHabit, handleEditHabit, onDeleteHabit, emptyState]);
 
   return (
     <div className="dashboard">
@@ -157,6 +179,14 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onDeleteHabit, onRe
               <AddHabitForm 
                 onSubmit={handleAddHabit}
                 onCancel={handleCancelAddForm}
+              />
+            )}
+
+            {editingHabit && (
+              <EditHabitForm 
+                habit={editingHabit}
+                onSubmit={handleUpdateHabit}
+                onCancel={handleCancelEdit}
               />
             )}
 

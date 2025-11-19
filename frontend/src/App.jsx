@@ -109,6 +109,30 @@ function App() {
     }
   }, [currentUser]);
 
+  // Function to update a habit
+  const updateHabit = useCallback(async (habitId, habitData) => {
+    if (!currentUser) return;
+    
+    try {
+      const data = await HabitService.updateHabit(currentUser.id, habitId, habitData);
+      
+      if (data.success && data.habit) {
+        // Update local state with the updated habit
+        setHabits(prevHabits => 
+          prevHabits.map(habit => 
+            habit.id === habitId ? { ...habit, ...data.habit } : habit
+          )
+        );
+      } else {
+        console.error('Failed to update habit:', data.error);
+        throw new Error(data.error || 'Failed to update habit');
+      }
+    } catch (error) {
+      console.error('Error updating habit:', error);
+      throw error;
+    }
+  }, [currentUser]);
+
   // Function to delete a habit
   const deleteHabit = useCallback(async (habitId) => {
     if (!currentUser) return;
@@ -166,6 +190,7 @@ function App() {
         habits={habits}
         onToggleHabit={toggleHabit}
         onAddHabit={addHabit}
+        onUpdateHabit={updateHabit}
         onDeleteHabit={deleteHabit}
         onResetProgress={resetAllProgress}
       />

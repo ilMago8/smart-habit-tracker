@@ -120,6 +120,42 @@ class HabitService {
     }
   }
 
+  // Update a habit
+  static async updateHabit(userId, habitId, habitData) {
+    if (!userId) {
+      throw new Error('User ID is required');
+    }
+    
+    if (!habitId) {
+      throw new Error('Habit ID is required');
+    }
+
+    try {
+      const response = await fetch(`${API_BASE_URL}/habits/update.php`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: userId,
+          habit_id: habitId,
+          ...habitData
+        })
+      });
+
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update habit');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Error updating habit:', error);
+      throw error;
+    }
+  }
+
   // Delete a habit
   static async deleteHabit(userId, habitId) {
     if (!userId) {

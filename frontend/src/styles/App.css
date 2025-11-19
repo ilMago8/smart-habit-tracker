@@ -521,33 +521,45 @@ body {
   line-height: 1.4;
 }
 
-/* Delete Button */
-.delete-btn {
+/* Header Actions */
+.habit-actions-header {
   position: absolute;
   top: 0;
   right: 0;
-  background: transparent;
-  border: 1px solid var(--danger-color);
-  color: var(--danger-color);
-  padding: 4px 8px;
-  border-radius: var(--border-radius-sm);
-  font-size: 0.75rem;
-  cursor: pointer;
-  transition: var(--transition-fast);
+  display: flex;
+  gap: 6px;
   opacity: 0;
   transform: translateY(-4px);
+  transition: var(--transition-fast);
 }
 
-.habit-card:hover .delete-btn {
+.habit-card:hover .habit-actions-header {
   opacity: 1;
   transform: translateY(0);
 }
 
-.delete-btn:hover {
-  background: var(--danger-color);
-  color: white;
+.edit-btn,
+.delete-btn {
+  background: transparent;
+  border: none;
+  padding: 6px 10px;
+  border-radius: var(--border-radius-sm);
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: var(--transition-fast);
 }
 
+.edit-btn:hover {
+  background: rgba(74, 111, 165, 0.1);
+  transform: scale(1.1);
+}
+
+.delete-btn:hover {
+  background: rgba(193, 92, 92, 0.1);
+  transform: scale(1.1);
+}
+
+.edit-btn:active,
 .delete-btn:active {
   transform: scale(0.95);
 }
@@ -981,5 +993,86 @@ body {
   
   .form-actions {
     flex-direction: column;
+  }
+}
+
+/* Edit Habit Modal */
+.edit-habit-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease;
+}
+
+.edit-habit-modal {
+  background: var(--card-bg);
+  border-radius: var(--border-radius-lg);
+  padding: 2rem;
+  max-width: 500px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+}
+
+.edit-habit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.edit-habit-header h2 {
+  margin: 0;
+  color: var(--primary-color);
+  font-size: 1.5rem;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #999;
+  transition: var(--transition-fast);
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.close-button:hover {
+  color: var(--danger-color);
+  transform: rotate(90deg);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
 }

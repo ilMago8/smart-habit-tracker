@@ -1,6 +1,6 @@
 import React, { memo, useCallback } from 'react';
 
-const HabitCard = memo(({ habit, onToggle, onDelete }) => {
+const HabitCard = memo(({ habit, onToggle, onDelete, onEdit }) => {
   const { 
     id, 
     name, 
@@ -24,6 +24,14 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
       onDelete();
     }
   }, [onDelete, name]);
+
+  const handleEdit = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (onEdit) {
+      onEdit(habit);
+    }
+  }, [onEdit, habit]);
 
   // Function to handle key press (accessibility)
   const handleKeyPress = useCallback((e) => {
@@ -59,17 +67,30 @@ const HabitCard = memo(({ habit, onToggle, onDelete }) => {
             </p>
           )}
         </div>
-        {onDelete && (
-          <button
-            type="button"
-            className="delete-btn"
-            onClick={handleDelete}
-            aria-label={`Delete habit ${name}`}
-            title="Delete habit"
-          >
-            Delete
-          </button>
-        )}
+        <div className="habit-actions-header">
+          {onEdit && (
+            <button
+              type="button"
+              className="edit-btn"
+              onClick={handleEdit}
+              aria-label={`Edit habit ${name}`}
+              title="Edit habit"
+            >
+              ✏️
+            </button>
+          )}
+          {onDelete && (
+            <button
+              type="button"
+              className="delete-btn"
+              onClick={handleDelete}
+              aria-label={`Delete habit ${name}`}
+              title="Delete habit"
+            >
+              🗑️
+            </button>
+          )}
+        </div>
       </header>
 
       <div className="progress-section">
