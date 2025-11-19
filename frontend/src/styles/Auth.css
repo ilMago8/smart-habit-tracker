@@ -87,7 +87,7 @@
 .form-group input {
   padding: 12px 14px;
   border: 2px solid var(--border-color);
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--radius-sm);
   font-size: var(--font-size-base);
   transition: var(--transition-fast);
   background: var(--card-bg);
@@ -114,7 +114,7 @@
   color: white;
   border: none;
   padding: 12px;
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--radius-sm);
   font-size: var(--font-size-base);
   font-weight: 500;
   cursor: pointer;
@@ -137,7 +137,7 @@
   background-color: rgba(193, 92, 92, 0.1);
   color: var(--danger-color);
   padding: var(--spacing-sm) var(--spacing-md);
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--radius-sm);
   margin-bottom: var(--spacing-lg);
   font-size: var(--font-size-sm);
   border: 1px solid rgba(193, 92, 92, 0.2);
@@ -183,7 +183,7 @@
   margin-top: var(--spacing-lg);
   padding: var(--spacing-md);
   background-color: rgba(74, 111, 165, 0.05);
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--radius-sm);
   border: 1px solid rgba(74, 111, 165, 0.1);
 }
 
@@ -202,19 +202,20 @@
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
-  background-color: rgba(255, 255, 255, 0.15);
+  background-color: var(--gray-100);
   border-radius: 50px; /* Pill shape */
   padding: 6px 16px 6px 6px; /* Asymmetric for design */
   transition: all 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--border-color);
   cursor: pointer;
   position: relative;
   z-index: 10;
 }
 
 .user-profile:hover {
-  background-color: rgba(255, 255, 255, 0.25);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  background-color: var(--gray-100);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-sm);
   transform: translateY(-1px);
 }
 
@@ -254,15 +255,15 @@
 .user-name {
   font-size: var(--font-size-sm);
   font-weight: 600;
-  color: white;
+  color: var(--text-primary);
   letter-spacing: 0.3px;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  text-shadow: none;
 }
 
 .user-logout {
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.8);
+  color: var(--text-secondary);
   font-size: var(--font-size-xs);
   cursor: pointer;
   text-align: left;
@@ -279,14 +280,38 @@
   left: 0;
   width: 0;
   height: 1px;
-  background-color: white;
+  background-color: currentColor;
   transition: width 0.2s ease;
 }
 
 .user-logout:hover {
-  color: white;
+  color: var(--text-primary);
 }
 
 .user-logout:hover::after {
   width: 100%;
+}
+
+/* Dark mode overrides for user profile chip */
+.dark-mode .user-profile {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.dark-mode .user-profile:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.dark-mode .user-name {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.dark-mode .user-logout {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dark-mode .user-logout::after {
+  background-color: currentColor;
 }

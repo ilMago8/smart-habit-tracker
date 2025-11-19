@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 const UserProfilePage = ({ habits }) => {
-  const { currentUser, logout, updateProfile } = useAuth();
+  const { currentUser, updateProfile } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [editForm, setEditForm] = useState({
@@ -68,17 +68,22 @@ const UserProfilePage = ({ habits }) => {
     }
   };
 
+  const handleCancelEdit = () => {
+    // Reset form to current user values and exit editing mode
+    setEditForm({
+      name: currentUser?.name || '',
+      email: currentUser?.email || '',
+      bio: currentUser?.bio || '',
+      goals: currentUser?.goals || ''
+    });
+    setIsEditing(false);
+  };
+
   const handleInputChange = (field, value) => {
     setEditForm(prev => ({
       ...prev,
       [field]: value
     }));
-  };
-
-  const handleLogout = () => {
-    if (window.confirm('Are you sure you want to logout?')) {
-      logout();
-    }
   };
 
   const getInitial = () => {
@@ -123,16 +128,32 @@ const UserProfilePage = ({ habits }) => {
           <p className="join-date">Member since {joinDate}</p>
         </div>
         <div className="profile-actions">
-          <button 
-            className={`edit-profile-btn ${isEditing ? 'save' : 'edit'}`}
-            onClick={handleEditToggle}
-            disabled={isLoading}
-          >
-            {isLoading ? 'Saving...' : (isEditing ? 'Save Changes' : 'Edit Profile')}
-          </button>
-          <button className="logout-btn" onClick={handleLogout}>
-            Logout
-          </button>
+          {isEditing ? (
+            <>
+              <button 
+                className="cancel-btn"
+                type="button"
+                onClick={handleCancelEdit}
+                disabled={isLoading}
+              >
+                Cancel
+              </button>
+              <button 
+                className="edit-profile-btn save"
+                onClick={handleEditToggle}
+                disabled={isLoading}
+              >
+                {isLoading ? 'Saving...' : 'Save Changes'}
+              </button>
+            </>
+          ) : (
+            <button 
+              className="edit-profile-btn edit"
+              onClick={handleEditToggle}
+            >
+              Edit Profile
+            </button>
+          )}
         </div>
       </div>
 

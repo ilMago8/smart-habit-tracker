@@ -1,98 +1,192 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import habitIcons, { iconCategories } from './HabitIcons';
+
+// Mirror AddHabitForm UI and behavior for consistency
+const HABIT_COLORS = [
+  { value: '#6366f1', name: 'Indigo', category: 'base' },
+  { value: '#8b5cf6', name: 'Purple', category: 'cool' },
+  { value: '#ec4899', name: 'Pink', category: 'warm' },
+  { value: '#ef4444', name: 'Red', category: 'warm' },
+  { value: '#f59e0b', name: 'Orange', category: 'warm' },
+  { value: '#10b981', name: 'Green', category: 'natural' },
+  { value: '#14b8a6', name: 'Teal', category: 'natural' },
+  { value: '#3b82f6', name: 'Blue', category: 'cool' },
+  { value: '#6366f1', name: 'Violet', category: 'cool' },
+  { value: '#64748b', name: 'Slate', category: 'neutral' }
+];
+
+const TARGET_OPTIONS = [
+  { value: 1, label: '1 time per week', description: 'Light goal' },
+  { value: 2, label: '2 times per week', description: 'Gradual start' },
+  { value: 3, label: '3 times per week', description: 'Moderate frequency' },
+  { value: 4, label: '4 times per week', description: 'Regular routine' },
+  { value: 5, label: '5 times per week', description: 'Strong routine' },
+  { value: 6, label: '6 times per week', description: 'Almost daily' },
+  { value: 7, label: 'Every day', description: 'Maximum commitment' }
+];
 
 const EditHabitForm = ({ habit, onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
-    name: habit.name,
-    color: habit.color,
+    name: habit.name || '',
+    description: habit.description || '',
+    color: habit.color || '#6366f1',
     target_frequency: habit.target_frequency || 7,
     icon: habit.icon || 'target'
   });
+  const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState('');
 
-  const colors = [
-    '#6366f1', '#8b5cf6', '#ec4899', '#ef4444',
-    '#f59e0b', '#10b981', '#14b8a6', '#3b82f6',
-    '#6366f1', '#64748b'
-  ];
+  const nameInputRef = useRef(null);
 
-  const frequencies = [
-    { value: 1, label: '1 time per week', description: 'Light goal' },
-    { value: 2, label: '2 times per week', description: 'Gradual start' },
-    { value: 3, label: '3 times per week', description: 'Moderate frequency' },
-    { value: 4, label: '4 times per week', description: 'Regular routine' },
-    { value: 5, label: '5 times per week', description: 'Strong routine' },
-    { value: 6, label: '6 times per week', description: 'Almost daily' },
-    { value: 7, label: 'Every day', description: 'Maximum commitment' }
-  ];
+  useEffect(() => {
+    if (nameInputRef.current) nameInputRef.current.focus();
+  }, []);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') onCancel();
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [onCancel]);
+
+  const validateForm = useCallback(() => {
+    const newErrors = {};
     if (!formData.name.trim()) {
-      setError('Habit name is required');
-      return;
+      newErrors.name = 'Name is required';
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'Name must be at least 2 characters';
+    } else if (formData.name.trim().length > 50) {
+      newErrors.name = 'Name cannot exceed 50 characters';
     }
 
-    setIsSubmitting(true);
-    setError('');
+    if (formData.description && formData.description.length > 200) {
+      newErrors.description = 'Description cannot exceed 200 characters';
+    }
 
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }, [formData]);
+
+  const handleChange = useCallback((field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    if (errors[field]) {
+      setErrors(prev => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  }, [errors]);
+
+  const handleBackdropClick = useCallback((e) => {
+    if (e.target === e.currentTarget) onCancel();
+  }, [onCancel]);
+
+  const handleSubmit = useCallback(async (e) => {
+    e.preventDefault();
+    if (isSubmitting) return;
+    if (!validateForm()) return;
+    setIsSubmitting(true);
     try {
-      await onSubmit(formData);
+      const cleaned = {
+        ...formData,
+        name: formData.name.trim(),
+        description: formData.description?.trim() || ''
+      };
+      await onSubmit(cleaned);
     } catch (err) {
-      setError(err.message || 'Failed to update habit');
+      setErrors({ submit: err?.message || 'Failed to update habit' });
+    } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [formData, isSubmitting, validateForm, onSubmit]);
 
   return (
-    <div className="edit-habit-overlay" onClick={onCancel}>
-      <div className="edit-habit-modal" onClick={(e) => e.stopPropagation()}>
-        <div className="edit-habit-header">
-          <h2>Edit Habit</h2>
+    <div 
+      className="add-habit-overlay" 
+      onClick={handleBackdropClick}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="edit-form-title"
+    >
+      <div className="add-habit-form">
+        <header className="form-header">
+          <h3 id="edit-form-title">Edit Habit</h3>
           <button 
-            className="close-button" 
+            type="button"
+            className="close-btn" 
             onClick={onCancel}
-            disabled={isSubmitting}
+            aria-label="Close form"
           >
-            ×
+            ✕
           </button>
-        </div>
+        </header>
 
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} noValidate>
           <div className="form-group">
-            <label htmlFor="edit-habit-name">Habit Name</label>
+            <label htmlFor="edit-habit-name">Habit Name *</label>
             <input
               id="edit-habit-name"
+              ref={nameInputRef}
               type="text"
               value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="e.g., Morning meditation"
-              maxLength={100}
-              disabled={isSubmitting}
+              onChange={(e) => handleChange('name', e.target.value)}
+              placeholder="e.g. Drink 8 glasses of water"
               required
+              maxLength={50}
+              aria-describedby={errors.name ? 'edit-name-error' : undefined}
+              className={errors.name ? 'error' : ''}
             />
+            {errors.name && (
+              <span id="edit-name-error" className="error-message" role="alert">
+                {errors.name}
+              </span>
+            )}
           </div>
 
           <div className="form-group">
-            <label>Color</label>
-            <div className="color-picker">
-              {colors.map(color => (
-                <button
-                  key={color}
-                  type="button"
-                  className={`color-option ${formData.color === color ? 'selected' : ''}`}
-                  style={{ backgroundColor: color }}
-                  onClick={() => setFormData({ ...formData, color })}
-                  disabled={isSubmitting}
-                />
-              ))}
-            </div>
+            <label htmlFor="edit-habit-description">Description (optional)</label>
+            <textarea
+              id="edit-habit-description"
+              value={formData.description}
+              onChange={(e) => handleChange('description', e.target.value)}
+              placeholder="Habit description..."
+              maxLength={200}
+              rows={3}
+              aria-describedby={errors.description ? 'edit-description-error' : undefined}
+              className={errors.description ? 'error' : ''}
+            />
+            {errors.description && (
+              <span id="edit-description-error" className="error-message" role="alert">
+                {errors.description}
+              </span>
+            )}
           </div>
 
-          <div className="form-group">
-            <label>Icon</label>
+          <div className="form-row">
+            <fieldset className="form-group">
+              <legend>Color</legend>
+              <div className="color-selector" role="radiogroup">
+                {HABIT_COLORS.map(({ value, name }) => (
+                  <button
+                    key={value}
+                    type="button"
+                    className={`color-option ${formData.color === value ? 'selected' : ''}`}
+                    style={{ backgroundColor: value }}
+                    onClick={() => handleChange('color', value)}
+                    aria-label={`Select color ${name}`}
+                    role="radio"
+                    aria-checked={formData.color === value}
+                    title={name}
+                  />
+                ))}
+              </div>
+            </fieldset>
+          </div>
+
+          <fieldset className="form-group">
+            <legend>Icon</legend>
             <div className="icon-selector">
               {Object.entries(iconCategories).map(([category, icons]) => (
                 <div key={category} className="icon-category">
@@ -103,9 +197,9 @@ const EditHabitForm = ({ habit, onSubmit, onCancel }) => {
                         key={iconKey}
                         type="button"
                         className={`icon-option ${formData.icon === iconKey ? 'selected' : ''}`}
-                        onClick={() => setFormData({ ...formData, icon: iconKey })}
+                        onClick={() => handleChange('icon', iconKey)}
+                        aria-label={`Select icon ${iconKey}`}
                         title={iconKey}
-                        disabled={isSubmitting}
                         dangerouslySetInnerHTML={{ __html: habitIcons[iconKey] }}
                       />
                     ))}
@@ -113,49 +207,53 @@ const EditHabitForm = ({ habit, onSubmit, onCancel }) => {
                 </div>
               ))}
             </div>
-          </div>
+          </fieldset>
 
           <div className="form-group">
-            <label>Weekly Goal</label>
-            <div className="frequency-options">
-              {frequencies.map(freq => (
-                <button
-                  key={freq.value}
-                  type="button"
-                  className={`frequency-option ${formData.target_frequency === freq.value ? 'selected' : ''}`}
-                  onClick={() => setFormData({ ...formData, target_frequency: freq.value })}
-                  disabled={isSubmitting}
-                >
-                  <div className="frequency-label">{freq.label}</div>
-                  <div className="frequency-description">{freq.description}</div>
-                </button>
+            <label htmlFor="edit-target-frequency">Weekly Goal</label>
+            <select
+              id="edit-target-frequency"
+              value={formData.target_frequency}
+              onChange={(e) => handleChange('target_frequency', parseInt(e.target.value))}
+            >
+              {TARGET_OPTIONS.map(({ value, label, description }) => (
+                <option key={value} value={value} title={description}>
+                  {label}
+                </option>
               ))}
-            </div>
+            </select>
           </div>
 
-          {error && (
-            <div className="error-message">
-              {error}
+          {errors.submit && (
+            <div className="error-message submit-error" role="alert">
+              {errors.submit}
             </div>
           )}
 
-          <div className="form-actions">
+          <footer className="form-actions">
             <button 
               type="button" 
-              className="cancel-button"
-              onClick={onCancel}
+              onClick={onCancel} 
+              className="cancel-btn"
               disabled={isSubmitting}
             >
               Cancel
             </button>
             <button 
               type="submit" 
-              className="submit-button"
+              className={`submit-btn ${isSubmitting ? 'loading' : ''}`}
               disabled={isSubmitting}
             >
-              {isSubmitting ? 'Saving...' : 'Save Changes'}
+              {isSubmitting ? (
+                <>
+                  <span className="spinner" aria-hidden="true"></span>
+                  Saving...
+                </>
+              ) : (
+                'Save Changes'
+              )}
             </button>
-          </div>
+          </footer>
         </form>
       </div>
     </div>

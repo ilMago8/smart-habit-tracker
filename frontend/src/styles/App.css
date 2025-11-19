@@ -324,6 +324,155 @@ body {
   gap: var(--space-3);
 }
 
+/* User profile chip (header) */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  background-color: var(--gray-100);
+  border-radius: var(--radius-full);
+  padding: 6px 16px 6px 6px;
+  transition: all 0.2s ease;
+  border: 1px solid var(--border-color);
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+}
+
+.user-profile:hover {
+  background-color: var(--gray-100);
+  border-color: var(--border-hover);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: white;
+  color: var(--primary-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: var(--font-size-base);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.user-avatar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 50%);
+  border-radius: 50%;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  padding-left: 4px;
+}
+
+.user-name {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+  text-shadow: none;
+}
+
+.user-logout {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  text-align: left;
+  padding: 0;
+  position: relative;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.user-logout::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background-color: currentColor;
+  transition: width 0.2s ease;
+}
+
+.user-logout:hover {
+  color: var(--text-primary);
+}
+
+.user-logout:hover::after {
+  width: 100%;
+}
+
+/* Dark mode overrides for user profile chip */
+.dark-mode .user-profile {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.dark-mode .user-profile:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.dark-mode .user-name {
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.dark-mode .user-logout {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.dark-mode .user-avatar {
+  background-color: var(--card-bg);
+  color: var(--primary-light);
+}
+
+/* Top-right Logout Button */
+.logout-top-btn {
+  padding: 10px 14px;
+  border-radius: var(--radius-full);
+  background: var(--danger-color);
+  color: #fff;
+  border: 2px solid var(--danger-color);
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: all var(--transition-base);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.logout-top-btn:hover {
+  background: var(--danger-dark);
+  border-color: var(--danger-dark);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.logout-top-btn:active {
+  transform: translateY(0);
+}
+
+.logout-top-btn svg {
+  display: block;
+  color: currentColor;
+}
+
 .theme-toggle {
   width: 40px;
   height: 40px;
@@ -401,6 +550,7 @@ body,
   gap: var(--space-2);
   transition: var(--transition-base);
   color: var(--text-primary);
+  box-shadow: none;
 }
 
 .progress-circle {
@@ -879,7 +1029,7 @@ body,
 }
 
 .add-habit-form {
-  background: white;
+  background: var(--card-bg);
   border-radius: var(--border-radius);
   padding: 30px;
   max-width: 500px;
@@ -897,7 +1047,7 @@ body,
 }
 
 .form-header h3 {
-  color: var(--dark-color);
+  color: var(--text-primary);
   margin: 0;
 }
 
@@ -913,8 +1063,18 @@ body,
 }
 
 .close-btn:hover {
-  color: var(--gray-900);
+  color: var(--text-primary);
   background: var(--gray-100);
+}
+
+/* Dark mode adjustments for modal close button */
+.dark-mode .close-btn {
+  color: var(--gray-300);
+}
+
+.dark-mode .close-btn:hover {
+  color: var(--text-primary);
+  background: var(--gray-200);
 }
 
 /* Form inputs */
@@ -1354,7 +1514,7 @@ body,
 .motivational-message {
   margin-top: var(--space-8);
   padding: var(--space-6);
-  background: white;
+  background: var(--card-bg);
   border-radius: var(--radius-lg);
   border: 2px solid var(--border-color);
   text-align: left;
@@ -1378,16 +1538,30 @@ body,
 }
 
 .message-content h4 {
-  color: var(--gray-900);
+  color: var(--text-primary);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   margin-bottom: var(--space-2);
 }
 
 .message-content p {
-  color: var(--gray-600);
+  color: var(--text-secondary);
   font-size: var(--font-size-base);
   line-height: 1.5;
+}
+
+/* Dark mode readability for motivational message */
+.dark-mode .motivational-message {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.dark-mode .message-content h4 {
+  color: var(--text-primary);
+}
+
+.dark-mode .message-content p {
+  color: var(--text-secondary);
 }
 
 /* Responsive Design */
