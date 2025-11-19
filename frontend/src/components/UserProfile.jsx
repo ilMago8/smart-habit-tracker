@@ -37,7 +37,7 @@ const UserProfile = ({ onGoProfile, onLogout }) => {
       onLogout();
     } else {
       logout();
-      addToast('Logout effettuato', { type: 'success' });
+      addToast('Logged out', { type: 'success' });
     }
   };
   
@@ -51,7 +51,7 @@ const UserProfile = ({ onGoProfile, onLogout }) => {
     e.stopPropagation();
     const next = !darkMode;
     setDarkMode(next);
-    addToast(next ? 'Modalità scura attivata' : 'Modalità chiara attivata', { type: 'info' });
+    addToast(next ? 'Dark mode enabled' : 'Light mode enabled', { type: 'info' });
   };
   
   return (

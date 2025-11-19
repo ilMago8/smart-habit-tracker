@@ -1484,6 +1484,11 @@ body.dark-mode .icon-option:hover svg {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: var(--space-2);
+  /* Match input containers */
+  padding: var(--space-2);
+  background: var(--gray-50);
+  border: 2px solid var(--border-color);
+  border-radius: var(--radius-md);
 }
 
 .color-option {
@@ -1535,10 +1540,12 @@ body.dark-mode .icon-option:hover svg {
 
 .dark-mode .icon-selector {
   background: var(--gray-100);
+  border: 2px solid var(--border-color);
 }
 
 .dark-mode .icon-option {
-  background: var(--card-bg);
+  /* Match dark input background */
+  background: var(--gray-100);
   border-color: var(--border-color);
 }
 
@@ -1559,7 +1566,14 @@ body.dark-mode .icon-option:hover svg {
   overflow-y: auto;
   padding: var(--space-2);
   background: var(--gray-50);
+  border: 2px solid var(--border-color);
   border-radius: var(--radius-md);
+}
+
+/* Dark mode parity for color selector container */
+.dark-mode .color-selector {
+  background: var(--gray-100);
+  border-color: var(--border-color);
 }
 
 .icon-category {

@@ -11,7 +11,7 @@ const HABIT_COLORS = [
   { value: '#10b981', name: 'Green', category: 'natural' },
   { value: '#14b8a6', name: 'Teal', category: 'natural' },
   { value: '#3b82f6', name: 'Blue', category: 'cool' },
-  { value: '#6366f1', name: 'Violet', category: 'cool' },
+  { value: '#7c3aed', name: 'Violet', category: 'cool' },
   { value: '#64748b', name: 'Slate', category: 'neutral' }
 ];
 

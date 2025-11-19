@@ -109,14 +109,14 @@ function App() {
           today_completed: false,
           total_checks: 0
         }]);
-        addToast('Attività creata', { type: 'success' });
+        addToast('Habit created', { type: 'success' });
       } else {
         console.error('Failed to create habit:', data.error);
-        addToast('Creazione attività fallita', { type: 'error' });
+        addToast('Failed to create habit', { type: 'error' });
       }
     } catch (error) {
       console.error('Error creating habit:', error);
-      addToast('Errore durante la creazione', { type: 'error' });
+      addToast('Error while creating', { type: 'error' });
     }
   }, [currentUser]);
 
@@ -134,15 +134,15 @@ function App() {
             habit.id === habitId ? { ...habit, ...data.habit } : habit
           )
         );
-        addToast('Attività aggiornata', { type: 'success' });
+        addToast('Habit updated', { type: 'success' });
       } else {
         console.error('Failed to update habit:', data.error);
-        addToast('Aggiornamento attività fallito', { type: 'error' });
+        addToast('Failed to update habit', { type: 'error' });
         throw new Error(data.error || 'Failed to update habit');
       }
     } catch (error) {
       console.error('Error updating habit:', error);
-      addToast('Errore durante l\'aggiornamento', { type: 'error' });
+      addToast('Error while updating', { type: 'error' });
       throw error;
     }
   }, [currentUser, addToast]);
@@ -154,10 +154,10 @@ function App() {
       setDeletingOne(true);
       await HabitService.deleteHabit(currentUser.id, pendingHabit.id);
       setHabits(prev => prev.filter(h => h.id !== pendingHabit.id));
-      addToast(`Attività "${pendingHabit.name ?? ''}" eliminata`, { type: 'success' });
+      addToast(`Habit "${pendingHabit.name ?? ''}" deleted`, { type: 'success' });
     } catch (error) {
       console.error('Error deleting habit:', error);
-      addToast('Impossibile eliminare l\'attività. Riprova.', { type: 'error' });
+      addToast('Failed to delete habit. Try again.', { type: 'error' });
       fetchHabits();
     } finally {
       setDeletingOne(false);
@@ -186,10 +186,10 @@ function App() {
       })));
       await HabitService.resetProgress(currentUser.id);
       await fetchHabits();
-      addToast('Progresso azzerato con successo', { type: 'success' });
+      addToast('Progress reset successfully', { type: 'success' });
     } catch (error) {
       console.error('Error resetting progress:', error);
-      addToast('Errore durante il reset del progresso', { type: 'error' });
+      addToast('Error resetting progress', { type: 'error' });
       fetchHabits();
     } finally {
       setResetting(false);
@@ -209,10 +209,10 @@ function App() {
       setHabits([]);
       await HabitService.deleteAllHabits(currentUser.id);
       await fetchHabits();
-      addToast('Tutte le attività sono state eliminate', { type: 'success' });
+      addToast('All habits have been deleted', { type: 'success' });
     } catch (error) {
       console.error('Error deleting all habits:', error);
-      addToast('Eliminazione fallita. Riprova.', { type: 'error' });
+      addToast('Deletion failed. Try again.', { type: 'error' });
       fetchHabits();
     } finally {
       setDeletingAll(false);
@@ -227,7 +227,7 @@ function App() {
   // Logout confirmation and action
   const doLogout = useCallback(() => {
     logout();
-    addToast('Logout effettuato', { type: 'success' });
+    addToast('Logged out', { type: 'success' });
     setConfirm({ open: false, type: null });
   }, [logout, addToast]);
 
@@ -268,25 +268,25 @@ function App() {
       <ConfirmDialog
         open={confirm.open}
         title={
-          confirm.type === 'reset' ? 'Azzera progressi' :
-          confirm.type === 'deleteAll' ? 'Elimina tutte le attività' :
-          confirm.type === 'delete' ? 'Elimina attività' :
-          'Conferma logout'
+          confirm.type === 'reset' ? 'Reset progress' :
+          confirm.type === 'deleteAll' ? 'Delete all habits' :
+          confirm.type === 'delete' ? 'Delete habit' :
+          'Confirm logout'
         }
         message={
           confirm.type === 'reset'
-            ? 'Sei sicuro di voler azzerare i progressi di tutte le abitudini? Questa azione non elimina le abitudini ed è irreversibile.'
+            ? 'Are you sure you want to reset progress for all habits? This does not delete habits and cannot be undone.'
             : confirm.type === 'deleteAll'
-              ? 'Sei sicuro di eliminare TUTTE le attività? L\'azione è irreversibile.'
+              ? 'Are you sure you want to delete ALL habits? This action is irreversible.'
               : confirm.type === 'delete'
-                ? `Eliminare definitivamente l\'attività \"${pendingHabit?.name ?? ''}\"?`
-                : 'Vuoi effettuare il logout?'
+                ? `Permanently delete habit \"${pendingHabit?.name ?? ''}\"?`
+                : 'Do you want to log out?'
         }
         confirmLabel={
-          confirm.type === 'reset' ? 'Azzera' :
-          confirm.type === 'deleteAll' ? 'Elimina tutte' :
-          confirm.type === 'delete' ? 'Elimina' :
-          'Esci'
+          confirm.type === 'reset' ? 'Reset' :
+          confirm.type === 'deleteAll' ? 'Delete all' :
+          confirm.type === 'delete' ? 'Delete' :
+          'Logout'
         }
         cancelLabel="Cancel"
         onConfirm={

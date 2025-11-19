@@ -49,13 +49,13 @@ const UserProfilePage = ({ habits }) => {
         const result = await updateProfile(dataToUpdate);
         if (result.success) {
           setIsEditing(false);
-          addToast('Profilo aggiornato con successo', { type: 'success' });
+          addToast('Profile updated successfully', { type: 'success' });
         } else {
-          addToast('Errore nel salvataggio delle modifiche', { type: 'error' });
+          addToast('Failed to save changes', { type: 'error' });
         }
       } catch (error) {
         console.error('Error saving:', error);
-        addToast('Errore nel salvataggio del profilo', { type: 'error' });
+        addToast('Error saving profile', { type: 'error' });
       } finally {
         setIsLoading(false);
       }
@@ -80,7 +80,7 @@ const UserProfilePage = ({ habits }) => {
       goals: currentUser?.goals || ''
     });
     setIsEditing(false);
-    addToast('Modifiche annullate', { type: 'info' });
+    addToast('Changes discarded', { type: 'info' });
   };
 
   const handleInputChange = (field, value) => {

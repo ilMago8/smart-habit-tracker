@@ -188,12 +188,12 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onUpdateHabit, onDe
                       <button 
                         className={`reset-btn ${isResetting ? 'loading' : ''}`}
                         onClick={onResetProgress}
-                        aria-label="Azzera i progressi di tutte le abitudini (non elimina le abitudini)"
-                        title="Azzera i progressi di tutte le abitudini (non elimina le abitudini)"
+                        aria-label="Reset progress for all habits (does not delete habits)"
+                        title="Reset progress for all habits (does not delete habits)"
                         disabled={isResetting}
                       >
                         {isResetting ? (
-                          'Azzero…'
+                          'Resetting…'
                         ) : (
                           <>
                             {/* refresh icon */}
@@ -201,7 +201,7 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onUpdateHabit, onDe
                               <path d="M21 12a9 9 0 1 1-3-6.7"/>
                               <polyline points="21 3 21 9 15 9"/>
                             </svg>
-                            Azzera progressi
+                            Reset progress
                           </>
                         )}
                       </button>
@@ -210,11 +210,11 @@ const Dashboard = memo(({ habits, onToggleHabit, onAddHabit, onUpdateHabit, onDe
                       <button
                         className={`delete-all-btn ${isDeletingAll ? 'loading' : ''}`}
                         onClick={onDeleteAllHabits}
-                        aria-label="Elimina tutte le attività"
-                        title="Elimina tutte le attività"
+                        aria-label="Delete all habits"
+                        title="Delete all habits"
                         disabled={isDeletingAll}
                       >
-                        {isDeletingAll ? 'Elimino…' : 'Elimina tutte'}
+                        {isDeletingAll ? 'Deleting…' : 'Delete all'}
                       </button>
                     )}
                   </>
