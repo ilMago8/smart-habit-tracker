@@ -6,6 +6,13 @@
   min-height: 100vh;
   background-color: var(--bg-color);
   padding: var(--spacing-md);
+  position: relative;
+}
+
+.theme-toggle-auth {
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 .auth-container {
