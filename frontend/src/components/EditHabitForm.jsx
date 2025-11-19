@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
+import habitIcons, { iconCategories } from './HabitIcons';
 
 const EditHabitForm = ({ habit, onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
     name: habit.name,
     color: habit.color,
-    target_frequency: habit.target_frequency || 7
+    target_frequency: habit.target_frequency || 7,
+    icon: habit.icon || 'target'
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
   const colors = [
-    '#667eea', '#f56565', '#48bb78', '#ed8936', 
-    '#9f7aea', '#38b2ac', '#ed64a6', '#ecc94b'
+    '#6366f1', '#8b5cf6', '#ec4899', '#ef4444',
+    '#f59e0b', '#10b981', '#14b8a6', '#3b82f6',
+    '#6366f1', '#64748b'
   ];
 
   const frequencies = [
@@ -84,6 +87,30 @@ const EditHabitForm = ({ habit, onSubmit, onCancel }) => {
                   onClick={() => setFormData({ ...formData, color })}
                   disabled={isSubmitting}
                 />
+              ))}
+            </div>
+          </div>
+
+          <div className="form-group">
+            <label>Icon</label>
+            <div className="icon-selector">
+              {Object.entries(iconCategories).map(([category, icons]) => (
+                <div key={category} className="icon-category">
+                  <div className="icon-category-label">{category}</div>
+                  <div className="icon-grid">
+                    {icons.map((iconKey) => (
+                      <button
+                        key={iconKey}
+                        type="button"
+                        className={`icon-option ${formData.icon === iconKey ? 'selected' : ''}`}
+                        onClick={() => setFormData({ ...formData, icon: iconKey })}
+                        title={iconKey}
+                        disabled={isSubmitting}
+                        dangerouslySetInnerHTML={{ __html: habitIcons[iconKey] }}
+                      />
+                    ))}
+                  </div>
+                </div>
               ))}
             </div>
           </div>

@@ -1,17 +1,18 @@
 import React, { useState, useCallback, memo, useEffect, useRef } from 'react';
+import habitIcons, { iconCategories } from './HabitIcons';
 
 // Optimized static configurations
 const HABIT_COLORS = [
-  { value: '#007bff', name: 'Blue', category: 'base' },
-  { value: '#00a8ff', name: 'Light Blue', category: 'cool' },
-  { value: '#fbc531', name: 'Yellow', category: 'warm' },
-  { value: '#44bd32', name: 'Green', category: 'natural' },
-  { value: '#9c88ff', name: 'Purple', category: 'cool' },
-  { value: '#e84393', name: 'Pink', category: 'warm' },
-  { value: '#fd79a8', name: 'Light Pink', category: 'warm' },
-  { value: '#fdcb6e', name: 'Orange', category: 'warm' },
-  { value: '#6c5ce7', name: 'Indigo', category: 'cool' },
-  { value: '#00b894', name: 'Teal', category: 'natural' }
+  { value: '#6366f1', name: 'Indigo', category: 'base' },
+  { value: '#8b5cf6', name: 'Purple', category: 'cool' },
+  { value: '#ec4899', name: 'Pink', category: 'warm' },
+  { value: '#ef4444', name: 'Red', category: 'warm' },
+  { value: '#f59e0b', name: 'Orange', category: 'warm' },
+  { value: '#10b981', name: 'Green', category: 'natural' },
+  { value: '#14b8a6', name: 'Teal', category: 'natural' },
+  { value: '#3b82f6', name: 'Blue', category: 'cool' },
+  { value: '#6366f1', name: 'Violet', category: 'cool' },
+  { value: '#64748b', name: 'Slate', category: 'neutral' }
 ];
 
 const TARGET_OPTIONS = [
@@ -28,8 +29,9 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    color: '#007bff',
-    target_frequency: 7
+    color: '#6366f1',
+    target_frequency: 7,
+    icon: 'target'
   });
   
   const [errors, setErrors] = useState({});
@@ -210,6 +212,30 @@ const AddHabitForm = memo(({ onSubmit, onCancel }) => {
               </div>
             </fieldset>
           </div>
+
+          <fieldset className="form-group">
+            <legend>Icon</legend>
+            <div className="icon-selector">
+              {Object.entries(iconCategories).map(([category, icons]) => (
+                <div key={category} className="icon-category">
+                  <div className="icon-category-label">{category}</div>
+                  <div className="icon-grid">
+                    {icons.map((iconKey) => (
+                      <button
+                        key={iconKey}
+                        type="button"
+                        className={`icon-option ${formData.icon === iconKey ? 'selected' : ''}`}
+                        onClick={() => handleChange('icon', iconKey)}
+                        aria-label={`Select icon ${iconKey}`}
+                        title={iconKey}
+                        dangerouslySetInnerHTML={{ __html: habitIcons[iconKey] }}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </fieldset>
 
           <div className="form-group">
             <label htmlFor="target-frequency">

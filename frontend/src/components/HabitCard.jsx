@@ -1,4 +1,5 @@
 import React, { memo, useCallback } from 'react';
+import habitIcons from './HabitIcons';
 
 const HabitCard = memo(({ habit, onToggle, onDelete, onEdit }) => {
   const { 
@@ -9,7 +10,8 @@ const HabitCard = memo(({ habit, onToggle, onDelete, onEdit }) => {
     week_completion, 
     today_completed, 
     week_checks, 
-    target_frequency 
+    target_frequency,
+    icon = 'target'
   } = habit;
 
   const handleToggle = useCallback((e) => {
@@ -47,7 +49,7 @@ const HabitCard = memo(({ habit, onToggle, onDelete, onEdit }) => {
                           week_completion >= 30 ? 'average' : 'needs-attention';
 
   const buttonText = today_completed ? 
-    { label: 'Completed ✓', action: 'Click to undo' } : 
+    { label: 'Completed', action: 'Click to undo' } : 
     { label: 'Mark as done', action: 'Click to complete' };
 
   return (
@@ -58,7 +60,11 @@ const HabitCard = memo(({ habit, onToggle, onDelete, onEdit }) => {
       aria-label={`Habit: ${name}`}
     >
       <header className="habit-header">
-        <div className="habit-color-indicator" style={{ backgroundColor: color }}></div>
+        <div 
+          className="habit-color-indicator" 
+          style={{ backgroundColor: color }}
+          dangerouslySetInnerHTML={{ __html: habitIcons[icon] || habitIcons.target }}
+        />
         <div className="habit-info">
           <h3 className="habit-name">{name}</h3>
           {description && (
@@ -76,7 +82,10 @@ const HabitCard = memo(({ habit, onToggle, onDelete, onEdit }) => {
               aria-label={`Edit habit ${name}`}
               title="Edit habit"
             >
-              ✏️
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+                <path d="m15 5 4 4"/>
+              </svg>
             </button>
           )}
           {onDelete && (
@@ -87,7 +96,11 @@ const HabitCard = memo(({ habit, onToggle, onDelete, onEdit }) => {
               aria-label={`Delete habit ${name}`}
               title="Delete habit"
             >
-              🗑️
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M3 6h18"/>
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
+              </svg>
             </button>
           )}
         </div>
