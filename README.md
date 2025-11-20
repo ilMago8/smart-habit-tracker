@@ -41,9 +41,10 @@
 ### ⚡ Habit Management
 - **Quick creation** with intuitive form and validation
 - **Complete customization**: 10 predefined colors with color picker
-- **Flexible goals**: 1, 2, 3, 5, or 7 times per week
+- **Flexible goals**: 1 to 7 times per week (fully customizable frequency)
 - **Visual states** for immediate feedback
 - **Toggle completion** - mark/unmark habits as done
+- **Edit habits** with inline editing and validation
 - **Delete habits** with confirmation dialog
 - **Reset progress** functionality for all habits
 - **Form validation** with real-time error feedback
