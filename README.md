@@ -3,7 +3,7 @@
 **A modern application for tracking daily habits with a colorful and intuitive React interface.**
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Vercel-000000?style=for-the-badge&logo=vercel)](https://smart-habit-tracker-orpin.vercel.app)
-[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/ilMago8/smart-habit-tracker)
+[![GitHub](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github)](https://github.com/manuelmorlin/smart-habit-tracker)
 [![React](https://img.shields.io/badge/React-18-61DAFB?style=for-the-badge&logo=react)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?style=for-the-badge&logo=vite)](https://vitejs.dev/)
 
@@ -149,7 +149,7 @@
 ### Frontend Only (Demo Mode)
 ```bash
 # Clone the repository
-git clone https://github.com/ilMago8/smart-habit-tracker.git
+git clone https://github.com/manuelmorlin/smart-habit-tracker.git
 cd smart-habit-tracker
 
 # Install frontend dependencies
@@ -463,12 +463,12 @@ Contributions, issues and feature requests are welcome!
 Found a bug or have a feature request?
 
 ### Report Bug
-- Use the [issue template](https://github.com/ilMago8/smart-habit-tracker/issues/new?template=bug_report.md)
+- Use the [issue template](https://github.com/manuelmorlin/smart-habit-tracker/issues/new?template=bug_report.md)
 - Include screenshots if possible
 - Specify browser and OS version
 
 ### Feature Request  
-- Use the [feature template](https://github.com/ilMago8/smart-habit-tracker/issues/new?template=feature_request.md)
+- Use the [feature template](https://github.com/manuelmorlin/smart-habit-tracker/issues/new?template=feature_request.md)
 - Describe the use case
 - Explain the benefit for users
 
@@ -484,8 +484,8 @@ See the [LICENSE](LICENSE) file for all details.
 
 ## 👨‍💻 Author
 
-**ilMago8**
-- GitHub: [@ilMago8](https://github.com/ilMago8)
+**Manuel Morlin**
+- GitHub: [@manuelmorlin](https://github.com/manuelmorlin)
 - LinkedIn: [Manuel Morlin](https://www.linkedin.com/in/manuel-morlin-732b83349/)
 
 ---
@@ -502,10 +502,10 @@ See the [LICENSE](LICENSE) file for all details.
 
 ## 📊 Project Stats
 
-![GitHub stars](https://img.shields.io/github/stars/ilMago8/smart-habit-tracker?style=social)
-![GitHub forks](https://img.shields.io/github/forks/ilMago8/smart-habit-tracker?style=social)
-![GitHub issues](https://img.shields.io/github/issues/ilMago8/smart-habit-tracker)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/ilMago8/smart-habit-tracker)
+![GitHub stars](https://img.shields.io/github/stars/manuelmorlin/smart-habit-tracker?style=social)
+![GitHub forks](https://img.shields.io/github/forks/manuelmorlin/smart-habit-tracker?style=social)
+![GitHub issues](https://img.shields.io/github/issues/manuelmorlin/smart-habit-tracker)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/manuelmorlin/smart-habit-tracker)
 
 ---
 
