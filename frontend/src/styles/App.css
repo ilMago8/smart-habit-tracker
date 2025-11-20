@@ -699,26 +699,30 @@ body,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: var(--space-6);
+  gap: var(--space-4);
+  flex-wrap: wrap;
 }
 
 .section-header h2 {
-  color: var(--dark-color);
-  font-size: 1.5rem;
-  font-weight: 600;
+  color: var(--text-primary);
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
 }
 
 .header-actions {
   display: flex;
-  gap: var(--spacing-sm);
+  gap: var(--space-3);
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .add-habit-btn {
   background: var(--primary-color);
   color: white;
   border: 2px solid var(--primary-color);
-  padding: var(--space-3) var(--space-6);
+  padding: var(--space-3) var(--space-5);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--transition-base);
@@ -728,6 +732,8 @@ body,
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
+  min-width: 120px;
+  justify-content: center;
 }
 
 .add-habit-btn:hover {
@@ -751,6 +757,11 @@ body,
   transition: all var(--transition-base);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 120px;
+  justify-content: center;
 }
 
 .reset-btn:hover {
@@ -793,6 +804,11 @@ body,
   transition: all var(--transition-base);
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 120px;
+  justify-content: center;
 }
 
 .delete-all-btn:hover {
@@ -828,8 +844,8 @@ body,
 /* Habits Grid */
 .habits-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-  gap: 28px;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: var(--space-6);
   align-items: stretch;
   padding-bottom: var(--space-2);
 }
@@ -977,7 +993,7 @@ body.dark-mode .empty-icon {
 .habit-card {
   background: var(--card-bg);
   border-radius: var(--radius-lg);
-  padding: var(--space-6);
+  padding: var(--space-8);
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-base);
   position: relative;
@@ -1015,16 +1031,17 @@ body.dark-mode .empty-icon {
 }
 
 .habit-color-indicator {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-md);
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-lg);
   background: var(--habit-color, var(--primary-color));
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
-  font-size: 24px;
+  font-size: 26px;
+  box-shadow: var(--shadow-xs);
 }
 
 .habit-color-indicator svg {
@@ -1073,13 +1090,13 @@ body.dark-mode .empty-icon {
 
 .edit-btn,
 .delete-btn {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   background: var(--gray-100);
-  border: 1px solid var(--border-color);
+  border: 2px solid var(--border-color);
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: all var(--transition-fast);
