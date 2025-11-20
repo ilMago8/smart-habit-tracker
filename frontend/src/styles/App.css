@@ -1294,121 +1294,179 @@ body.dark-mode .empty-icon {
   background: var(--gray-100);
 }
 
-/* Dark mode adjustments for modal close button */
+/* ============================================
+   DARK MODE - NEW HABIT & EDIT HABIT MODALS
+   ============================================ */
+
+/* Modal Overlay */
+.dark-mode .add-habit-overlay,
+.dark-mode .edit-habit-overlay {
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
+}
+
+/* Modal Container */
+.dark-mode .add-habit-form,
+.dark-mode .edit-habit-modal {
+  background: var(--card-bg);
+  border: 2px solid var(--border-color);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+/* Modal Header */
+.dark-mode .add-habit-form .form-header h3,
+.dark-mode .edit-habit-modal .edit-habit-header h2 {
+  color: var(--text-primary);
+}
+
 .dark-mode .close-btn {
-  color: var(--gray-300);
+  color: var(--gray-400);
 }
 
 .dark-mode .close-btn:hover {
   color: var(--text-primary);
-  background: var(--gray-200);
+  background: var(--gray-100);
 }
 
-/* Dark mode modal refinements */
-body.dark-mode .add-habit-overlay,
-body.dark-mode .edit-habit-overlay {
-  background: rgba(0,0,0,0.65);
-  backdrop-filter: blur(4px);
-}
-
-body.dark-mode .add-habit-form,
-body.dark-mode .edit-habit-modal {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  box-shadow: 0 12px 48px -12px rgba(0,0,0,0.6);
-}
-
-body.dark-mode .add-habit-form .form-header h3,
-body.dark-mode .edit-habit-modal .edit-habit-header h2 {
-  color: var(--text-primary);
-}
-
-body.dark-mode .add-habit-form label,
-body.dark-mode .edit-habit-modal label {
+/* Labels and Legends */
+.dark-mode .add-habit-form label,
+.dark-mode .edit-habit-modal label {
   color: var(--text-secondary);
 }
 
-/* Color and Icon legends must be white in dark mode */
-body.dark-mode .add-habit-form legend,
-body.dark-mode .edit-habit-modal legend {
-  color: #ffffff;
+.dark-mode .add-habit-form legend,
+.dark-mode .edit-habit-modal legend {
+  color: var(--text-primary);
   font-weight: var(--font-weight-semibold);
 }
 
-body.dark-mode .add-habit-form input[type="text"],
-body.dark-mode .add-habit-form textarea,
-body.dark-mode .add-habit-form select,
-body.dark-mode .edit-habit-modal input[type="text"],
-body.dark-mode .edit-habit-modal textarea,
-body.dark-mode .edit-habit-modal select {
+/* Text Inputs */
+.dark-mode .add-habit-form input[type="text"],
+.dark-mode .add-habit-form textarea,
+.dark-mode .add-habit-form select,
+.dark-mode .edit-habit-modal input[type="text"],
+.dark-mode .edit-habit-modal textarea,
+.dark-mode .edit-habit-modal select {
   background: var(--gray-100);
   border-color: var(--border-color);
   color: var(--text-primary);
 }
 
-body.dark-mode .add-habit-form input[type="text"]::placeholder,
-body.dark-mode .add-habit-form textarea::placeholder,
-body.dark-mode .edit-habit-modal input[type="text"]::placeholder,
-body.dark-mode .edit-habit-modal textarea::placeholder {
+.dark-mode .add-habit-form input[type="text"]::placeholder,
+.dark-mode .add-habit-form textarea::placeholder,
+.dark-mode .edit-habit-modal input[type="text"]::placeholder,
+.dark-mode .edit-habit-modal textarea::placeholder {
   color: var(--text-secondary);
 }
 
-body.dark-mode .add-habit-form input[type="text"]:focus,
-body.dark-mode .add-habit-form textarea:focus,
-body.dark-mode .add-habit-form select:focus,
-body.dark-mode .edit-habit-modal input[type="text"]:focus,
-body.dark-mode .edit-habit-modal textarea:focus,
-body.dark-mode .edit-habit-modal select:focus {
+.dark-mode .add-habit-form input[type="text"]:focus,
+.dark-mode .add-habit-form textarea:focus,
+.dark-mode .add-habit-form select:focus,
+.dark-mode .edit-habit-modal input[type="text"]:focus,
+.dark-mode .edit-habit-modal textarea:focus,
+.dark-mode .edit-habit-modal select:focus {
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(99,102,241,0.25);
-}
-
-body.dark-mode .color-option.selected {
-  outline: 3px solid var(--primary-color);
-  outline-offset: 2px;
-}
-
-body.dark-mode .icon-option.selected {
-  background: var(--primary-color);
-  box-shadow: 0 0 0 2px var(--primary-color);
-}
-
-body.dark-mode .cancel-btn {
-  background: var(--gray-100);
-  color: var(--text-secondary);
-  border: 1px solid var(--border-color);
-}
-body.dark-mode .cancel-btn:hover:not(:disabled) {
-  color: var(--text-primary);
   background: var(--card-bg);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
 }
 
-body.dark-mode .submit-btn {
-  background: var(--primary-color);
-  color: #fff;
-}
-body.dark-mode .submit-btn:hover:not(:disabled) {
-  background: var(--primary-dark);
-}
-
-body.dark-mode .error-message {
-  color: var(--danger-color);
-}
-
-/* Improve Icon section readability in dark mode */
-body.dark-mode .icon-selector {
+/* Color Selector */
+.dark-mode .color-selector {
   background: var(--gray-100);
   border-color: var(--border-color);
 }
-body.dark-mode .icon-category-label {
-  color: #ffffff;
-  font-weight: var(--font-weight-medium);
+
+.dark-mode .color-option {
+  border-color: transparent;
 }
-body.dark-mode .icon-option svg {
-  color: var(--gray-300);
+
+.dark-mode .color-option:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
 }
-body.dark-mode .icon-option:hover svg {
+
+.dark-mode .color-option.selected {
+  border-color: var(--text-primary);
+  outline: 3px solid var(--primary-light);
+  outline-offset: 2px;
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+}
+
+.dark-mode .color-option.selected::after {
+  background: var(--gray-100);
+  color: var(--text-primary);
+  border-color: var(--border-color);
+}
+
+/* Icon Selector */
+.dark-mode .icon-selector {
+  background: var(--gray-100);
+  border-color: var(--border-color);
+}
+
+.dark-mode .icon-category-label {
+  color: var(--text-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.dark-mode .icon-option {
+  background: var(--card-bg);
+  border-color: var(--border-color);
+}
+
+.dark-mode .icon-option svg {
+  color: var(--gray-400);
+}
+
+.dark-mode .icon-option:hover {
+  background: var(--gray-100);
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.dark-mode .icon-option:hover svg {
   color: var(--primary-light);
+}
+
+.dark-mode .icon-option.selected {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+}
+
+.dark-mode .icon-option.selected svg {
+  color: white;
+}
+
+/* Form Buttons */
+.dark-mode .cancel-btn {
+  background: var(--gray-100);
+  color: var(--text-secondary);
+  border-color: var(--border-color);
+}
+
+.dark-mode .cancel-btn:hover:not(:disabled) {
+  background: var(--gray-50);
+  color: var(--text-primary);
+  border-color: var(--gray-400);
+}
+
+.dark-mode .submit-btn {
+  background: var(--primary-color);
+  color: white;
+  border-color: var(--primary-color);
+}
+
+.dark-mode .submit-btn:hover:not(:disabled) {
+  background: var(--primary-dark);
+  border-color: var(--primary-dark);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+}
+
+/* Error Messages */
+.dark-mode .error-message {
+  color: var(--danger-light);
 }
 
 /* Form inputs */
@@ -1556,30 +1614,7 @@ body.dark-mode .icon-option:hover svg {
   box-shadow: var(--shadow-xs);
 }
 
-/* Dark mode specific adjustments */
-.dark-mode .color-option.selected {
-  border-color: var(--gray-50);
-  outline-color: var(--primary-light);
-}
-
-.dark-mode .icon-selector {
-  background: var(--gray-100);
-  border: 2px solid var(--border-color);
-}
-
-.dark-mode .icon-option {
-  /* Match dark input background */
-  background: var(--gray-100);
-  border-color: var(--border-color);
-}
-
-.dark-mode .icon-option:hover {
-  background: var(--gray-50);
-}
-
-.dark-mode .icon-option.selected {
-  background: var(--primary-color);
-}
+/* Dark mode adjustments moved to unified section above */
 
 /* Icon Selector */
 .icon-selector {
@@ -1594,20 +1629,7 @@ body.dark-mode .icon-option:hover svg {
   border-radius: var(--radius-md);
 }
 
-/* Dark mode parity for color selector container */
-.dark-mode .color-selector {
-  background: var(--gray-100);
-  border-color: var(--border-color);
-}
-
-/* Ensure icon options are well visible with better contrast */
-.dark-mode .icon-option {
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.dark-mode .icon-option:hover {
-  border-color: var(--primary-color);
-}
+/* Dark mode rules consolidated above */
 
 .icon-category {
   display: flex;
