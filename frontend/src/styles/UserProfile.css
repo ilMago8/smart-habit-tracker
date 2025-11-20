@@ -1,19 +1,18 @@
 /* Styles for the user profile page */
 .user-profile-page {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--spacing-lg);
+  width: 100%;
 }
 
 .profile-header {
   display: flex;
   align-items: flex-start;
-  gap: var(--spacing-xl);
+  gap: var(--space-6);
   background-color: var(--card-bg);
-  padding: var(--spacing-xl);
+  padding: var(--space-8);
   border-radius: var(--radius-lg);
-  box-shadow: var(--card-shadow);
-  margin-bottom: var(--spacing-xl);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--border-color);
+  margin-bottom: var(--space-6);
 }
 
 .profile-avatar-large {
@@ -118,36 +117,39 @@
 
 .profile-content {
   display: grid;
-  gap: var(--spacing-xl);
+  gap: var(--space-6);
 }
 
 .profile-section {
   background-color: var(--card-bg);
-  padding: var(--spacing-xl);
+  padding: var(--space-8);
   border-radius: var(--radius-lg);
-  box-shadow: var(--card-shadow);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--border-color);
 }
 
 .profile-section h3 {
-  margin: 0 0 var(--spacing-lg) 0;
-  color: var(--dark-color);
+  margin: 0 0 var(--space-5) 0;
+  color: var(--text-primary);
   font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
   border-bottom: 2px solid var(--primary-color);
-  padding-bottom: var(--spacing-sm);
+  padding-bottom: var(--space-2);
 }
 
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--spacing-lg);
+  gap: var(--space-4);
 }
 
 .stat-card {
-  background-color: var(--light-color);
-  padding: var(--spacing-lg);
-  border-radius: var(--radius-md);
+  background-color: var(--gray-50);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  border: 2px solid var(--border-color);
   text-align: center;
-  transition: var(--transition-fast);
+  transition: var(--transition-base);
 }
 
 .stat-card:hover {
