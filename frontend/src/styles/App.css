@@ -344,6 +344,314 @@ body {
 }
 
 /* Responsive design */
+/* Mobile First - Small devices (phones, up to 576px) */
+@media (max-width: 576px) {
+  :root {
+    --font-size-xs: 0.7rem;
+    --font-size-sm: 0.8rem;
+    --font-size-base: 0.9rem;
+    --font-size-lg: 1rem;
+    --font-size-xl: 1.1rem;
+    --font-size-2xl: 1.3rem;
+  }
+
+  .dashboard {
+    padding: var(--space-4) var(--space-3);
+  }
+
+  .dashboard-top-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+  }
+
+  .app-title {
+    font-size: 1.5rem;
+  }
+
+  .user-profile-container {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .user-profile {
+    padding: 4px 12px 4px 4px;
+  }
+
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+
+  .user-name {
+    font-size: 0.8rem;
+  }
+
+  .theme-toggle {
+    width: 36px;
+    height: 36px;
+  }
+
+  .dashboard-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-2) 0;
+  }
+  
+  .date {
+    font-size: 0.8rem;
+  }
+
+  .daily-summary .completed,
+  .daily-summary .total {
+    font-size: 1.8rem;
+  }
+
+  .daily-summary .separator {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-tabs {
+    margin-bottom: var(--space-4);
+    gap: var(--space-1);
+    padding: 0;
+  }
+
+  .tab {
+    padding: var(--space-2) var(--space-4);
+    font-size: 0.8rem;
+    flex: 1;
+    min-width: 0;
+    justify-content: center;
+  }
+
+  .section-header {
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+
+  .section-header h2 {
+    font-size: var(--font-size-xl);
+  }
+
+  .header-actions {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .add-habit-btn,
+  .reset-btn,
+  .delete-all-btn {
+    width: 100%;
+    min-width: unset;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  .habits-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .habit-card {
+    padding: var(--space-5);
+  }
+
+  .habit-color-indicator {
+    width: 44px;
+    height: 44px;
+    font-size: 22px;
+  }
+
+  .habit-color-indicator svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .habit-name {
+    font-size: var(--font-size-base);
+  }
+
+  .habit-description {
+    font-size: 0.8rem;
+  }
+
+  .edit-btn,
+  .delete-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .check-btn {
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.85rem;
+  }
+
+  /* Modal adjustments for mobile */
+  .add-habit-overlay,
+  .edit-habit-overlay {
+    padding: var(--space-2);
+    align-items: flex-start;
+  }
+
+  .add-habit-form,
+  .edit-habit-modal {
+    padding: var(--space-5);
+    max-height: 95vh;
+    margin-top: var(--space-2);
+  }
+
+  .form-header {
+    margin-bottom: var(--space-4);
+  }
+
+  .form-header h3,
+  .edit-habit-header h2 {
+    font-size: var(--font-size-lg);
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .color-selector,
+  .icon-selector {
+    padding: var(--space-2);
+  }
+
+  .color-selector {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .color-option {
+    height: 36px;
+  }
+
+  .icon-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-1);
+  }
+
+  .icon-option {
+    padding: var(--space-2);
+  }
+
+  .icon-option svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+    gap: var(--space-2);
+  }
+
+  .cancel-btn,
+  .submit-btn {
+    width: 100%;
+    padding: var(--space-3) var(--space-4);
+  }
+
+  /* Stats Panel Mobile */
+  .summary-cards {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .summary-card {
+    padding: var(--space-4);
+  }
+
+  .stat-item {
+    padding: var(--space-3);
+  }
+
+  .stat-name {
+    font-size: 0.9rem;
+  }
+
+  .stat-percentage {
+    font-size: 0.85rem;
+  }
+
+  .motivational-message {
+    padding: var(--space-4);
+  }
+
+  .message-content h4 {
+    font-size: var(--font-size-base);
+  }
+
+  .message-content p {
+    font-size: 0.85rem;
+  }
+
+  /* Confirm Dialog Mobile */
+  .confirm-modal {
+    padding: var(--space-5);
+  }
+
+  .confirm-title {
+    font-size: var(--font-size-lg);
+  }
+
+  .confirm-message {
+    font-size: 0.9rem;
+  }
+
+  .confirm-actions {
+    flex-direction: column-reverse;
+    width: 100%;
+  }
+
+  .confirm-btn {
+    width: 100%;
+  }
+
+  /* Empty State Mobile */
+  .empty-state {
+    padding: var(--space-8) var(--space-4);
+  }
+
+  .empty-icon {
+    width: 50px;
+    height: 50px;
+  }
+
+  .empty-state h3 {
+    font-size: 1.2rem;
+  }
+
+  .empty-state p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet and small desktop (577px to 768px) */
+@media (min-width: 577px) and (max-width: 768px) {
+  .dashboard {
+    padding: var(--space-6) var(--space-5);
+  }
+
+  .habits-grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .summary-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .dashboard-tabs {
+    justify-content: flex-start;
+  }
+}
+
+/* Legacy mobile support */
 @media (max-width: 768px) {
   .dashboard-info {
     flex-direction: column;
@@ -1962,49 +2270,35 @@ body.dark-mode .empty-icon {
   color: var(--text-secondary);
 }
 
-/* Responsive Design */
+/* Responsive Design - Enhanced for mobile */
 @media (max-width: 768px) {
-  .dashboard {
-    padding: 15px;
+  /* Touch-friendly targets (minimum 44x44px) */
+  .tab,
+  .add-habit-btn,
+  .reset-btn,
+  .delete-all-btn,
+  .check-btn,
+  .edit-btn,
+  .delete-btn,
+  .icon-option,
+  .color-option {
+    min-height: 44px;
+    touch-action: manipulation;
   }
-  
-  .dashboard-header h1 {
-    font-size: 2rem;
+
+  /* Prevent text selection on buttons */
+  button,
+  .tab,
+  .icon-option,
+  .color-option {
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
   }
-  
-  .dashboard-tabs {
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .tab {
-    width: 200px;
-  }
-  
-  .dashboard-content {
-    padding: 20px;
-  }
-  
-  .habits-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .section-header {
-    flex-direction: column;
-    gap: 15px;
-    text-align: center;
-  }
-  
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-  
-  .summary-cards {
-    grid-template-columns: 1fr;
-  }
-  
-  .form-actions {
-    flex-direction: column;
+
+  /* Improve scrolling on modals */
+  .add-habit-form,
+  .edit-habit-modal {
+    -webkit-overflow-scrolling: touch;
   }
 }
 
