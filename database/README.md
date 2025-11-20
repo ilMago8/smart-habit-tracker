@@ -93,22 +93,38 @@ $password = 'your_password';
 
 
 
-## 📊 **Included Data**
+## 📊 **Sample Data Included**
 
-### **🎯 Example Habits:**
+### **👤 Demo User:**
+- **Email:** demo@example.com
+- **Password:** password (hashed with bcrypt)
+- **Name:** Demo User
+- **Bio & Goals:** Pre-filled for demonstration
 
-1. **💧 Drink Water** - Daily hydration
-2. **📚 Reading** - Mental stimulation
-3. **🤸‍♂️ Stretching** - Physical flexibility
-4. **🧘‍♀️ Meditation** - Mental wellbeing
-5. **🚶‍♂️ Walking** - Physical activity
-6. **😴 Regular Sleep** - Optimal rest
+### **🎯 Six Example Habits:**
+1. **💧 Drink Water** - 7 days/week target
+2. **📚 Reading** - 7 days/week target
+3. **🤸‍♂️ Stretching** - 6 days/week target
+4. **🧘‍♀️ Meditation** - 5 days/week target
+5. **🚶‍♂️ Walking** - 5 days/week target
+6. **😴 Regular Sleep** - 7 days/week target
 
-### **✅ Test Checks:**
+### **✅ Weekly Test Data:**
+- Sample completion checks for current week
+- Realistic patterns (70-90% completion)
+- Various dates and times for testing
+- Perfect for API development and testing
 
-- Sample data for current week
-- Realistic completion patterns
-- Perfect for API testing
+### **🔧 Using Sample Data:**
+```bash
+# Login with demo account
+curl -X POST http://localhost:8000/api/auth/login.php \
+  -H "Content-Type: application/json" \
+  -d '{"email":"demo@example.com","password":"password"}'
+
+# Get demo user habits
+curl http://localhost:8000/api/habits/get.php?user_id=1
+```
 
 ## 🔧 **Useful Queries**
 
@@ -147,37 +163,79 @@ GROUP BY habit_id;
 
 
 
-## 🎯 **Future Extensions**
+## ✅ **Current Multi-User Implementation**
 
-### **V2.1 - Multi User:**
+The schema already includes complete multi-user support:
 
+### **Users Table:**
 ```sql
--- Users table
 CREATE TABLE users (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    email VARCHAR(255) UNIQUE NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    bio TEXT,
+    goals TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
-
--- FK to users in habits
-ALTER TABLE habits ADD COLUMN user_id INT;
-ALTER TABLE habits ADD FOREIGN KEY (user_id) REFERENCES users(id);
 ```
 
-### **V2.2 - Advanced Analytics:**
+### **User-Habit Relationship:**
+- Each habit belongs to one user via `user_id` foreign key
+- CASCADE delete ensures cleanup when user is deleted
+- Indexes optimize queries by user_id
+- Complete data isolation between users
 
+## 🎯 **Future Enhancements**
+
+### **V2.2 - Streak Tracking:**
 ```sql
--- Metrics table
+-- Add streak columns to habits table
+ALTER TABLE habits 
+  ADD COLUMN current_streak INT DEFAULT 0,
+  ADD COLUMN best_streak INT DEFAULT 0,
+  ADD COLUMN last_completed_date DATE;
+
+-- Trigger to update streaks automatically
+CREATE TRIGGER update_streak_after_check
+AFTER INSERT ON habit_checks
+FOR EACH ROW
+BEGIN
+  -- Calculate and update streak logic
+END;
+```
+
+### **V2.3 - Advanced Analytics:**
+```sql
+-- Habit analytics table
 CREATE TABLE habit_analytics (
     id INT AUTO_INCREMENT PRIMARY KEY,
     habit_id INT NOT NULL,
-    metric_date DATE NOT NULL,
-    streak_current INT DEFAULT 0,
-    streak_best INT DEFAULT 0,
+    week_start DATE NOT NULL,
     completion_rate DECIMAL(5,2),
-    FOREIGN KEY (habit_id) REFERENCES habits(id)
+    streak_count INT,
+    total_completions INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (habit_id) REFERENCES habits(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_habit_week (habit_id, week_start)
 );
+```
+
+### **V2.4 - Categories & Tags:**
+```sql
+-- Categories table
+CREATE TABLE categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    color VARCHAR(7),
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Habit-Category relationship
+ALTER TABLE habits ADD COLUMN category_id INT;
+ALTER TABLE habits ADD FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL;
 ```
 
 

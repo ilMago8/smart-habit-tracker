@@ -61,15 +61,18 @@
 - **Goals achieved counter** for successful habits
 
 ### 🎨 Modern UI/UX
+- **Dark/Light mode** with theme toggle and localStorage persistence
+- **Fully responsive design** optimized for mobile, tablet, and desktop
+- **Touch-friendly targets** (minimum 44x44px) for mobile interactions
 - **Consistent design system** with CSS custom properties
-- **Smooth animations** and optimized transitions
+- **Smooth animations** and GPU-accelerated transitions
 - **WCAG accessibility** with ARIA labels and keyboard navigation
 - **Optimized performance** with React.memo and lazy loading
-- **Form validation** with inline error messages
-- **Loading states** and user feedback
-- **Tooltips** for better user guidance
+- **Form validation** with real-time error feedback
+- **Toast notifications** for user feedback
+- **Loading states** and skeleton screens
 - **Confirmation dialogs** for destructive actions
-- **Responsive grid layouts** adapting to screen sizes
+- **Responsive grid layouts** with mobile-first approach
 
 ### 👤 User Profile Management
 - **Personal statistics dashboard** with habit metrics
@@ -339,14 +342,19 @@ mysql -u root -p smart_habit_tracker < backup.sql
 - [x] **Data security** with password encryption
 - [x] **Habit toggle** functionality
 - [x] **Real-time statistics** and analytics
+- [x] **Dark mode** with theme persistence
+- [x] **Fully responsive** mobile-first design
+- [x] **Enhanced UX** with loading states and toast notifications
+- [x] **Edit habits** functionality
+- [x] **User profile** management with editable fields
 
-### 🎯 V2.1 - UX Improvements (In Progress)
-- [ ] **Dark mode** toggle with persistence
-- [ ] **Streak tracking** for consecutive series  
-- [ ] **Predefined habit templates**
-- [ ] **Data export** in CSV/JSON
-- [ ] **Improved mobile** responsive design
-- [ ] **Loading states** and better UX feedback
+### 🎯 V2.2 - Advanced Features (In Progress)
+- [ ] **Streak tracking** for consecutive days
+- [ ] **Predefined habit templates** library
+- [ ] **Data export** in CSV/JSON format
+- [ ] **Habit categories** and tagging system
+- [ ] **Calendar view** for habit history
+- [ ] **Habit reminders** with notifications
 
 ### 🎯 V3.0 - Advanced Features
 - [ ] **Push notifications** for reminders
@@ -368,17 +376,19 @@ mysql -u root -p smart_habit_tracker < backup.sql
 ## 📋 API Documentation
 
 ### Authentication Endpoints
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Authenticate user  
-- `GET /api/auth/profile?user_id={id}` - Get user profile
-- `PUT /api/auth/profile` - Update user profile
+- `POST /api/auth/register.php` - Register new user with email and password
+- `POST /api/auth/login.php` - Authenticate user and return session data
+- `GET /api/auth/profile.php?user_id={id}` - Get user profile information
+- `PUT /api/auth/profile.php` - Update user profile (name, bio, goals)
 
-### Habit Management Endpoints  
-- `GET /api/habits/get.php?user_id={id}` - Get user habits
-- `POST /api/habits/create.php` - Create new habit
-- `POST /api/habits/check.php` - Toggle habit completion
-- `POST /api/habits/manage.php` - Delete habit or reset progress
-- `GET /api/habits/stats.php?user_id={id}` - Get habit statistics
+### Habit Management Endpoints
+- `GET /api/habits/get.php?user_id={id}` - Get all user habits with statistics
+- `POST /api/habits/create.php` - Create new habit with customization
+- `PUT /api/habits/update.php` - Update existing habit details
+- `POST /api/habits/check.php` - Toggle daily habit completion
+- `DELETE /api/habits/delete.php` - Delete specific habit
+- `POST /api/habits/reset.php` - Reset all habit progress for user
+- `GET /api/habits/stats.php?user_id={id}` - Get detailed weekly statistics
 
 ### Request/Response Format
 All endpoints use JSON format with standardized response structure:
