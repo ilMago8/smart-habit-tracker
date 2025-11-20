@@ -242,6 +242,56 @@
   margin: 0;
 }
 
+/* ============================================
+   DARK MODE - USER PROFILE
+   ============================================ */
+
+.dark-mode .profile-name,
+.dark-mode .join-date,
+.dark-mode .habit-name,
+.dark-mode .no-habits {
+  color: var(--text-primary);
+}
+
+.dark-mode .favorite-habit {
+  background-color: var(--gray-100);
+}
+
+.dark-mode .favorite-habit:hover {
+  background-color: var(--gray-50);
+}
+
+.dark-mode .habit-completion {
+  color: var(--primary-light);
+}
+
+.dark-mode .stat-number {
+  color: var(--primary-light);
+}
+
+.dark-mode .stat-label {
+  color: var(--text-secondary);
+}
+
+.dark-mode .profile-bio,
+.dark-mode .profile-goals {
+  color: var(--text-primary);
+}
+
+.dark-mode .profile-bio-edit,
+.dark-mode .profile-goals-edit {
+  background: var(--gray-100);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+.dark-mode .profile-bio-edit:focus,
+.dark-mode .profile-goals-edit:focus {
+  background: var(--card-bg);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
   .profile-header {

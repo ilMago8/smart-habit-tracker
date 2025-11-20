@@ -1330,10 +1330,7 @@ body.dark-mode .empty-icon {
 
 /* Labels and Legends */
 .dark-mode .add-habit-form label,
-.dark-mode .edit-habit-modal label {
-  color: var(--text-secondary);
-}
-
+.dark-mode .edit-habit-modal label,
 .dark-mode .add-habit-form legend,
 .dark-mode .edit-habit-modal legend {
   color: var(--text-primary);
